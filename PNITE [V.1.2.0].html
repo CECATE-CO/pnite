@@ -194,6 +194,21 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
 .mem-fonte{font-size:10px;color:var(--text-3);margin-top:6px}
 .mem-warn{font-size:10px;color:var(--orange);margin-top:6px;display:flex;align-items:center;gap:4px}
 .mem-sec-title{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin:18px 0 8px}
+
+/* FOOTER / CONTROLE DE VERSÃO WEB */
+.pnite-footer{margin-top:auto;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px;color:var(--text-2)}
+.pnite-footer-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pnite-footer-brand{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--text-1)}
+.pnite-footer-brand i{color:var(--accent);font-size:15px}
+.pnite-footer-desc{color:var(--text-3);font-size:11px}
+.pnite-footer-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pnite-footer-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;background:var(--bg-badge);border:1px solid var(--border);font-size:11px;color:var(--text-2)}
+.pnite-footer-tag.version-tag{font-weight:600;color:var(--accent-dark);background:var(--accent-light);border-color:rgba(29,158,117,.25)}
+[data-theme="dark"] .pnite-footer-tag.version-tag{color:var(--accent);background:var(--accent-light);border-color:rgba(34,196,126,.3)}
+.pnite-footer-tag.date-tag{color:var(--text-2)}
+.pnite-footer-tag.status-tag{color:var(--text-2)}
+.status-indicator-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;box-shadow:0 0 0 2px rgba(29,158,117,.25)}
+@media(max-width:768px){.pnite-footer{flex-direction:column;align-items:flex-start;gap:10px}.pnite-footer-right{width:100%;justify-content:flex-start}}
 </style>
 </head>
 <body>
@@ -225,7 +240,7 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
         <div style="font-size:11px;font-weight:600;color:var(--text-1)">Gestor</div>
         <div style="font-size:10px;color:var(--text-3)">CECATE/UFG</div>
       </div>
-      <span style="margin-left:auto;font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--bg-badge);color:var(--accent);border:1px solid var(--border)">v.1.1.0</span>
+      <span style="margin-left:auto;font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--bg-badge);color:var(--accent);border:1px solid var(--border)" id="pniteSidebarVersion" class="pnite-version-val">V.1.2.0</span>
     </div>
   </aside>
 
@@ -466,6 +481,33 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
         <div id="memoriaList"></div>
       </div>
     </div>
+
+    <!-- FOOTER / CONTROLE DE VERSÃO WEB -->
+    <footer class="pnite-footer">
+      <div class="pnite-footer-left">
+        <div class="pnite-footer-brand">
+          <i class="ti ti-bus"></i>
+          <span>PNITE</span>
+        </div>
+        <div class="pnite-footer-desc">
+          Plataforma Nacional de Inteligência em Transporte Escolar · CECATE/UFG &amp; FNDE
+        </div>
+      </div>
+      <div class="pnite-footer-right">
+        <div class="pnite-footer-tag version-tag" title="Versão oficial da plataforma para controle web">
+          <i class="ti ti-tag"></i>
+          <span>Versão: <strong class="pnite-version-val">V.1.2.0</strong></span>
+        </div>
+        <div class="pnite-footer-tag date-tag" title="Data da última alteração no sistema">
+          <i class="ti ti-calendar-event"></i>
+          <span>Alteração: <strong class="pnite-date-val">14/09/2026</strong></span>
+        </div>
+        <div class="pnite-footer-tag status-tag" title="Ambiente de processamento web local">
+          <span class="status-indicator-dot"></span>
+          <span>Versão Web</span>
+        </div>
+      </div>
+    </footer>
   </main>
 </div>
 
@@ -499,7 +541,14 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
           <div class="setting-label">Versão do sistema (PNITE)</div>
           <div class="setting-desc">Plataforma Nacional de Inteligência em Transporte Escolar</div>
         </div>
-        <span style="font-size:11px;font-weight:600;color:var(--accent)" id="pniteVersionDisplay">v.1.1.0</span>
+        <span style="font-size:11px;font-weight:600;color:var(--accent)" id="pniteVersionDisplay" class="pnite-version-val">V.1.2.0</span>
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Data da última alteração</div>
+          <div class="setting-desc">Registro para controle da versão web</div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:var(--text-2)" id="pniteDateDisplay" class="pnite-date-val">14/09/2026</span>
       </div>
     </div>
   </div>
@@ -510,7 +559,8 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.1.1.0";
+const PNITE_VERSION = "V.1.2.0";
+const PNITE_LAST_UPDATE = "14/09/2026";
 // ================================================================
 // DADOS REAIS — Relatórios CECATE/UFG 2024-2025
 // ================================================================
@@ -1352,10 +1402,16 @@ function renderMapaRank(ind,vals){
   document.getElementById('mapaRankList').innerHTML=html||'<div style="font-size:11px;color:var(--text-3)">Sem dados para este indicador neste nível.</div>';
 }
 
+function syncVersionInfo(){
+  document.querySelectorAll('.pnite-version-val').forEach(el=>el.textContent=PNITE_VERSION);
+  document.querySelectorAll('.pnite-date-val').forEach(el=>el.textContent=PNITE_LAST_UPDATE);
+}
+
 // Init
 const savedTheme=localStorage.getItem('theme')||'light';
 document.documentElement.setAttribute('data-theme',savedTheme);
 if(savedTheme==='dark') document.getElementById('darkToggle').checked=true;
+syncVersionInfo();
 render();
 renderGiTable();
 renderMissingTable();

@@ -224,7 +224,7 @@ Caso seja desejável reconectar o indicador `ICA` ao `TEDC`:
 ## 5. Instruções para Restauração Rápida
 Para restaurar qualquer um dos dois indicadores (ou ambos):
 1. Copie o snippet correspondente da Seção 2.2 ou 3.2.
-2. Localize no arquivo `ESTRUTURA HTML [TE V140926].html` o array/objeto indicado.
+2. Localize no arquivo principal `PNITE [V.1.2.0].html` (anteriormente `ESTRUTURA HTML [TE V140926].html`) o array/objeto indicado.
 3. Cole a respectiva entrada no array/objeto mantendo a sintaxe JavaScript / HTML.
 4. Incremente a versão do sistema em conformidade com o padrão SemVer (`v.X.Y.Z`).
 5. Execute o teste de carregamento e interface no console do navegador.
