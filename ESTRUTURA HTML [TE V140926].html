@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard — Indicadores de Transporte Escolar</title>
+<title>PNITE — Plataforma Nacional de Inteligência em Transporte Escolar</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
 <style>
 :root {
@@ -203,8 +203,8 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
     <div class="brand">
       <div class="brand-icon"><i class="ti ti-bus"></i></div>
       <div>
-        <div class="brand-name">Painel de Indicadores</div>
-        <div class="brand-sub">CECATE/UFG · FNDE</div>
+        <div class="brand-name">PNITE</div>
+        <div class="brand-sub">Plataforma Nac. Inteligência TE</div>
       </div>
     </div>
     <div class="nav-sec">Painéis</div>
@@ -225,6 +225,7 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
         <div style="font-size:11px;font-weight:600;color:var(--text-1)">Gestor</div>
         <div style="font-size:10px;color:var(--text-3)">CECATE/UFG</div>
       </div>
+      <span style="margin-left:auto;font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--bg-badge);color:var(--accent);border:1px solid var(--border)">v.1.1.0</span>
     </div>
   </aside>
 
@@ -379,8 +380,8 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
       <div class="full-card" style="font-size:10px;color:var(--text-3);line-height:1.8">
         <div class="cc-title" style="margin-bottom:6px">Nota metodológica</div>
         <strong style="color:var(--text-2)">Origem e escopo.</strong> Esta aba apresenta os microdados SETE/PDDE agregados por município (código IBGE de 7 dígitos do campo <code>codigo_cidade</code>) e por UF, com nomes territoriais da Divisão Territorial Brasileira (DTB) 2024 do IBGE. Foram identificados <b id="seteNMun" style="color:var(--text-1)"></b> municípios com ao menos um registro, todos com correspondência exata no DTB (nenhum código órfão). A visão <b>Registros</b> traz contagens brutas por tabela; a visão <b>Indicadores</b> aplica, por município, as mesmas fórmulas documentadas na aba Memória de Cálculo.<br>
-        <strong style="color:var(--text-2)">Indicadores validados por reagregação.</strong> PRGM, PRDAM, PRRM, PRHM, PRMM, PVP, PVT, MON_CVE e MOT_CVE municipais, quando reagregados por UF, reproduzem exatamente os valores estaduais das demais abas (zero divergências em 27 UFs).<br>
-        <strong style="color:var(--yellow,#b8860b)">⚠ Indicadores da cadeia de alunos (ATE, MEDATE, IUC, TEDC, TETI).</strong> São calculados no grão (município, id) e <b>não reagregam</b> para os valores estaduais das demais abas. Causa identificada: o campo <code>id_aluno</code> mistura uma sequência global com sequências legadas locais — 11.827 ids ocorrem em mais de um município — e o cálculo estadual por ids distintos colapsa alunos diferentes de municípios diferentes (ex.: RO tem 46.194 pares município+id contra 24.968 ids distintos). O grão municipal usado aqui é referencialmente correto; os agregados estaduais das demais abas devem ser revisados à luz desse achado. O mesmo vale para junções por <code>id_rota</code>/<code>id_veiculo</code>/<code>id_escola</code> sem o município (afeta al_adeq/TETI e esc_at/ATE).<br>
+        <strong style="color:var(--text-2)">Indicadores validados por reagregação.</strong> PRGM, PRDAM, PRRM, PRHM, PRMM, PVP, MON_CVE e MOT_CVE municipais, quando reagregados por UF, reproduzem exatamente os valores estaduais das demais abas (zero divergências em 27 UFs).<br>
+        <strong style="color:var(--yellow,#b8860b)">⚠ Indicadores da cadeia de alunos (ATE, MEDATE, IUC, TETI).</strong> São calculados no grão (município, id) e <b>não reagregam</b> para os valores estaduais das demais abas. Causa identificada: o campo <code>id_aluno</code> mistura uma sequência global com sequências legadas locais — 11.827 ids ocorrem em mais de um município — e o cálculo estadual por ids distintos colapsa alunos diferentes de municípios diferentes (ex.: RO tem 46.194 pares município+id contra 24.968 ids distintos). O grão municipal usado aqui é referencialmente correto; os agregados estaduais das demais abas devem ser revisados à luz desse achado. O mesmo vale para junções por <code>id_rota</code>/<code>id_veiculo</code>/<code>id_escola</code> sem o município (afeta al_adeq/TETI e esc_at/ATE).<br>
         <strong style="color:var(--text-2)">Divergências de contagem bruta.</strong> Alunos = 3.761.370 registros brutos vs. 3.406.265 ids distintos usados nos indicadores; escolas = 65.569 vs. 61.722; motoristas = 63.739 registros vs. 44.152 com vínculo informado. Rotas (82.887), veículos (67.730) e monitores (22.678) coincidem exatamente.<br>
         <strong style="color:var(--yellow,#b8860b)">⚠ Interpretações de código não confirmadas.</strong> Origem 1 = próprio / 2 = terceirizado; tipo de rota 1 = rodoviária, 2 = aquaviária, 3 = mista; vínculo 1/2 = vínculo formal; tipos de veículo 1, 2 e 3 = adequados (TETI). Nenhuma dessas interpretações foi validada contra a documentação oficial do SETE e não devem fundamentar decisões antes dessa verificação. PECS, PATM, PATE e IPTE exigem Censo Escolar municipal e não estão disponíveis neste escopo; PRPM, PVPCE, IPE e ICA permanecem incalculáveis por ausência estrutural de dados.<br>
         <strong style="color:var(--text-2)">Km total.</strong> Soma do campo <code>km</code> das rotas com valor entre 0 e 2.000 km (nulos, zero e aberrantes excluídos; "rotas c/ km" indica quantas entraram na soma). "Alunos transportados" = pares distintos (município, id_aluno) presentes em rota_atende_aluno.
@@ -422,7 +423,6 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
               <option value="PRMM">PRMM — Rotas Multimodais</option>
               <option value="PRPM">PRPM — Rotas com Monitores</option>
               <option value="PVP">PVP — Veículos Próprios</option>
-              <option value="PVT">PVT — Veículos Terceirizados</option>
               <option value="PVPCE">PVPCE — Veículos Caminho da Escola</option>
               <option value="PECS">PECS — Escolas no SETE</option>
               <option value="IUC">IUC — Índice de Utiliz. Capacidade</option>
@@ -447,7 +447,7 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
             <tbody id="missingTable"></tbody>
           </table>
           <div style="margin-top:12px;font-size:10px;color:var(--text-3);line-height:1.7;padding:10px 12px;background:var(--bg-input);border-radius:8px;border-left:3px solid var(--blue)">
-            <strong style="color:var(--blue)">Sobre a substituição:</strong> os quatro indicadores acima foram removidos das listas do dashboard por serem incalculáveis nesta base (documento "Indicadores substitutos"). A correspondência ICA → TEDC, IPE → TETI e PVPCE → PVP/PVT foi derivada dos pareamentos apresentados no próprio documento ("ICA ou TEDC", "TETI ou IPE", "PVP/PVT/PVPCE"); a direção da substituição é inferida da disponibilidade de dados e deve ser validada metodologicamente. A calculadora ao lado permite estimar os removidos manualmente caso os dados sejam obtidos.
+            <strong style="color:var(--blue)">Sobre a substituição:</strong> os indicadores acima foram identificados como incalculáveis de forma direta nesta base (documento "Indicadores substitutos"). A correspondência IPE → TETI e PVPCE → PVP foi derivada das alternativas operacionais viáveis; o indicador ICA não possui substituto direto nesta versão. A calculadora ao lado permite estimar indicadores manualmente caso dados adicionais sejam obtidos.
           </div>
         </div>
       </div>
@@ -496,10 +496,10 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
       </div>
       <div class="setting-row">
         <div>
-          <div class="setting-label">Versão do relatório</div>
-          <div class="setting-desc">Última atualização: dez/2025</div>
+          <div class="setting-label">Versão do sistema (PNITE)</div>
+          <div class="setting-desc">Plataforma Nacional de Inteligência em Transporte Escolar</div>
         </div>
-        <span style="font-size:11px;color:var(--text-3)">2025.12</span>
+        <span style="font-size:11px;font-weight:600;color:var(--accent)" id="pniteVersionDisplay">v.1.1.0</span>
       </div>
     </div>
   </div>
@@ -507,6 +507,10 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
+// ================================================================
+// PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
+// ================================================================
+const PNITE_VERSION = "v.1.1.0";
 // ================================================================
 // DADOS REAIS — Relatórios CECATE/UFG 2024-2025
 // ================================================================
@@ -520,7 +524,6 @@ const ALL_INDICATORS = [
   {sigla:'PRHM',nome:'Rotas Hidroviárias',tipo:'D',formula:'(Rotas hidroviárias ÷ Total de rotas) × 100',fonte:'SETE/PDDE',status:'ok',valNac:2.04,unit:'%',obj:'Caracterizar a participação do modo hidroviário no conjunto de rotas do transporte escolar.'},
   {sigla:'PRMM',nome:'Rotas Multimodais',tipo:'D',formula:'(Rotas multimodais ÷ Total de rotas) × 100',fonte:'SETE/PDDE',status:'ok',valNac:5.52,unit:'%',obj:'Caracterizar a participação de rotas que combinam mais de um modo de transporte.'},
   {sigla:'PVP',nome:'Veículos Próprios',tipo:'D',formula:'(Veículos próprios ÷ Total de veículos) × 100',fonte:'SETE/PDDE',status:'ok',valNac:50.68,unit:'%',obj:'Medir a participação de veículos de propriedade do poder público na frota do transporte escolar.'},
-  {sigla:'PVT',nome:'Veículos Terceirizados',tipo:'D',formula:'(Veículos terceirizados ÷ Total de veículos) × 100',fonte:'SETE/PDDE',status:'ok',valNac:49.32,unit:'%',obj:'Medir a participação de veículos terceirizados na frota, indicando o arranjo operacional adotado.'},
   {sigla:'PECS',nome:'Escolas Cadastradas no SETE',tipo:'D',formula:'(Escolas SETE ÷ Escolas ativas Censo) × 100',fonte:'SETE+Censo 2025',status:'ok',valNac:34.19,unit:'%',obj:'Aferir a cobertura de adesão ao SETE, relacionando as escolas cadastradas no sistema às escolas ativas do Censo Escolar.'},
   {sigla:'ATE',nome:'Alunos Transportados por Escola',tipo:'D',formula:'Alunos transp ÷ Escolas atendidas',fonte:'SETE/PDDE',status:'ok',valNac:38.9,unit:'alunos',obj:'Estimar a média de alunos transportados por escola atendida, dimensionando a escala do atendimento.'},
   {sigla:'MEDATE',nome:'Mediana de Alunos Transp. por Escola',tipo:'D',formula:'Mediana de alunos transp. por escola atendida',fonte:'SETE/PDDE',status:'ok',valNac:26.0,unit:'alunos',obj:'Estimar o valor mediano de alunos transportados por escola atendida, medida menos sensível a valores extremos que a média.'},
@@ -529,7 +532,6 @@ const ALL_INDICATORS = [
   {sigla:'MON_CVE',nome:'Monitores com Vínculo Empregatício',tipo:'P',formula:'(Monitores efetivos/CLT ÷ Total) × 100',fonte:'SETE/PDDE',status:'ok',valNac:18.89,unit:'%',obj:'Medir o grau de formalização do vínculo empregatício dos monitores do transporte escolar.'},
   {sigla:'MOT_CVE',nome:'Motoristas com Vínculo Empregatício',tipo:'P',formula:'(Motoristas efetivos/CLT ÷ Total) × 100',fonte:'SETE/PDDE',status:'ok',valNac:21.29,unit:'%',obj:'Medir o grau de formalização do vínculo empregatício dos motoristas do transporte escolar.'},
   {sigla:'TETI',nome:'Erradicação de Transporte Inadequado',tipo:'FNL',formula:'(Alunos em ônibus/micro/van ÷ Total transp.) × 100',fonte:'SETE/PDDE',status:'ok',valNac:56.18,unit:'%',obj:'Aferir a parcela de alunos transportados em veículos adequados (ônibus, micro-ônibus e vans), como resultado finalístico de qualidade e adequação da frota.'},
-  {sigla:'TEDC',nome:'Taxa de Eficácia da Demanda Cadastrada',tipo:'FNL',formula:'(Alunos em rotas ativas ÷ Total cadastrados) × 100',fonte:'SETE/PDDE',status:'ok',valNac:30.96,unit:'%',obj:'Medir a cobertura efetiva do atendimento, relacionando alunos atendidos em rotas ativas aos alunos cadastrados no SETE.'},
   {sigla:'PATM',nome:'Proporção de Alunos Transp. (agregado)',tipo:'CENSO',formula:'QT_TRANSP_PUBLICO ÷ QT_MAT_BAS',fonte:'Censo 2025',status:'ok',valNac:19.73,unit:'%',obj:'Dimensionar a proporção de matrículas da educação básica atendidas por transporte escolar público, segundo o Censo Escolar.'},
   {sigla:'PATE',nome:'Proporção de Alunos Transp. por Estado',tipo:'CENSO',formula:'QT_TRANSP_PUBLICO ÷ QT_MAT_BAS',fonte:'Censo 2025',status:'ok',valNac:19.73,unit:'%',obj:'Dimensionar, por estado, a proporção de matrículas atendidas por transporte escolar público, segundo o Censo Escolar.'},
   {sigla:'IPTE',nome:'Índice Proporcionalidade Mun/Estadual',tipo:'CENSO',formula:'QT_TRANSP_RESP_EST ÷ QT_TRANSP_RESP_MUN',fonte:'Censo 2025',status:'ok',valNac:0.187,unit:'índice',obj:'Comparar a participação estadual e municipal na oferta do transporte escolar, por meio da razão entre alunos transportados sob responsabilidade do estado e do município.'},
@@ -542,7 +544,6 @@ const INDICATORS = {
     {sigla:'PRMM',nome:'Rotas Multimodais',unit:'%',key:'PRMM'},
     {sigla:'PRDAM',nome:'Rotas c/ Dificuldade',unit:'%',key:'PRDAM'},
     {sigla:'PVP',nome:'Veículos Próprios',unit:'%',key:'PVP'},
-    {sigla:'PVT',nome:'Veículos Terceirizados',unit:'%',key:'PVT'},
     {sigla:'ATE',nome:'Alunos Transp./Escola',unit:'alunos',key:'ATE'},
     {sigla:'PECS',nome:'Escolas no SETE',unit:'%',key:'PECS'},
     {sigla:'MEDATE',nome:'Mediana ATE',unit:'alunos',key:'MEDATE'},
@@ -555,15 +556,14 @@ const INDICATORS = {
   ],
   FNL:[
     {sigla:'TETI',nome:'Errad. Transp. Inadequado',unit:'%',key:'TETI'},
-    {sigla:'TEDC',nome:'Eficácia Demanda Cadastrada',unit:'%',key:'TEDC'},
   ]
 };
 
 const MISSING_TABLE = [
   {sigla:'PRPM',nome:'Rotas com Monitores',info:'Não existe tabela rota-monitor nos dados PDDE',subst:'IPE → TETI',ganho:'O documento indica o IPE como substituto direto; como o IPE também é incalculável nesta base, o TETI atua como proxy factível de segurança (adequação da frota).'},
   {sigla:'IPE',nome:'Proteção Embarcada',info:'Depende de PRPM (monitor por rota) — indisponível',subst:'TETI',ganho:'Usa a segurança estrutural da frota como proxy factível de proteção no SETE.'},
-  {sigla:'PVPCE',nome:'Veíc. Caminho da Escola',info:'Sem flag que identifique veículo do programa CE',subst:'PVP / PVT',ganho:'Reposiciona a análise para o arranjo operacional da frota (própria e terceirizada), componentes disponíveis do grupo PVP/PVT/PVPCE.'},
-  {sigla:'ICA',nome:'Continuidade do Acesso',info:'Requer registro diário de execução de rotas',subst:'TEDC',ganho:'Substitui a medida de continuidade pela cobertura do aluno efetivamente atendido, com base apenas em demanda cadastrada e atendimento realizado.'},
+  {sigla:'PVPCE',nome:'Veíc. Caminho da Escola',info:'Sem flag que identifique veículo do programa CE',subst:'PVP',ganho:'Reposiciona a análise para a frota própria (PVP), componente disponível do arranjo operacional.'},
+  {sigla:'ICA',nome:'Continuidade do Acesso',info:'Requer registro diário de execução de rotas',subst:'—',ganho:'Os microdados não dispõem de registro diário de execução; indicador sem substituto direto nesta versão.'},
 ];
 
 const CALC_DEFS = {
@@ -574,7 +574,6 @@ const CALC_DEFS = {
   PRMM:{fields:['Rotas multimodais','Total de rotas'],formula:'(A ÷ B) × 100',fn:v=>(v[0]/v[1]*100).toFixed(1)+'%'},
   PRPM:{fields:['Monitores vinculados a rotas','Total de monitores'],formula:'(A ÷ B) × 100',fn:v=>(v[0]/v[1]*100).toFixed(1)+'%'},
   PVP:{fields:['Veículos próprios','Total de veículos'],formula:'(A ÷ B) × 100',fn:v=>(v[0]/v[1]*100).toFixed(1)+'%'},
-  PVT:{fields:['Veículos terceirizados','Total de veículos'],formula:'(A ÷ B) × 100',fn:v=>(v[0]/v[1]*100).toFixed(1)+'%'},
   PVPCE:{fields:['Veículos Caminho da Escola','Total de veículos'],formula:'(A ÷ B) × 100',fn:v=>(v[0]/v[1]*100).toFixed(1)+'%'},
   PECS:{fields:['Escolas no SETE','Total de escolas'],formula:'(A ÷ B) × 100',fn:v=>(v[0]/v[1]*100).toFixed(1)+'%'},
   IUC:{fields:['Alunos transportados','Capacidade total da frota'],formula:'A ÷ B',fn:v=>(v[0]/v[1]).toFixed(2)+' (ideal ≤ 1,0)'},
@@ -705,7 +704,7 @@ function renderRotasGrid(d){
 
 function renderFrotaGrid(d){
   const g=document.getElementById('frotaGrid'); if(!g) return; g.innerHTML='';
-  [{k:'PVP',n:'Veículos Próprios',c:'fg'},{k:'PVT',n:'Veículos Terceirizados',c:'fb2'}].forEach(m=>{
+  [{k:'PVP',n:'Veículos Próprios',c:'fg'}].forEach(m=>{
     const val=d[m.k]; const disp=val===null?'—':val.toFixed(1)+'%';
     g.innerHTML+=`<div class="mc"><div class="mc-top"><span class="mc-label">${m.k}</span><span class="badge bd">D</span></div><div class="mc-val">${disp}</div><div class="mc-unit">${m.n}</div><div class="mc-bar"><div class="mc-fill ${m.c}" style="width:${val===null?0:Math.min(100,val).toFixed(0)}%"></div></div></div>`;
   });
@@ -922,18 +921,11 @@ function renderMemoria(){
     'Campo origem = 1',
     'Suposição não confirmada: origem 1 = próprio',null);
 
-  html+=card('PVT','Veículos Terceirizados','D',
-    [['Veículos origem 2',fmt(r.vt)],['Total de veículos',fmt(r.tot_veic)]],
-    `(${fmt(r.vt)} ÷ ${fmt(r.tot_veic)}) × 100`,
-    calcVal(r.vt,r.tot_veic,true),
-    'Campo origem = 2',
-    'Suposição não confirmada: origem 2 = terceirizado',null);
-
   html+=card('PVPCE','Veículos Caminho da Escola','D',
     [['Veículos marcados como CE','—'],['Total de veículos',fmt(r.tot_veic)]],
     '(Veículos CE ÷ Total de veículos) × 100',
     null,'script_04_veiculos.csv',null,
-    'Nenhum campo identifica se o veículo pertence ao programa Caminho da Escola. Indicador substituído (ver aba Calcular): PVP/PVT');
+    'Nenhum campo identifica se o veículo pertence ao programa Caminho da Escola. Indicador com foco alternativo na frota própria: PVP');
 
   // ── PROFISSIONAIS ──
   html+=secTitle('Profissionais','script_05_monitores.csv · script_06_motoristas.csv');
@@ -975,13 +967,6 @@ function renderMemoria(){
     `${fmt(r.al_transp)} ÷ (${fmt(r.n_veic_validos)} × ${fmt(r.cap_media)})`,
     iuc_val,
     'Veículos com capacidade > 70 excluídos como outliers. IUC < 1 indica capacidade ociosa agregada.',null,null);
-
-  const tedc_val=r.al_transp&&r.al_cad?(r.al_transp/r.al_cad*100).toFixed(2)+'%':null;
-  html+=card('TEDC','Taxa de Eficácia da Demanda Cadastrada','FNL',
-    [['Alunos em rotas ativas',fmt(r.al_transp)],['Alunos cadastrados',fmt(r.al_cad)]],
-    `(${fmt(r.al_transp)} ÷ ${fmt(r.al_cad)}) × 100`,
-    tedc_val,
-    'script_13 (alunos em rotas) ÷ script_01 (alunos cadastrados)',null,null);
 
   const pecs_val=r.sete_esc&&r.cs_esc_ativas?(r.sete_esc/r.cs_esc_ativas*100).toFixed(2)+'%':null;
   html+=card('PECS','Escolas Cadastradas no SETE','D',
@@ -1028,7 +1013,7 @@ function renderMemoria(){
     [['Dias letivos com rotas executadas','—'],['Dias letivos programados','—']],
     '(Dias executados ÷ Dias programados) × 100',
     null,'Registro diário de execução',null,
-    'Os dados são cadastro estático — não há registro histórico de execução diária de rotas. Indicador substituído (ver aba Calcular): TEDC');
+    'Os dados são cadastro estático — não há registro histórico de execução diária de rotas. Indicador sem substituto direto nesta versão.');
 
 
 
@@ -1054,9 +1039,9 @@ const SETE_COLS_REG = [
 const SETE_COLS_IND = [
   {k:'cod', l:'Cód. IBGE'}, {k:'mun', l:'Município'}, {k:'uf', l:'UF'},
   {k:'PRGM', l:'PRGM %'}, {k:'PRDAM', l:'PRDAM %'}, {k:'PRRM', l:'PRRM %⚠'},
-  {k:'PRHM', l:'PRHM %⚠'}, {k:'PRMM', l:'PRMM %⚠'}, {k:'PVP', l:'PVP %⚠'}, {k:'PVT', l:'PVT %⚠'},
+  {k:'PRHM', l:'PRHM %⚠'}, {k:'PRMM', l:'PRMM %⚠'}, {k:'PVP', l:'PVP %⚠'},
   {k:'MON_CVE', l:'MON_CVE %⚠'}, {k:'MOT_CVE', l:'MOT_CVE %⚠'}, {k:'ATE', l:'ATE'},
-  {k:'MEDATE', l:'MEDATE'}, {k:'IUC', l:'IUC'}, {k:'TEDC', l:'TEDC %'}, {k:'TETI', l:'TETI %⚠'}];
+  {k:'MEDATE', l:'MEDATE'}, {k:'IUC', l:'IUC'}, {k:'TETI', l:'TETI %⚠'}];
 SETE_COLS_REG.forEach(c => c.i = SETE_MUN.cols.indexOf(c.k));
 SETE_COLS_IND.forEach(c => c.i = SETE_MUN.cols.indexOf(c.k));
 function seteCols(){ return seteView==='ind' ? SETE_COLS_IND : SETE_COLS_REG; }

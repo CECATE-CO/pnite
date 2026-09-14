@@ -1,0 +1,75 @@
+{
+  "versao_remocao": "v.1.1.0",
+  "versao_origem": "v.1.0.0",
+  "data_remocao": "2026-09-14",
+  "indicadores": [
+    {
+      "sigla": "PVT",
+      "nome": "Veículos Terceirizados",
+      "tipo": "D",
+      "tipo_extenso": "Descritivo",
+      "formula": "(Veículos terceirizados ÷ Total de veículos) × 100",
+      "fonte": "SETE/PDDE",
+      "status": "ok",
+      "valNac": 49.32,
+      "unit": "%",
+      "obj": "Medir a participação de veículos terceirizados na frota, indicando o arranjo operacional adotado.",
+      "campos_base": ["Veículos origem 2 (vt)", "Total de veículos (tot_veic)"],
+      "calculadora": {
+        "fields": ["Veículos terceirizados", "Total de veículos"],
+        "formula": "(A ÷ B) × 100"
+      },
+      "valores_por_uf": {
+        "nacional": 49.32,
+        "norte": 44.99,
+        "nordeste": 47.07,
+        "sudeste": 55.14,
+        "sul": 45.58,
+        "centro-oeste": 23.62,
+        "ac": 18.8,
+        "al": 37.71,
+        "am": 57.81,
+        "ap": 57.89,
+        "ba": 64.03,
+        "ce": 47.97,
+        "df": 0.72,
+        "es": 69.99,
+        "go": 48.82,
+        "ma": 66.17,
+        "mg": 51.98,
+        "ms": 31.06,
+        "mt": 13.87,
+        "pa": 50.56,
+        "pb": 27.72,
+        "pe": 52.79,
+        "pi": 55.71,
+        "pr": 53.21,
+        "rj": 45.33,
+        "rn": 40.42,
+        "ro": 38.89,
+        "rr": 36.51,
+        "rs": 49.06,
+        "sc": 34.48,
+        "se": 31.12,
+        "sp": 53.27,
+        "to": 54.48
+      }
+    },
+    {
+      "sigla": "TEDC",
+      "nome": "Taxa de Eficácia da Demanda Cadastrada",
+      "tipo": "FNL",
+      "tipo_extenso": "Finalístico",
+      "formula": "(Alunos em rotas ativas ÷ Total cadastrados) × 100",
+      "fonte": "SETE/PDDE",
+      "status": "ok",
+      "valNac": 30.96,
+      "unit": "%",
+      "obj": "Medir a cobertura efetiva do atendimento, relacionando alunos atendidos em rotas ativas aos alunos cadastrados no SETE.",
+      "campos_base": ["Alunos em rotas ativas (al_transp)", "Alunos cadastrados (al_cad)"],
+      "valores_por_uf": {
+        "nacional": 30.96
+      }
+    }
+  ]
+}
