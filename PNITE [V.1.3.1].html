@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PNITE — Plataforma Nacional de Inteligência em Transporte Escolar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
 <style>
 :root {
@@ -211,7 +214,7 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
 @media(max-width:768px){.pnite-footer{flex-direction:column;align-items:flex-start;gap:10px}.pnite-footer-right{width:100%;justify-content:flex-start}}
 
 /* ==========================================================================
-   PNITE v.1.3.0 — REFINAMENTOS VISUAIS CLEAN E IDENTIDADE TÉCNICA
+   PNITE v.1.3.1 — REFINAMENTOS VISUAIS CLEAN E IDENTIDADE TÉCNICA
    ========================================================================== */
 .badge-novo {
   display: inline-flex;
@@ -397,6 +400,364 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
   color: var(--accent);
 }
 
+
+/* ==========================================================================
+   PNITE v.1.3.1 — NOVA PROPOSTA VISUAL CLEAN (INSPIRADA EM 'INDICADORES REVISADOS')
+   ========================================================================== */
+:root {
+  --w: #ffffff;
+  --off: #f5f5f7;
+  --g1: #e8e8ed;
+  --g2: #d2d2d7;
+  --g3: #a1a1a6;
+  --g4: #6e6e73;
+  --g5: #3a3a3c;
+  --ink: #111111;
+  --blue: #0071e3;
+  --blue-hover: #0077ed;
+  --blue-light: #e6f0fb;
+  --red: #c0392b;
+  --amber: #b8860b;
+  --amber-light: #faf1de;
+  --emerald: #1D9E75;
+
+  /* Mapeamento de Tokens do Sistema */
+  --bg-page: #f5f5f7;
+  --bg-card: #ffffff;
+  --bg-sidebar: #ffffff;
+  --bg-hover: #f0f2f5;
+  --bg-active: #e8f0fe;
+  --bg-input: #fbfbfd;
+  --bg-badge: #f0f1f4;
+  --border: #e8e8ed;
+  --border-mid: #d2d2d7;
+  --text-1: #111111;
+  --text-2: #6e6e73;
+  --text-3: #8c929e;
+  --accent: #0071e3;
+  --accent-dark: #0056b3;
+  --accent-light: #e6f0fb;
+  --shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+
+[data-theme="dark"] {
+  --w: #161b22;
+  --off: #0d1117;
+  --g1: #21262d;
+  --g2: #30363d;
+  --g3: #6b7280;
+  --g4: #8b949e;
+  --g5: #c9d1d9;
+  --ink: #f0f6fc;
+  --blue: #409cff;
+  --blue-hover: #58a6ff;
+  --blue-light: rgba(56, 139, 253, 0.15);
+  --red: #f85149;
+  --amber: #d29922;
+  --amber-light: rgba(210, 153, 34, 0.15);
+  --emerald: #2ea043;
+
+  --bg-page: #0d1117;
+  --bg-card: #161b22;
+  --bg-sidebar: #13171e;
+  --bg-hover: #1f242c;
+  --bg-active: rgba(56, 139, 253, 0.18);
+  --bg-input: #1a1f28;
+  --bg-badge: #1f242d;
+  --border: #262b34;
+  --border-mid: #323844;
+  --text-1: #f0f6fc;
+  --text-2: #8b949e;
+  --text-3: #6e7681;
+  --accent: #409cff;
+  --accent-dark: #1f6feb;
+  --accent-light: rgba(56, 139, 253, 0.15);
+  --shadow: 0 1px 4px rgba(0,0,0,.3);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-1);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+}
+
+/* Tipografia Editorial Limpa */
+.page-title {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-1);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+.page-sub {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 3px;
+  font-weight: 300;
+}
+
+.cc-title {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+}
+.cc-sub {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 2px;
+  font-weight: 300;
+}
+
+/* Metric Cards com Grandes Números Serifa */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.mc {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+  transition: all .2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.mc:hover {
+  border-color: var(--border-mid);
+  transform: translateY(-1px);
+}
+.mc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.mc-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.mc-val {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: var(--text-1);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  margin: 6px 0 2px;
+}
+.mc-unit {
+  font-size: 11.5px;
+  color: var(--text-2);
+  font-weight: 300;
+  line-height: 1.4;
+}
+.mc-bar {
+  height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+/* Botões e Filtros em Pílula Clean */
+.fb, .tab-btn {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all .15s ease;
+  font-family: inherit;
+  font-weight: 500;
+}
+.fb.active, .tab-btn.active {
+  background: var(--text-1);
+  color: var(--bg-card);
+  border-color: var(--text-1);
+  font-weight: 500;
+}
+.fb:hover:not(.active), .tab-btn:hover:not(.active) {
+  background: var(--bg-hover);
+  color: var(--text-1);
+  border-color: var(--border-mid);
+}
+
+/* Tabelas Arejadas e Limpas */
+.gi-t, .ind-t {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-1);
+}
+.gi-t thead th, .ind-t thead th {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-align: left;
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--border-mid);
+}
+.gi-t tbody td, .ind-t tbody td {
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.45;
+  vertical-align: middle;
+}
+.gi-t tbody tr:hover td, .ind-t tbody tr:hover td {
+  background: var(--bg-hover);
+}
+
+/* Badges e Pílulas */
+.badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.bd { background: #e6f0fb; color: var(--blue); }
+[data-theme="dark"] .bd { background: rgba(56, 139, 253, 0.18); color: var(--blue); }
+.bp { background: #faf1de; color: var(--amber); }
+[data-theme="dark"] .bp { background: rgba(210, 153, 34, 0.18); color: var(--amber); }
+.bf { background: #fde8e8; color: var(--red); }
+[data-theme="dark"] .bf { background: rgba(248, 81, 73, 0.18); color: var(--red); }
+
+.sp {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .02em;
+  color: var(--text-1);
+}
+
+.full-card, .cc, .ic {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 22px;
+  box-shadow: var(--shadow);
+}
+
+/* Cartões da Memória de Cálculo Clean */
+.mem-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  transition: border-color .15s ease;
+}
+.mem-card:hover {
+  border-color: var(--border-mid);
+}
+.mem-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.mem-sigla {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-1);
+}
+.mem-nome {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-2);
+}
+.mem-result {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--blue);
+  margin-left: auto;
+}
+.mem-formula {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 14.5px;
+  color: var(--text-1);
+  text-align: center;
+  margin: 6px 0 8px;
+}
+.mem-dados {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0;
+}
+.mem-chip {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 16px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+}
+.mem-chip b {
+  color: var(--text-1);
+  font-weight: 600;
+}
+.mem-sec-title {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--text-1);
+  margin: 20px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Rodapé Minimalista Clean */
+.pnite-footer-clean {
+  margin-top: auto;
+  padding: 18px 0 6px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pfc-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pfc-brand {
+  font-weight: 600;
+  color: var(--text-2);
+  display: inline-flex;
+  align-items: center;
+}
+.pfc-desc {
+  font-weight: 300;
+}
+
 </style>
 </head>
 <body>
@@ -428,7 +789,7 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
         <div style="font-size:11px;font-weight:600;color:var(--text-1)">Gestor</div>
         <div style="font-size:10px;color:var(--text-3)">CECATE/UFG</div>
       </div>
-      <span style="margin-left:auto;font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--bg-badge);color:var(--accent);border:1px solid var(--border)" id="pniteSidebarVersion" class="pnite-version-val">v.1.3.0</span>
+      <span style="margin-left:auto;font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--bg-badge);color:var(--accent);border:1px solid var(--border)" id="pniteSidebarVersion" class="pnite-version-val">v.1.3.1</span>
     </div>
   </aside>
 
@@ -692,29 +1053,10 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
     </div>
 
     <!-- FOOTER / CONTROLE DE VERSÃO WEB -->
-    <footer class="pnite-footer">
-      <div class="pnite-footer-left">
-        <div class="pnite-footer-brand">
-          <i class="ti ti-bus"></i>
-          <span>PNITE</span>
-        </div>
-        <div class="pnite-footer-desc">
-          Plataforma Nacional de Inteligência em Transporte Escolar · CECATE/UFG &amp; FNDE
-        </div>
-      </div>
-      <div class="pnite-footer-right">
-        <div class="pnite-footer-tag version-tag" title="Versão oficial da plataforma para controle web">
-          <i class="ti ti-tag"></i>
-          <span>Versão: <strong class="pnite-version-val">v.1.3.0</strong></span>
-        </div>
-        <div class="pnite-footer-tag date-tag" title="Data da última alteração no sistema">
-          <i class="ti ti-calendar-event"></i>
-          <span>Alteração: <strong class="pnite-date-val">15/09/2026</strong></span>
-        </div>
-        <div class="pnite-footer-tag status-tag" title="Ambiente de processamento web local">
-          <span class="status-indicator-dot"></span>
-          <span>Versão Web</span>
-        </div>
+    <footer class="pnite-footer-clean">
+      <div class="pfc-content">
+        <span class="pfc-brand"><i class="ti ti-bus" style="margin-right:6px"></i>PNITE</span>
+        <span class="pfc-desc">Plataforma Nacional de Inteligência em Transporte Escolar · CECATE/UFG &amp; FNDE</span>
       </div>
     </footer>
   </main>
@@ -750,7 +1092,7 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
           <div class="setting-label">Versão do sistema (PNITE)</div>
           <div class="setting-desc">Plataforma Nacional de Inteligência em Transporte Escolar</div>
         </div>
-        <span style="font-size:11px;font-weight:600;color:var(--accent)" id="pniteVersionDisplay" class="pnite-version-val">v.1.3.0</span>
+        <span style="font-size:11px;font-weight:600;color:var(--accent)" id="pniteVersionDisplay" class="pnite-version-val">v.1.3.1</span>
       </div>
       <div class="setting-row">
         <div>
@@ -768,9 +1110,9 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.1.3.0";
+const PNITE_VERSION = "v.1.3.1";
 const PNITE_LAST_UPDATE = "15/09/2026";
-const PNITE_LAST_TIME = "15:45";
+const PNITE_LAST_TIME = "17:25";
 const PNITE_LAST_AUTHOR = "Vítor Lima";
 // ================================================================
 // DADOS REAIS — Relatórios CECATE/UFG 2024-2025
@@ -778,7 +1120,7 @@ const PNITE_LAST_AUTHOR = "Vítor Lima";
 const DATA = {"nacional":{"label":"Brasil","PRGM":38.16,"PRDAM":17.8,"PRRM":92.43,"PRHM":2.04,"PRMM":5.52,"PVP":50.68,"PVT":49.32,"PVPCE":null,"PECS":34.19,"IUC":0.53,"MON_CVE":18.89,"MOT_CVE":21.29,"PRPM":null,"ATE":38.9,"TETI":56.18,"IPE":null,"TEDC":30.96,"PATM":19.73,"PATE":19.73,"IPTE":0.187,"MEDATE":26.0,"ICA":null},"regiao":{"norte":{"label":"Norte","PRGM":32.85,"PRDAM":19.1,"PRRM":73.02,"PRHM":21.42,"PRMM":5.56,"PVP":55.01,"PVT":44.99,"PVPCE":null,"PECS":38.87,"IUC":0.59,"MON_CVE":16.39,"MOT_CVE":16.66,"PRPM":null,"ATE":33.79,"TETI":50.41,"IPE":null,"TEDC":null,"PATM":22.53,"PATE":22.53,"IPTE":0.167,"MEDATE":20.0,"ICA":null},"nordeste":{"label":"Nordeste","PRGM":35.5,"PRDAM":20.2,"PRRM":91.33,"PRHM":0.23,"PRMM":8.44,"PVP":52.93,"PVT":47.07,"PVPCE":null,"PECS":41.77,"IUC":0.58,"MON_CVE":15.16,"MOT_CVE":16.64,"PRPM":null,"ATE":40.0,"TETI":54.21,"IPE":null,"TEDC":null,"PATM":26.22,"PATE":26.22,"IPTE":0.129,"MEDATE":32.0,"ICA":null},"sudeste":{"label":"Sudeste","PRGM":31.46,"PRDAM":14.14,"PRRM":96.3,"PRHM":0.12,"PRMM":3.58,"PVP":44.86,"PVT":55.14,"PVPCE":null,"PECS":25.83,"IUC":0.45,"MON_CVE":19.26,"MOT_CVE":19.52,"PRPM":null,"ATE":35.92,"TETI":57.81,"IPE":null,"TEDC":null,"PATM":16.78,"PATE":16.78,"IPTE":0.267,"MEDATE":20.0,"ICA":null},"sul":{"label":"Sul","PRGM":54.14,"PRDAM":11.43,"PRRM":95.96,"PRHM":0.08,"PRMM":3.97,"PVP":54.42,"PVT":45.58,"PVPCE":null,"PECS":36.37,"IUC":0.48,"MON_CVE":21.91,"MOT_CVE":34.38,"PRPM":null,"ATE":41.07,"TETI":70.76,"IPE":null,"TEDC":null,"PATM":17.02,"PATE":17.02,"IPTE":0.082,"MEDATE":28.0,"ICA":null},"centro-oeste":{"label":"Centro Oeste","PRGM":41.53,"PRDAM":21.88,"PRRM":96.91,"PRHM":0.16,"PRMM":2.92,"PVP":76.38,"PVT":23.62,"PVPCE":null,"PECS":33.73,"IUC":0.39,"MON_CVE":38.88,"MOT_CVE":34.04,"PRPM":null,"ATE":48.18,"TETI":63.33,"IPE":null,"TEDC":null,"PATM":12.03,"PATE":12.03,"IPTE":0.579,"MEDATE":32.0,"ICA":null}},"estado":{"ac":{"label":"Acre","PRGM":18.75,"PRDAM":14.06,"PRRM":76.56,"PRHM":23.44,"PRMM":0.0,"PVP":81.2,"PVT":18.8,"PVPCE":null,"PECS":39.17,"IUC":0.49,"MON_CVE":4.04,"MOT_CVE":37.1,"PRPM":null,"ATE":22.1,"TETI":38.56,"IPE":null,"TEDC":null,"PATM":26.75,"PATE":26.75,"IPTE":0.963,"MEDATE":7.0,"ICA":null},"al":{"label":"Alagoas","PRGM":56.65,"PRDAM":10.63,"PRRM":88.92,"PRHM":0.37,"PRMM":10.71,"PVP":62.29,"PVT":37.71,"PVPCE":null,"PECS":43.62,"IUC":0.37,"MON_CVE":6.87,"MOT_CVE":11.82,"PRPM":null,"ATE":47.9,"TETI":74.26,"IPE":null,"TEDC":null,"PATM":38.23,"PATE":38.23,"IPTE":0.229,"MEDATE":44.0,"ICA":null},"am":{"label":"Amazonas","PRGM":57.53,"PRDAM":14.16,"PRRM":37.35,"PRHM":62.65,"PRMM":0.0,"PVP":42.19,"PVT":57.81,"PVPCE":null,"PECS":31.03,"IUC":0.46,"MON_CVE":30.53,"MOT_CVE":10.31,"PRPM":null,"ATE":24.8,"TETI":40.33,"IPE":null,"TEDC":null,"PATM":17.45,"PATE":17.45,"IPTE":0.332,"MEDATE":15.0,"ICA":null},"ap":{"label":"Amapá","PRGM":2.13,"PRDAM":27.66,"PRRM":76.6,"PRHM":23.4,"PRMM":0.0,"PVP":42.11,"PVT":57.89,"PVPCE":null,"PECS":9.37,"IUC":1.26,"MON_CVE":17.65,"MOT_CVE":10.98,"PRPM":null,"ATE":55.7,"TETI":81.54,"IPE":null,"TEDC":null,"PATM":18.46,"PATE":18.46,"IPTE":0.965,"MEDATE":null,"ICA":null},"ba":{"label":"Bahia","PRGM":37.18,"PRDAM":11.66,"PRRM":94.0,"PRHM":0.24,"PRMM":5.76,"PVP":35.97,"PVT":64.03,"PVPCE":null,"PECS":43.12,"IUC":0.55,"MON_CVE":10.71,"MOT_CVE":8.95,"PRPM":null,"ATE":34.5,"TETI":37.79,"IPE":null,"TEDC":null,"PATM":28.02,"PATE":28.02,"IPTE":0.042,"MEDATE":31.0,"ICA":null},"ce":{"label":"Ceará","PRGM":13.37,"PRDAM":19.44,"PRRM":89.18,"PRHM":0.02,"PRMM":10.79,"PVP":52.03,"PVT":47.97,"PVPCE":null,"PECS":48.78,"IUC":0.79,"MON_CVE":8.56,"MOT_CVE":17.49,"PRPM":null,"ATE":50.7,"TETI":58.77,"IPE":null,"TEDC":null,"PATM":26.4,"PATE":26.4,"IPTE":0.067,"MEDATE":55.0,"ICA":null},"df":{"label":"Distrito Federal","PRGM":60.0,"PRDAM":0.0,"PRRM":100.0,"PRHM":0.0,"PRMM":0.0,"PVP":99.28,"PVT":0.72,"PVPCE":null,"PECS":6.68,"IUC":0.01,"MON_CVE":null,"MOT_CVE":null,"PRPM":null,"ATE":21.0,"TETI":66.67,"IPE":null,"TEDC":null,"PATM":14.24,"PATE":14.24,"IPTE":null,"MEDATE":5.0,"ICA":null},"es":{"label":"Espírito Santo","PRGM":31.56,"PRDAM":6.7,"PRRM":93.76,"PRHM":0.05,"PRMM":6.19,"PVP":30.01,"PVT":69.99,"PVPCE":null,"PECS":26.99,"IUC":0.52,"MON_CVE":10.63,"MOT_CVE":10.67,"PRPM":null,"ATE":36.0,"TETI":46.15,"IPE":null,"TEDC":null,"PATM":16.6,"PATE":16.6,"IPTE":0.374,"MEDATE":29.5,"ICA":null},"go":{"label":"Goiás","PRGM":35.61,"PRDAM":32.12,"PRRM":94.9,"PRHM":0.08,"PRMM":5.02,"PVP":51.18,"PVT":48.82,"PVPCE":null,"PECS":34.87,"IUC":0.68,"MON_CVE":41.7,"MOT_CVE":36.45,"PRPM":null,"ATE":44.0,"TETI":40.49,"IPE":null,"TEDC":null,"PATM":10.47,"PATE":10.47,"IPTE":0.054,"MEDATE":24.0,"ICA":null},"ma":{"label":"Maranhão","PRGM":25.66,"PRDAM":38.47,"PRRM":86.28,"PRHM":0.61,"PRMM":13.11,"PVP":33.83,"PVT":66.17,"PVPCE":null,"PECS":32.62,"IUC":0.69,"MON_CVE":14.39,"MOT_CVE":9.62,"PRPM":null,"ATE":36.4,"TETI":40.58,"IPE":null,"TEDC":null,"PATM":19.58,"PATE":19.58,"IPTE":0.004,"MEDATE":24.0,"ICA":null},"mg":{"label":"Minas Gerais","PRGM":37.34,"PRDAM":26.93,"PRRM":96.15,"PRHM":0.25,"PRMM":3.6,"PVP":48.02,"PVT":51.98,"PVPCE":null,"PECS":51.26,"IUC":0.54,"MON_CVE":25.92,"MOT_CVE":18.27,"PRPM":null,"ATE":38.0,"TETI":52.28,"IPE":null,"TEDC":null,"PATM":17.02,"PATE":17.02,"IPTE":0.008,"MEDATE":20.0,"ICA":null},"ms":{"label":"Mato Grosso do Sul","PRGM":38.8,"PRDAM":32.21,"PRRM":96.71,"PRHM":0.48,"PRMM":2.81,"PVP":68.94,"PVT":31.06,"PVPCE":null,"PECS":34.43,"IUC":0.48,"MON_CVE":50.2,"MOT_CVE":28.28,"PRPM":null,"ATE":78.8,"TETI":70.9,"IPE":null,"TEDC":null,"PATM":10.76,"PATE":10.76,"IPTE":0.375,"MEDATE":43.0,"ICA":null},"mt":{"label":"Mato Grosso","PRGM":31.7,"PRDAM":23.19,"PRRM":96.04,"PRHM":0.09,"PRMM":3.87,"PVP":86.13,"PVT":13.87,"PVPCE":null,"PECS":44.54,"IUC":0.39,"MON_CVE":24.75,"MOT_CVE":37.39,"PRPM":null,"ATE":48.9,"TETI":75.26,"IPE":null,"TEDC":null,"PATM":14.12,"PATE":14.12,"IPTE":0.608,"MEDATE":35.0,"ICA":null},"pa":{"label":"Pará","PRGM":18.39,"PRDAM":18.02,"PRRM":57.81,"PRHM":40.03,"PRMM":2.16,"PVP":49.44,"PVT":50.56,"PVPCE":null,"PECS":40.2,"IUC":0.91,"MON_CVE":15.42,"MOT_CVE":17.8,"PRPM":null,"ATE":34.3,"TETI":27.29,"IPE":null,"TEDC":null,"PATM":27.54,"PATE":27.54,"IPTE":0.027,"MEDATE":23.0,"ICA":null},"pb":{"label":"Paraíba","PRGM":16.56,"PRDAM":24.37,"PRRM":89.91,"PRHM":0.0,"PRMM":10.09,"PVP":72.28,"PVT":27.72,"PVPCE":null,"PECS":36.28,"IUC":0.5,"MON_CVE":23.02,"MOT_CVE":31.41,"PRPM":null,"ATE":34.0,"TETI":57.8,"IPE":null,"TEDC":null,"PATM":22.86,"PATE":22.86,"IPTE":0.264,"MEDATE":23.0,"ICA":null},"pe":{"label":"Pernambuco","PRGM":49.45,"PRDAM":7.17,"PRRM":91.55,"PRHM":0.47,"PRMM":7.98,"PVP":47.21,"PVT":52.79,"PVPCE":null,"PECS":48.24,"IUC":0.51,"MON_CVE":17.2,"MOT_CVE":9.4,"PRPM":null,"ATE":38.8,"TETI":62.61,"IPE":null,"TEDC":null,"PATM":21.75,"PATE":21.75,"IPTE":0.161,"MEDATE":30.0,"ICA":null},"pi":{"label":"Piauí","PRGM":36.0,"PRDAM":19.09,"PRRM":93.52,"PRHM":0.1,"PRMM":6.38,"PVP":44.29,"PVT":55.71,"PVPCE":null,"PECS":45.93,"IUC":0.49,"MON_CVE":25.11,"MOT_CVE":13.03,"PRPM":null,"ATE":37.7,"TETI":52.53,"IPE":null,"TEDC":null,"PATM":34.39,"PATE":34.39,"IPTE":0.491,"MEDATE":41.0,"ICA":null},"pr":{"label":"Paraná","PRGM":63.87,"PRDAM":7.83,"PRRM":98.92,"PRHM":0.08,"PRMM":1.0,"PVP":46.79,"PVT":53.21,"PVPCE":null,"PECS":37.7,"IUC":0.2,"MON_CVE":15.63,"MOT_CVE":30.48,"PRPM":null,"ATE":18.3,"TETI":75.82,"IPE":null,"TEDC":null,"PATM":17.64,"PATE":17.64,"IPTE":0.0,"MEDATE":20.0,"ICA":null},"rj":{"label":"Rio de Janeiro","PRGM":29.78,"PRDAM":9.55,"PRRM":97.77,"PRHM":0.09,"PRMM":2.13,"PVP":54.67,"PVT":45.33,"PVPCE":null,"PECS":13.64,"IUC":0.33,"MON_CVE":14.78,"MOT_CVE":16.89,"PRPM":null,"ATE":34.0,"TETI":80.49,"IPE":null,"TEDC":null,"PATM":37.87,"PATE":37.87,"IPTE":0.642,"MEDATE":20.0,"ICA":null},"rn":{"label":"Rio Grande do Norte","PRGM":32.41,"PRDAM":20.96,"PRRM":92.26,"PRHM":0.08,"PRMM":7.66,"PVP":59.58,"PVT":40.42,"PVPCE":null,"PECS":40.72,"IUC":0.64,"MON_CVE":19.74,"MOT_CVE":17.19,"PRPM":null,"ATE":35.0,"TETI":48.45,"IPE":null,"TEDC":null,"PATM":24.81,"PATE":24.81,"IPTE":0.111,"MEDATE":17.5,"ICA":null},"ro":{"label":"Rondônia","PRGM":36.71,"PRDAM":26.28,"PRRM":93.47,"PRHM":0.29,"PRMM":6.24,"PVP":61.11,"PVT":38.89,"PVPCE":null,"PECS":41.72,"IUC":0.25,"MON_CVE":11.95,"MOT_CVE":15.94,"PRPM":null,"ATE":38.8,"TETI":85.03,"IPE":null,"TEDC":null,"PATM":18.92,"PATE":18.92,"IPTE":0.124,"MEDATE":60.0,"ICA":null},"rr":{"label":"Roraima","PRGM":41.94,"PRDAM":6.45,"PRRM":100.0,"PRHM":0.0,"PRMM":0.0,"PVP":63.49,"PVT":36.51,"PVPCE":null,"PECS":48.42,"IUC":0.41,"MON_CVE":12.5,"MOT_CVE":5.56,"PRPM":null,"ATE":27.5,"TETI":26.92,"IPE":null,"TEDC":null,"PATM":14.5,"PATE":14.5,"IPTE":0.947,"MEDATE":2.5,"ICA":null},"rs":{"label":"Rio Grande do Sul","PRGM":47.04,"PRDAM":11.5,"PRRM":97.65,"PRHM":0.08,"PRMM":2.27,"PVP":50.94,"PVT":49.06,"PVPCE":null,"PECS":36.26,"IUC":0.63,"MON_CVE":25.2,"MOT_CVE":31.98,"PRPM":null,"ATE":44.4,"TETI":61.91,"IPE":null,"TEDC":null,"PATM":13.91,"PATE":13.91,"IPTE":0.29,"MEDATE":30.0,"ICA":null},"sc":{"label":"Santa Catarina","PRGM":51.5,"PRDAM":14.97,"PRRM":91.3,"PRHM":0.07,"PRMM":8.63,"PVP":65.52,"PVT":34.48,"PVPCE":null,"PECS":34.67,"IUC":0.6,"MON_CVE":24.9,"MOT_CVE":40.68,"PRPM":null,"ATE":60.5,"TETI":74.56,"IPE":null,"TEDC":null,"PATM":20.03,"PATE":20.03,"IPTE":0.04,"MEDATE":35.0,"ICA":null},"se":{"label":"Sergipe","PRGM":52.26,"PRDAM":29.97,"PRRM":96.34,"PRHM":0.17,"PRMM":3.48,"PVP":68.88,"PVT":31.12,"PVPCE":null,"PECS":32.93,"IUC":0.72,"MON_CVE":10.81,"MOT_CVE":30.85,"PRPM":null,"ATE":45.0,"TETI":55.12,"IPE":null,"TEDC":null,"PATM":30.99,"PATE":30.99,"IPTE":0.363,"MEDATE":22.0,"ICA":null},"sp":{"label":"São Paulo","PRGM":27.16,"PRDAM":13.39,"PRRM":97.53,"PRHM":0.08,"PRMM":2.4,"PVP":46.73,"PVT":53.27,"PVPCE":null,"PECS":17.19,"IUC":0.42,"MON_CVE":25.7,"MOT_CVE":32.25,"PRPM":null,"ATE":35.7,"TETI":52.3,"IPE":null,"TEDC":null,"PATM":9.4,"PATE":9.4,"IPTE":0.126,"MEDATE":18.0,"ICA":null},"to":{"label":"Tocantins","PRGM":54.5,"PRDAM":27.1,"PRRM":69.38,"PRHM":0.12,"PRMM":30.5,"PVP":45.52,"PVT":54.48,"PVPCE":null,"PECS":65.91,"IUC":0.36,"MON_CVE":22.67,"MOT_CVE":18.94,"PRPM":null,"ATE":33.3,"TETI":53.22,"IPE":null,"TEDC":null,"PATM":16.5,"PATE":16.5,"IPTE":0.294,"MEDATE":21.5,"ICA":null}}};
 const RAW_DATA = {"nacional":{"tot_rotas":82887,"georref":31626,"dif":14751,"t1":76616,"t2":1693,"t3":4578,"tot_veic":67730,"vp":34328,"vt":33402,"n_veic_validos":67391,"cap_media":31.61,"tot_mon":22678,"mon_cv":4283,"tot_mot_info":44152,"mot_cv":13573,"al_cad":3406265,"al_transp":1054709,"esc_at":27094,"medate_n":20563,"medate_val":25.0,"al_adeq":584008,"al_transp_teti":1054709,"cs_mat":46018380,"cs_transp":9078809,"cs_test":1431234,"cs_tmun":7647575,"cs_esc_ativas":180540,"cs_esc_transp":100655,"sete_esc":61722},"ac":{"tot_rotas":128,"georref":24,"dif":18,"t1":98,"t2":30,"t3":0,"tot_veic":133,"vp":108,"vt":25,"n_veic_validos":133,"cap_media":36.22,"tot_mon":99,"mon_cv":4,"tot_mot_info":103,"mot_cv":46,"al_cad":6802,"al_transp":2383,"esc_at":108,"medate_n":85,"medate_val":7.0,"al_adeq":919,"al_transp_teti":2383,"cs_mat":242727,"cs_transp":64941,"cs_test":31854,"cs_tmun":33087,"cs_esc_ativas":1524,"cs_esc_transp":909,"sete_esc":597},"al":{"tot_rotas":1345,"georref":762,"dif":143,"t1":1196,"t2":5,"t3":144,"tot_veic":1628,"vp":1014,"vt":614,"n_veic_validos":1619,"cap_media":38.01,"tot_mon":1150,"mon_cv":79,"tot_mot_info":1235,"mot_cv":218,"al_cad":152648,"al_transp":22860,"esc_at":477,"medate_n":279,"medate_val":44.0,"al_adeq":16975,"al_transp_teti":22860,"cs_mat":831546,"cs_transp":317905,"cs_test":59324,"cs_tmun":258581,"cs_esc_ativas":2882,"cs_esc_transp":2086,"sete_esc":1257},"am":{"tot_rotas":332,"georref":191,"dif":47,"t1":124,"t2":208,"t3":0,"tot_veic":320,"vp":135,"vt":185,"n_veic_validos":319,"cap_media":27.66,"tot_mon":95,"mon_cv":29,"tot_mot_info":181,"mot_cv":30,"al_cad":83405,"al_transp":4017,"esc_at":162,"medate_n":698,"medate_val":15.0,"al_adeq":1620,"al_transp_teti":4017,"cs_mat":1131739,"cs_transp":197502,"cs_test":49235,"cs_tmun":148267,"cs_esc_ativas":5562,"cs_esc_transp":3289,"sete_esc":1726},"ap":{"tot_rotas":47,"georref":1,"dif":13,"t1":36,"t2":11,"t3":0,"tot_veic":57,"vp":24,"vt":33,"n_veic_validos":57,"cap_media":30.18,"tot_mon":51,"mon_cv":9,"tot_mot_info":52,"mot_cv":9,"al_cad":4384,"al_transp":2172,"esc_at":39,"medate_n":0,"medate_val":null,"al_adeq":1771,"al_transp_teti":2172,"cs_mat":212026,"cs_transp":39131,"cs_test":19222,"cs_tmun":19909,"cs_esc_ativas":875,"cs_esc_transp":510,"sete_esc":82},"ba":{"tot_rotas":10080,"georref":3748,"dif":1175,"t1":9475,"t2":24,"t3":581,"tot_veic":6439,"vp":2316,"vt":4123,"n_veic_validos":6382,"cap_media":27.05,"tot_mon":1783,"mon_cv":191,"tot_mot_info":4008,"mot_cv":581,"al_cad":451349,"al_transp":94271,"esc_at":2731,"medate_n":2154,"medate_val":31.0,"al_adeq":35628,"al_transp_teti":94271,"cs_mat":3345058,"cs_transp":937240,"cs_test":37866,"cs_tmun":899374,"cs_esc_ativas":16106,"cs_esc_transp":11434,"sete_esc":6945},"ce":{"tot_rotas":4382,"georref":586,"dif":852,"t1":3908,"t2":1,"t3":473,"tot_veic":3106,"vp":1616,"vt":1490,"n_veic_validos":3080,"cap_media":35.25,"tot_mon":1624,"mon_cv":139,"tot_mot_info":2372,"mot_cv":576,"al_cad":248358,"al_transp":86224,"esc_at":1699,"medate_n":1176,"medate_val":55.0,"al_adeq":50676,"al_transp_teti":86224,"cs_mat":2108135,"cs_transp":556628,"cs_test":35157,"cs_tmun":521471,"cs_esc_ativas":7716,"cs_esc_transp":4985,"sete_esc":3764},"df":{"tot_rotas":5,"georref":3,"dif":0,"t1":5,"t2":0,"t3":0,"tot_veic":139,"vp":138,"vt":1,"n_veic_validos":134,"cap_media":45.69,"al_cad":4683,"al_transp":42,"esc_at":2,"medate_n":3,"medate_val":5.0,"al_adeq":28,"al_transp_teti":42,"cs_mat":620272,"cs_transp":88301,"cs_test":88301,"cs_tmun":0,"cs_esc_ativas":1332,"cs_esc_transp":570,"sete_esc":89},"es":{"tot_rotas":1971,"georref":622,"dif":132,"t1":1848,"t2":1,"t3":122,"tot_veic":843,"vp":253,"vt":590,"n_veic_validos":841,"cap_media":28.78,"tot_mon":461,"mon_cv":49,"tot_mot_info":495,"mot_cv":95,"al_cad":33852,"al_transp":12707,"esc_at":353,"medate_n":202,"medate_val":29.5,"al_adeq":5864,"al_transp_teti":12707,"cs_mat":867017,"cs_transp":143945,"cs_test":39210,"cs_tmun":104735,"cs_esc_ativas":3046,"cs_esc_transp":1652,"sete_esc":822},"go":{"tot_rotas":2491,"georref":887,"dif":800,"t1":2364,"t2":2,"t3":125,"tot_veic":1858,"vp":951,"vt":907,"n_veic_validos":1855,"cap_media":27.8,"tot_mon":283,"mon_cv":118,"tot_mot_info":1346,"mot_cv":631,"al_cad":78285,"al_transp":34945,"esc_at":795,"medate_n":615,"medate_val":24.0,"al_adeq":14148,"al_transp_teti":34945,"cs_mat":1526256,"cs_transp":159846,"cs_test":8164,"cs_tmun":151682,"cs_esc_ativas":4752,"cs_esc_transp":2171,"sete_esc":1657},"ma":{"tot_rotas":1968,"georref":505,"dif":757,"t1":1698,"t2":12,"t3":258,"tot_veic":1753,"vp":593,"vt":1160,"n_veic_validos":1749,"cap_media":30.89,"tot_mon":1223,"mon_cv":176,"tot_mot_info":1498,"mot_cv":183,"al_cad":135561,"al_transp":37021,"esc_at":1018,"medate_n":911,"medate_val":24.0,"al_adeq":15023,"al_transp_teti":37021,"cs_mat":1821863,"cs_transp":356685,"cs_test":1563,"cs_tmun":355122,"cs_esc_ativas":11219,"cs_esc_transp":5658,"sete_esc":3660},"mg":{"tot_rotas":15679,"georref":5855,"dif":4222,"t1":15075,"t2":39,"t3":565,"tot_veic":13338,"vp":6405,"vt":6933,"n_veic_validos":13264,"cap_media":26.61,"tot_mon":3325,"mon_cv":862,"tot_mot_info":7936,"mot_cv":2172,"al_cad":412477,"al_transp":190011,"esc_at":4996,"medate_n":3995,"medate_val":20.0,"al_adeq":99329,"al_transp_teti":190011,"cs_mat":4220829,"cs_transp":718249,"cs_test":5924,"cs_tmun":712325,"cs_esc_ativas":15910,"cs_esc_transp":9824,"sete_esc":8155},"ms":{"tot_rotas":1245,"georref":483,"dif":401,"t1":1204,"t2":6,"t3":35,"tot_veic":1288,"vp":888,"vt":400,"n_veic_validos":1281,"cap_media":38.81,"tot_mon":255,"mon_cv":128,"tot_mot_info":861,"mot_cv":360,"al_cad":40027,"al_transp":24042,"esc_at":305,"medate_n":247,"medate_val":43.0,"al_adeq":17045,"al_transp_teti":24042,"cs_mat":675479,"cs_transp":72697,"cs_test":19816,"cs_tmun":52881,"cs_esc_ativas":1859,"cs_esc_transp":833,"sete_esc":640},"mt":{"tot_rotas":2199,"georref":697,"dif":510,"t1":2112,"t2":2,"t3":85,"tot_veic":2596,"vp":2236,"vt":360,"n_veic_validos":2583,"cap_media":40.42,"tot_mon":303,"mon_cv":75,"tot_mot_info":1620,"mot_cv":744,"al_cad":68220,"al_transp":40377,"esc_at":825,"medate_n":665,"medate_val":35.0,"al_adeq":30388,"al_transp_teti":40377,"cs_mat":888828,"cs_transp":125484,"cs_test":47440,"cs_tmun":78044,"cs_esc_ativas":2710,"cs_esc_transp":1524,"sete_esc":1207},"pa":{"tot_rotas":3235,"georref":595,"dif":583,"t1":1870,"t2":1295,"t3":70,"tot_veic":1341,"vp":663,"vt":678,"n_veic_validos":1331,"cap_media":33.65,"tot_mon":642,"mon_cv":99,"tot_mot_info":1102,"mot_cv":238,"al_cad":284571,"al_transp":40870,"esc_at":1193,"medate_n":972,"medate_val":23.0,"al_adeq":11152,"al_transp_teti":40870,"cs_mat":2146239,"cs_transp":591018,"cs_test":15277,"cs_tmun":575741,"cs_esc_ativas":10530,"cs_esc_transp":7080,"sete_esc":4233},"pb":{"tot_rotas":1715,"georref":284,"dif":418,"t1":1542,"t2":0,"t3":173,"tot_veic":1396,"vp":1009,"vt":387,"n_veic_validos":1391,"cap_media":32.61,"tot_mon":126,"mon_cv":29,"tot_mot_info":878,"mot_cv":409,"al_cad":67350,"al_transp":22795,"esc_at":671,"medate_n":519,"medate_val":23.0,"al_adeq":13176,"al_transp_teti":22795,"cs_mat":942549,"cs_transp":215512,"cs_test":45078,"cs_tmun":170434,"cs_esc_ativas":4636,"cs_esc_transp":2910,"sete_esc":1682},"pe":{"tot_rotas":6139,"georref":3036,"dif":440,"t1":5620,"t2":29,"t3":490,"tot_veic":5124,"vp":2419,"vt":2705,"n_veic_validos":5116,"cap_media":31.0,"tot_mon":2035,"mon_cv":350,"tot_mot_info":3859,"mot_cv":525,"al_cad":306988,"al_transp":80993,"esc_at":2086,"medate_n":1212,"medate_val":30.0,"al_adeq":50711,"al_transp_teti":80993,"cs_mat":2076655,"cs_transp":451632,"cs_test":62693,"cs_tmun":388939,"cs_esc_ativas":7992,"cs_esc_transp":4496,"sete_esc":3855},"pi":{"tot_rotas":1928,"georref":694,"dif":368,"t1":1803,"t2":2,"t3":123,"tot_veic":1673,"vp":741,"vt":932,"n_veic_validos":1670,"cap_media":33.25,"tot_mon":892,"mon_cv":224,"tot_mot_info":923,"mot_cv":222,"al_cad":95923,"al_transp":27160,"esc_at":720,"medate_n":556,"medate_val":41.0,"al_adeq":14266,"al_transp_teti":27160,"cs_mat":823199,"cs_transp":283104,"cs_test":93290,"cs_tmun":189814,"cs_esc_ativas":4017,"cs_esc_transp":2889,"sete_esc":1845},"pr":{"tot_rotas":6095,"georref":3893,"dif":477,"t1":6029,"t2":5,"t3":61,"tot_veic":5055,"vp":2365,"vt":2690,"n_veic_validos":5022,"cap_media":34.02,"tot_mon":1209,"mon_cv":189,"tot_mot_info":3457,"mot_cv":1450,"al_cad":132681,"al_transp":33337,"esc_at":1824,"medate_n":807,"medate_val":20.0,"al_adeq":25275,"al_transp_teti":33337,"cs_mat":2438428,"cs_transp":430205,"cs_test":95,"cs_tmun":430110,"cs_esc_ativas":9576,"cs_esc_transp":5211,"sete_esc":3610},"rj":{"tot_rotas":1078,"georref":321,"dif":103,"t1":1054,"t2":1,"t3":23,"tot_veic":1811,"vp":990,"vt":821,"n_veic_validos":1801,"cap_media":33.01,"tot_mon":1157,"mon_cv":171,"tot_mot_info":1029,"mot_cv":255,"al_cad":132284,"al_transp":19874,"esc_at":585,"medate_n":428,"medate_val":20.0,"al_adeq":15997,"al_transp_teti":19874,"cs_mat":3319771,"cs_transp":1257278,"cs_test":491385,"cs_tmun":765893,"cs_esc_ativas":11647,"cs_esc_transp":5286,"sete_esc":1589},"rn":{"tot_rotas":1188,"georref":385,"dif":249,"t1":1096,"t2":1,"t3":91,"tot_veic":814,"vp":485,"vt":329,"n_veic_validos":809,"cap_media":37.97,"tot_mon":152,"mon_cv":30,"tot_mot_info":567,"mot_cv":142,"al_cad":58685,"al_transp":19539,"esc_at":558,"medate_n":442,"medate_val":17.5,"al_adeq":9466,"al_transp_teti":19539,"cs_mat":756434,"cs_transp":187676,"cs_test":18786,"cs_tmun":168890,"cs_esc_ativas":3416,"cs_esc_transp":2210,"sete_esc":1391},"ro":{"tot_rotas":1362,"georref":500,"dif":358,"t1":1273,"t2":4,"t3":85,"tot_veic":1206,"vp":737,"vt":469,"n_veic_validos":1205,"cap_media":44.11,"tot_mon":686,"mon_cv":82,"tot_mot_info":668,"mot_cv":154,"al_cad":24968,"al_transp":13389,"esc_at":345,"medate_n":279,"medate_val":60.0,"al_adeq":11385,"al_transp_teti":13389,"cs_mat":376264,"cs_transp":71179,"cs_test":7866,"cs_tmun":63313,"cs_esc_ativas":1220,"cs_esc_transp":668,"sete_esc":509},"rr":{"tot_rotas":62,"georref":26,"dif":4,"t1":62,"t2":0,"t3":0,"tot_veic":63,"vp":40,"vt":23,"n_veic_validos":63,"cap_media":36.06,"tot_mon":24,"mon_cv":3,"tot_mot_info":32,"mot_cv":3,"al_cad":45735,"al_transp":936,"esc_at":34,"medate_n":40,"medate_val":2.5,"al_adeq":252,"al_transp_teti":936,"cs_mat":186395,"cs_transp":27027,"cs_test":13148,"cs_tmun":13879,"cs_esc_ativas":915,"cs_esc_transp":442,"sete_esc":443},"rs":{"tot_rotas":6522,"georref":3068,"dif":750,"t1":6369,"t2":5,"t3":148,"tot_veic":5175,"vp":2636,"vt":2539,"n_veic_validos":5145,"cap_media":32.02,"tot_mon":758,"mon_cv":191,"tot_mot_info":3464,"mot_cv":1468,"al_cad":219165,"al_transp":103363,"esc_at":2328,"medate_n":1820,"medate_val":30.0,"al_adeq":63993,"al_transp_teti":103363,"cs_mat":2189268,"cs_transp":304471,"cs_test":68522,"cs_tmun":235949,"cs_esc_ativas":9946,"cs_esc_transp":5382,"sete_esc":3606},"sc":{"tot_rotas":2839,"georref":1462,"dif":425,"t1":2592,"t2":2,"t3":245,"tot_veic":2848,"vp":1866,"vt":982,"n_veic_validos":2838,"cap_media":36.72,"tot_mon":783,"mon_cv":195,"tot_mot_info":1929,"mot_cv":1065,"al_cad":131491,"al_transp":62636,"esc_at":1036,"medate_n":771,"medate_val":35.0,"al_adeq":46702,"al_transp_teti":62636,"cs_mat":1769938,"cs_transp":354510,"cs_test":13705,"cs_tmun":340805,"cs_esc_ativas":6750,"cs_esc_transp":3463,"sete_esc":2340},"se":{"tot_rotas":574,"georref":300,"dif":172,"t1":553,"t2":1,"t3":20,"tot_veic":466,"vp":321,"vt":145,"n_veic_validos":463,"cap_media":44.15,"tot_mon":296,"mon_cv":32,"tot_mot_info":412,"mot_cv":145,"al_cad":35245,"al_transp":14666,"esc_at":326,"medate_n":231,"medate_val":22.0,"al_adeq":8084,"al_transp_teti":14666,"cs_mat":520379,"cs_transp":161276,"cs_test":42940,"cs_tmun":118336,"cs_esc_ativas":2004,"cs_esc_transp":1298,"sete_esc":660},"sp":{"tot_rotas":6632,"georref":1801,"dif":888,"t1":6468,"t2":5,"t3":159,"tot_veic":6133,"vp":2866,"vt":3267,"n_veic_validos":6116,"cap_media":30.03,"tot_mon":2922,"mon_cv":751,"tot_mot_info":3379,"mot_cv":1635,"al_cad":187590,"al_transp":76716,"esc_at":2149,"medate_n":1689,"medate_val":18.0,"al_adeq":40119,"al_transp_teti":76716,"cs_mat":9600318,"cs_transp":902541,"cs_test":101090,"cs_tmun":801451,"cs_esc_ativas":30817,"cs_esc_transp":12726,"sete_esc":5297},"to":{"tot_rotas":1646,"georref":897,"dif":446,"t1":1142,"t2":2,"t3":502,"tot_veic":1127,"vp":513,"vt":614,"n_veic_validos":1124,"cap_media":31.5,"tot_mon":344,"mon_cv":78,"tot_mot_info":746,"mot_cv":217,"al_cad":44201,"al_transp":12853,"esc_at":386,"medate_n":302,"medate_val":21.5,"al_adeq":6840,"al_transp_teti":12853,"cs_mat":380768,"cs_transp":62826,"cs_test":14283,"cs_tmun":48543,"cs_esc_ativas":1581,"cs_esc_transp":1149,"sete_esc":1042},"norte":{"tot_rotas":6812,"georref":2234,"dif":1469,"t1":4605,"t2":1550,"t3":657,"tot_veic":4247,"vp":2220,"vt":2027,"n_veic_validos":4232,"cap_media":35.68,"tot_mon":1941,"mon_cv":304,"tot_mot_info":2884,"mot_cv":697,"al_cad":477037,"al_transp":75248,"esc_at":2206,"medate_n":2338,"medate_val":20.0,"al_adeq":32946,"al_transp_teti":75248,"cs_mat":4676158,"cs_transp":1053624,"cs_test":150885,"cs_tmun":902739,"cs_esc_ativas":22207,"cs_esc_transp":14047,"sete_esc":8632},"nordeste":{"tot_rotas":29319,"georref":10300,"dif":4574,"t1":26891,"t2":75,"t3":2353,"tot_veic":22399,"vp":10514,"vt":11885,"n_veic_validos":22279,"cap_media":31.75,"tot_mon":9281,"mon_cv":1250,"tot_mot_info":15752,"mot_cv":3001,"al_cad":1520080,"al_transp":396806,"esc_at":10080,"medate_n":7315,"medate_val":31.0,"al_adeq":206365,"al_transp_teti":396806,"cs_mat":13225818,"cs_transp":3467658,"cs_test":396697,"cs_tmun":3070961,"cs_esc_ativas":59988,"cs_esc_transp":37966,"sete_esc":25059},"sudeste":{"tot_rotas":25360,"georref":8599,"dif":5345,"t1":24445,"t2":46,"t3":869,"tot_veic":22125,"vp":10514,"vt":11611,"n_veic_validos":22022,"cap_media":28.16,"tot_mon":7865,"mon_cv":1833,"tot_mot_info":12839,"mot_cv":4157,"al_cad":761273,"al_transp":296771,"esc_at":7994,"medate_n":6255,"medate_val":20.0,"al_adeq":159014,"al_transp_teti":296771,"cs_mat":18007935,"cs_transp":3022013,"cs_test":637609,"cs_tmun":2384404,"cs_esc_ativas":61420,"cs_esc_transp":29488,"sete_esc":15863},"sul":{"tot_rotas":15456,"georref":8423,"dif":1652,"t1":14990,"t2":12,"t3":454,"tot_veic":13078,"vp":6867,"vt":6211,"n_veic_validos":13005,"cap_media":33.82,"tot_mon":2750,"mon_cv":575,"tot_mot_info":8850,"mot_cv":3983,"al_cad":479443,"al_transp":197424,"esc_at":5132,"medate_n":3351,"medate_val":28.0,"al_adeq":134540,"al_transp_teti":197424,"cs_mat":6397634,"cs_transp":1089186,"cs_test":82322,"cs_tmun":1006864,"cs_esc_ativas":26272,"cs_esc_transp":14056,"sete_esc":9556},"centro-oeste":{"tot_rotas":5940,"georref":2070,"dif":1711,"t1":5685,"t2":10,"t3":245,"tot_veic":5881,"vp":4213,"vt":1668,"n_veic_validos":5853,"cap_media":36.19,"tot_mon":841,"mon_cv":321,"tot_mot_info":3827,"mot_cv":1735,"al_cad":188165,"al_transp":97588,"esc_at":1888,"medate_n":1484,"medate_val":31.0,"al_adeq":59883,"al_transp_teti":97588,"cs_mat":3710835,"cs_transp":446328,"cs_test":163721,"cs_tmun":282607,"cs_esc_ativas":10653,"cs_esc_transp":5098,"sete_esc":3593}};
 // ================================================================
-// PNITE v.1.3.0 — PADRONIZAÇÃO E INJEÇÃO DOS INDICADORES REVISADOS
+// PNITE v.1.3.1 — PADRONIZAÇÃO E INJEÇÃO DOS INDICADORES REVISADOS
 // ================================================================
 (function patchPniteDataScopes() {
   function patchScope(d) {
@@ -2193,7 +2535,7 @@ renderMissingTable();
       </div>
     </div>
     <div class="pif-body">
-      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.1.3.0</strong></div>
+      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.1.3.1</strong></div>
       <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">15/09/2026</span></div>
       <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">15:45</span></div>
       <div class="pif-row"><span>Responsável técnico:</span><span class="pnite-author-val">Vítor Lima</span></div>
@@ -2205,7 +2547,7 @@ renderMissingTable();
   </div>
   <button class="pif-btn" id="pifBtn" aria-label="Informações de Versão">
     <i class="ti ti-info-circle"></i>
-    <span class="pif-btn-label pnite-version-val">v.1.3.0</span>
+    <span class="pif-btn-label pnite-version-val">v.1.3.1</span>
   </button>
 </div>
 
