@@ -222,9 +222,21 @@ Caso seja desejável reconectar o indicador `ICA` ao `TEDC`:
 ---
 
 ## 5. Instruções para Restauração Rápida
-Para restaurar qualquer um dos dois indicadores (ou ambos):
-1. Copie o snippet correspondente da Seção 2.2 ou 3.2.
-2. Localize no arquivo principal `PNITE [V.1.2.0].html` (anteriormente `ESTRUTURA HTML [TE V140926].html`) o array/objeto indicado.
-3. Cole a respectiva entrada no array/objeto mantendo a sintaxe JavaScript / HTML.
-4. Incremente a versão do sistema em conformidade com o padrão SemVer (`v.X.Y.Z`).
-5. Execute o teste de carregamento e interface no console do navegador.
+Para restaurar qualquer indicador descontinuado:
+1. Localize no arquivo principal `PNITE [V.1.3.0].html` o array `ALL_INDICATORS` ou o objeto `INDICATORS`.
+2. Adicione a respectiva entrada no array/objeto mantendo a sintaxe JavaScript / HTML.
+3. Incremente a versão do sistema em conformidade com o padrão SemVer (`v.X.Y.Z`).
+4. Execute o teste de carregamento e interface no console do navegador.
+
+---
+
+## 6. Revisão Geral de 2026 — Versão `v.1.3.0`
+- **Data:** 15/09/2026
+- **Versão:** `v.1.3.0`
+- **Quadro de Indicadores Excluídos (5):**
+  1. **PVT** (Descritivo): Complementar ao PVP (redundância operacional).
+  2. **PECS** (Descritivo): Incompatibilidade de denominador após decisão de cadastrar apenas escolas atendidas no SETE.
+  3. **MATE** (Desempenho): Inconsistência metodológica e sobreposição com ATE e PATM.
+  4. **ICA** (Finalístico): Ausência estrutural de coleta diária de execução de rotas.
+  5. **TEDC** (Finalístico): Inexistente na base; absorvido pela proposta do novo PCSC (SETE + Censo).
+
