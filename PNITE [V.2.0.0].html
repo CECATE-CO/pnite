@@ -214,7 +214,7 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
 @media(max-width:768px){.pnite-footer{flex-direction:column;align-items:flex-start;gap:10px}.pnite-footer-right{width:100%;justify-content:flex-start}}
 
 /* ==========================================================================
-   PNITE v.1.4.3 — REFINAMENTOS VISUAIS CLEAN E IDENTIDADE TÉCNICA
+   PNITE v.2.0.0 — REFINAMENTOS VISUAIS CLEAN E IDENTIDADE TÉCNICA
    ========================================================================== */
 .badge-novo {
   display: inline-flex;
@@ -402,7 +402,7 @@ select.fs{padding:6px 26px 6px 10px;border-radius:7px;font-size:11px;border:1px 
 
 
 /* ==========================================================================
-   PNITE v.1.4.3 — NOVA PROPOSTA VISUAL CLEAN (INSPIRADA EM 'INDICADORES REVISADOS')
+   PNITE v.2.0.0 — NOVA PROPOSTA VISUAL CLEAN (INSPIRADA EM 'INDICADORES REVISADOS')
    ========================================================================== */
 :root {
   --w: #ffffff;
@@ -760,7 +760,7 @@ body {
 
 
 /* ==========================================================================
-   PNITE v.1.4.3 — ELYRA DESIGN SYSTEM & PALETA APROVADA (ANEXOS 1 A 5)
+   PNITE v.2.0.0 — ELYRA DESIGN SYSTEM & PALETA APROVADA (ANEXOS 1 A 5)
    Cores autorizadas: #2589F4, #595959, #DF6D7C, #3FC688, #FFCD42
    ========================================================================== */
 :root {
@@ -1218,496 +1218,1483 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 
+
+/* ==========================================================================
+   PNITE v.2.0.0 — NOVA ARQUITETURA MODULAR, LAYOUT EDITORIAL E I18N
+   ========================================================================== */
+
+/* Cores padronizadas do sistema */
+:root {
+  --c-blue: #2589F4;
+  --c-rose: #DF6D7C;
+  --c-mint: #3FC688;
+  --c-yellow: #FFCD42;
+  --c-navy: #0D1A30;
+  --font-serif: 'EB Garamond', Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+  background: var(--bg-page);
+  color: var(--text-1);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+}
+
+.pnite-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ==========================================================================
+   CABEÇALHO SUPERIOR FIXO / FLUTUANTE COM CÁPSULA (ANEXO 1)
+   ========================================================================== */
+.pnite-top-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(12px);
+  padding: 10px 24px;
+}
+.header-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.hb-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--c-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(37, 137, 244, 0.35);
+}
+.hb-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+}
+.hb-sub {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 400;
+}
+
+/* CÁPSULA FLUTUANTE DE NAVEGAÇÃO DAS FRENTES (MODELO ANEXO 1) */
+.header-capsule-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 32px;
+  padding: 4px 6px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+.hcn-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 26px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  white-space: nowrap;
+}
+.hcn-tab:hover:not(.active) {
+  color: var(--text-1);
+  background: var(--bg-hover);
+}
+.hcn-tab.active {
+  background: var(--bg-card);
+  color: var(--c-blue);
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+[data-theme="dark"] .hcn-tab.active {
+  background: var(--bg-card);
+  color: var(--c-blue);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+.hcn-tab i {
+  font-size: 14px;
+}
+
+/* BOTÕES DE AÇÃO DO TOPO (CONFIGURAÇÕES E TEMA) */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.header-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s ease;
+}
+.header-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-1);
+  border-color: var(--border-mid);
+}
+.theme-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+/* ==========================================================================
+   TELAS DE DESENVOLVIMENTO (PLACEHOLDERS DAS FRENTES)
+   ========================================================================== */
+.front-view {
+  display: none;
+  width: 100%;
+}
+.front-view.active {
+  display: block;
+}
+.front-placeholder-view {
+  min-height: 72vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+.placeholder-card {
+  max-width: 580px;
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 52px 40px;
+  box-shadow: var(--shadow);
+}
+.placeholder-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+.warning-icon {
+  background: rgba(255, 205, 66, 0.16);
+  color: #B38600;
+  border: 1px solid rgba(255, 205, 66, 0.35);
+}
+.info-icon {
+  background: rgba(37, 137, 244, 0.14);
+  color: var(--c-blue);
+  border: 1px solid rgba(37, 137, 244, 0.3);
+}
+.placeholder-title {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--text-1);
+  margin-bottom: 14px;
+  line-height: 1.25;
+}
+.placeholder-desc {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.65;
+  margin-bottom: 28px;
+}
+.placeholder-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 20px;
+  background: var(--bg-badge);
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 20px;
+}
+.placeholder-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 24px;
+  background: var(--c-blue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all .2s ease;
+  font-family: inherit;
+}
+.placeholder-back-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   CONTAINER EDITORIAL DA PÁGINA PRINCIPAL (TRANSPORTE ESCOLAR)
+   ========================================================================== */
+.editorial-container {
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 36px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* SEÇÃO 00: HEAD EDITORIAL / CONTEXTUALIZAÇÃO */
+.sec-editorial-intro {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.sei-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--c-blue);
+  margin-bottom: 10px;
+}
+.sei-title {
+  font-family: var(--font-serif);
+  font-size: 42px;
+  font-weight: 400;
+  color: var(--text-1);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.sei-lead {
+  font-size: 15.5px;
+  color: var(--text-2);
+  line-height: 1.7;
+  max-width: 920px;
+  margin-bottom: 28px;
+  font-weight: 400;
+}
+.sei-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media(max-width: 850px) {
+  .sei-meta-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.sei-meta-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+.smi-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--c-blue);
+  margin-bottom: 6px;
+}
+.smi-val {
+  font-size: 12.5px;
+  color: var(--text-1);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   SEÇÕES EXPANSÍVEIS (01 E 02)
+   ========================================================================== */
+.sec-expandable {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: all .25s ease;
+}
+.sec-exp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 26px;
+  gap: 16px;
+  cursor: pointer;
+  user-select: none;
+  background: var(--bg-card);
+  transition: background .15s ease;
+}
+.sec-exp-header:hover {
+  background: var(--bg-hover);
+}
+.seh-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.sec-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--bg-badge);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--c-blue);
+  flex-shrink: 0;
+}
+.sec-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-1);
+  line-height: 1.25;
+}
+.sec-sub {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 3px;
+  line-height: 1.45;
+}
+.expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-1);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .2s ease;
+  white-space: nowrap;
+}
+.expand-btn:hover {
+  background: var(--c-blue);
+  color: #fff;
+  border-color: var(--c-blue);
+}
+.expand-btn .exp-icon {
+  font-size: 14px;
+  transition: transform .25s ease;
+}
+.sec-expandable.open .expand-btn .exp-icon {
+  transform: rotate(180deg);
+}
+.sec-exp-content {
+  display: none;
+  padding: 0 26px 28px;
+  border-top: 1px solid var(--border);
+  animation: fadeInDown .2s ease;
+}
+.sec-expandable.open .sec-exp-content {
+  display: block;
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* SUB-ABAS INTERNAS DA SEÇÃO 01 */
+.exp-inner-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 20px 0 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  flex-wrap: wrap;
+}
+.eit-btn {
+  padding: 7px 16px;
+  border-radius: 20px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s ease;
+}
+.eit-btn.active {
+  background: var(--c-blue);
+  color: #fff;
+  border-color: var(--c-blue);
+  font-weight: 600;
+}
+.eit-panel {
+  display: none;
+}
+.eit-panel.active {
+  display: block;
+}
+
+/* ==========================================================================
+   SEÇÃO 03: SELEÇÃO TERRITORIAL DEDICADA
+   ========================================================================== */
+.sec-territorio-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 26px 28px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+}
+.sec-territorio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.sth-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.territory-active-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(37, 137, 244, 0.12);
+  border: 1px solid rgba(37, 137, 244, 0.3);
+  color: var(--c-blue);
+  font-size: 12px;
+  font-weight: 600;
+}
+.territory-level-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.tl-pill {
+  padding: 8px 22px;
+  border-radius: 24px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .18s ease;
+}
+.tl-pill:hover:not(.active) {
+  background: var(--bg-hover);
+  color: var(--text-1);
+}
+.tl-pill.active {
+  background: var(--c-blue);
+  color: #fff;
+  border-color: var(--c-blue);
+  box-shadow: 0 2px 10px rgba(37, 137, 244, 0.3);
+}
+.territory-subselects {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.subselect-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ==========================================================================
+   SEÇÕES 04 A 08: CABEÇALHO PADRÃO
+   ========================================================================== */
+.sec-card-standard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 26px 28px;
+  box-shadow: var(--shadow);
+}
+.sec-header-standard {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+/* ==========================================================================
+   SEÇÃO 07: ANÁLISE DE ROTAS REDESENHADA
+   ========================================================================== */
+.rotas-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
+}
+@media(max-width: 850px) {
+  .rotas-summary-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.rotas-sum-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.rsc-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-3);
+  letter-spacing: .05em;
+}
+.rsc-val {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--text-1);
+  line-height: 1.1;
+  margin-top: 5px;
+}
+.rotas-ranking-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px 16px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+@media(max-width: 950px) {
+  .rotas-ranking-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media(max-width: 600px) {
+  .rotas-ranking-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.rotas-rank-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px;
+  background: var(--bg-input);
+  border-radius: 10px;
+  font-size: 11.5px;
+  border: 1px solid var(--border);
+}
+.rrr-uf {
+  font-weight: 700;
+  width: 28px;
+  color: var(--text-1);
+}
+.rrr-bar-wrap {
+  flex: 1;
+  margin: 0 10px;
+  background: var(--border);
+  height: 7px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.rrr-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width .5s ease;
+}
+.rrr-val {
+  font-weight: 600;
+  min-width: 46px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   SEÇÃO 08: MAPA COMPACTO
+   ========================================================================== */
+.mapa-compact-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.mapa-compact-layout {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+@media(max-width: 920px) {
+  .mapa-compact-layout {
+    grid-template-columns: 1fr;
+  }
+}
+.mapa-compact-left {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  position: relative;
+}
+.mapa-compact-left .mapa-svg-wrap {
+  max-width: 500px;
+  margin: 0 auto;
+}
+.uf-path {
+  stroke: var(--bg-card);
+  stroke-width: 0.5px !important;
+  cursor: pointer;
+  transition: opacity .15s, stroke-width .15s, fill .25s;
+}
+.uf-path:hover {
+  opacity: 0.88;
+  stroke: var(--text-1);
+  stroke-width: 1.3px !important;
+}
+.uf-path.selected {
+  stroke: var(--text-1);
+  stroke-width: 1.8px !important;
+}
+
+/* ==========================================================================
+   MODAL DE CONFIGURAÇÕES E SELEÇÃO DE IDIOMA
+   ========================================================================== */
+.settings-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(13, 26, 48, 0.45);
+  backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.settings-modal-overlay.open {
+  display: flex;
+}
+.settings-modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 520px;
+  padding: 32px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+  animation: modalScaleUp .2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modalScaleUp {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.smb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+.smb-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text-1);
+}
+.smb-close {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: var(--text-3);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: all .15s ease;
+}
+.smb-close:hover {
+  color: var(--text-1);
+  background: var(--bg-hover);
+}
+.smb-sec {
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+.smb-sec:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.smb-sec-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--c-blue);
+  margin-bottom: 4px;
+}
+.smb-sec-desc {
+  font-size: 11.5px;
+  color: var(--text-3);
+  margin-bottom: 12px;
+}
+.lang-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-1);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s ease;
+}
+.lang-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--c-blue);
+}
+.lang-btn.active {
+  background: rgba(37, 137, 244, 0.12);
+  border-color: var(--c-blue);
+  color: var(--c-blue);
+  font-weight: 600;
+}
+.lang-flag {
+  font-size: 16px;
+}
+
+/* ==========================================================================
+   RODAPÉ EDITORIAL
+   ========================================================================== */
+.editorial-footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-card);
+  padding: 32px 24px;
+  margin-top: 40px;
+}
+.ef-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+.ef-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ef-badge {
+  font-weight: 700;
+  color: var(--c-blue);
+  background: rgba(37, 137, 244, 0.12);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
 </style>
+
+<script>
+window.__errors = [];
+window.onerror = function(msg, url, line, col, err) {
+  window.__errors.push({msg: msg, line: line, col: col, stack: err ? err.stack : ''});
+  console.error("PAGE_ERROR:", msg, "line", line, col);
+};
+</script>
+
 </head>
 <body>
-<div class="dash">
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-icon"><i class="ti ti-bus"></i></div>
-      <div>
-        <div class="brand-name">PNITE</div>
-        <div class="brand-sub">Plataforma Nac. Inteligência TE</div>
-      </div>
-    </div>
-    <div class="nav-sec">Painéis</div>
-    <div class="nav-item active" onclick="switchTab('dashboard',this)"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
-    <div class="nav-item" onclick="switchTab('indicadores',this)"><i class="ti ti-list-check"></i> Indicadores Gerais</div>
-    <div class="nav-item" onclick="switchTab('mapa',this)"><i class="ti ti-map-2"></i> Mapa</div>
-    <div class="nav-item" onclick="switchTab('sete',this)"><i class="ti ti-table"></i> Dados SETE</div>
-    <div class="nav-sec">Por Tema</div>
-    <div class="nav-item" onclick="switchTab('rotas',this)"><i class="ti ti-route"></i> Rotas</div>
-    <div class="nav-item" onclick="switchTab('frota',this)"><i class="ti ti-truck"></i> Frota</div>
-    <div class="nav-item" onclick="switchTab('calculo',this)"><i class="ti ti-calculator"></i> Calcular</div>
-    <div class="nav-item" onclick="switchTab('memoria',this)"><i class="ti ti-math-function"></i> Memória de Cálculo</div>
-    <div class="nav-sec">Sistema</div>
-    <div class="nav-item" onclick="openSettings()"><i class="ti ti-settings"></i> Configurações</div>
-    <div class="sidebar-bot">
-      <div class="av">GS</div>
-      <div>
-        <div style="font-size:11px;font-weight:600;color:var(--text-1)">Gestor</div>
-        <div style="font-size:10px;color:var(--text-3)">CECATE/UFG</div>
-      </div>
-      <span style="margin-left:auto;font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--bg-badge);color:var(--accent);border:1px solid var(--border)" id="pniteSidebarVersion" class="pnite-version-val">v.1.4.3</span>
-    </div>
-  </aside>
 
-  <!-- MAIN -->
-  <main class="main">
-    <div class="topbar">
-      <div>
-        <div class="page-title" id="pageTitle">Dashboard Geral</div>
-        <div class="page-sub" id="pageSub">Dados: SETE/PDDE (microdados) + Censo Escolar 2025/INEP · 31 indicadores oficiais · 82.887 rotas · 46 mi matrículas · 27 UFs</div>
-      </div>
-      <div class="filters">
-        <button class="fb active" onclick="setScope(this,'nacional')">Nacional</button>
-        <button class="fb" onclick="setScope(this,'regiao')">Região</button>
-        <button class="fb" onclick="setScope(this,'estado')">Estado</button>
-        <select class="fs" id="regionSelect" style="display:none" onchange="onRegionChange()">
-          <option value="">Selecionar...</option>
-        </select>
-        <span class="src-badge"><i class="ti ti-database" style="font-size:11px"></i>SETE/PDDE + Censo 2025</span>
-      </div>
-    </div>
-
-    <!-- TAB DASHBOARD -->
-    <div class="tab-content active" id="tab-dashboard">
-      
-      <!-- LINHA 1: HERO PANORAMA (Att. 5) + DISTRIBUIÇÃO MODAL & WAFFLES (Att. 3) -->
-      <div class="elyra-hero-row">
-        <!-- CARD HERO: PANORAMA COM CAPSULE BARS -->
-        <div class="elyra-card">
-          <div class="elyra-card-head">
-            <div class="ech-left">
-              <div class="ech-icon" style="color:var(--c-blue)"><i class="ti ti-layout-grid"></i></div>
-              <div>
-                <div class="cc-title">Panorama Operacional SETE</div>
-                <div class="cc-sub">Monitoramento de cobertura territorial e indicadores-chave de transporte</div>
-              </div>
-            </div>
-            <div class="ech-right">
-              <span class="elyra-scope-pill" id="dashboardScopeBadge"><i class="ti ti-map-pin"></i> Nacional</span>
-            </div>
-          </div>
-          
-          <div class="elyra-hero-body">
-            <!-- Grandes KPIs Verticais -->
-            <div class="elyra-hero-kpis" id="heroKpis"></div>
-            
-            <!-- Capsule Bars Elyra (Anexo 5) -->
-            <div class="elyra-capsule-chart-wrap">
-              <div class="ecc-head">
-                <div>
-                  <div class="ecc-title">Distribuição das Rotas & Frota</div>
-                  <div class="ecc-sub">Aderência por modalidade e conformidade</div>
-                </div>
-              </div>
-              <div class="elyra-capsule-bars" id="elyraCapsuleBars"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CARD DISTRIBUIÇÃO MODAL (Anexo 3) -->
-        <div class="elyra-card">
-          <div class="elyra-card-head">
-            <div class="ech-left">
-              <div class="ech-icon" style="color:var(--c-rose)"><i class="ti ti-steering-wheel"></i></div>
-              <div>
-                <div class="cc-title">Distribuição Modal</div>
-                <div class="cc-sub">Vias rodoviárias, hidroviárias e mistas</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="elyra-dist-body">
-            <!-- Dot-matrix progress rows (Anexo 3) -->
-            <div class="elyra-waffle-rows" id="modalWaffleRows"></div>
-            
-            <!-- Segmented Donut (Anexo 3) -->
-            <div class="elyra-donut-wrap">
-              <div style="position:relative;width:130px;height:130px;margin:0 auto">
-                <canvas id="chartModalDonut" role="img" aria-label="Distribuição modal das rotas"></canvas>
-                <div class="donut-center-info">
-                  <span class="dci-val" id="donutTotalVal">82.887</span>
-                  <span class="dci-lbl">rotas</span>
-                </div>
-              </div>
-              <div class="donut-legend" id="donutLegend"></div>
-            </div>
-          </div>
+<div class="pnite-app">
+  <!-- CABEÇALHO SUPERIOR FIXO COM CÁPSULA (ANEXO 1) -->
+  <header class="pnite-top-header">
+    <div class="header-container">
+      <div class="header-brand">
+        <div class="hb-icon"><i class="ti ti-bus"></i></div>
+        <div>
+          <div class="hb-name" data-i18n="brand_name">PNITE</div>
+          <div class="hb-sub" data-i18n="brand_sub">Plataforma Nacional de Inteligência em Transporte Escolar</div>
         </div>
       </div>
 
-      <!-- LINHA 2: INDICADORES FINALÍSTICOS — FOCO ESTRATÉGICO / CIRCULAR ARC GAUGES (Anexo) -->
-      <div class="elyra-card" style="border-color: rgba(255, 205, 66, 0.35); box-shadow: 0 4px 24px -2px rgba(255, 205, 66, 0.06);">
-        <div class="elyra-card-head" style="margin-bottom:14px">
-          <div class="ech-left">
-            <div class="ech-icon" style="color:#B38600; background:rgba(255, 205, 66, 0.18)"><i class="ti ti-target-arrow"></i></div>
+      <!-- CÁPSULA FLUTUANTE DE NAVEGAÇÃO DAS FRENTES (MODELO ANEXO 1) -->
+      <nav class="header-capsule-nav" aria-label="Frentes da Plataforma">
+        <button class="hcn-tab active" id="frontTabTransporte" onclick="switchFront('transporte', this)">
+          <i class="ti ti-route"></i> <span data-i18n="front_transporte">Indicadores do Transporte Escolar</span>
+        </button>
+        <button class="hcn-tab" id="frontTabCapacitacao" onclick="switchFront('capacitacao', this)">
+          <i class="ti ti-certificate"></i> <span data-i18n="front_capacitacao">Indicadores da Capacitação</span>
+        </button>
+        <button class="hcn-tab" id="frontTabGestao" onclick="switchFront('gestao', this)">
+          <i class="ti ti-chart-arrows"></i> <span data-i18n="front_gestao">Indicadores da Gestão</span>
+        </button>
+      </nav>
+
+      <!-- AÇÕES DO CABEÇALHO: CONFIGURAÇÕES E MODO ESCURO -->
+      <div class="header-actions">
+        <button class="header-btn" onclick="openSettingsModal()" title="Configurações e Idioma">
+          <i class="ti ti-settings"></i> <span data-i18n="config">Configurações</span>
+        </button>
+        <button class="header-btn theme-icon-btn" onclick="toggleTheme()" title="Alternar Modo Claro / Escuro">
+          <i class="ti ti-moon" id="themeIcon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====================================================================
+       TELA DE PLACEHOLDER 1: INDICADORES DA CAPACITAÇÃO
+       ==================================================================== -->
+  <div class="front-view" id="frontCapacitacao">
+    <div class="front-placeholder-view">
+      <div class="placeholder-card">
+        <div class="placeholder-icon warning-icon">
+          <i class="ti ti-alert-triangle"></i>
+        </div>
+        <div class="placeholder-badge" data-i18n="em_desenvolvimento">Em Desenvolvimento</div>
+        <h2 class="placeholder-title" data-i18n="placeholder_cap_title">Estamos preparando tudo por aqui</h2>
+        <p class="placeholder-desc" data-i18n="placeholder_cap_desc">
+          A frente de Indicadores da Capacitação está em fase de estruturação e em breve trará métricas consolidadas sobre a formação e qualificação de motoristas, monitores e técnicos da gestão escolar em todo o Brasil.
+        </p>
+        <button class="placeholder-back-btn" onclick="switchFront('transporte', document.getElementById('frontTabTransporte'))">
+          <i class="ti ti-arrow-left"></i> <span data-i18n="voltar_transporte">Voltar aos Indicadores do Transporte Escolar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       TELA DE PLACEHOLDER 2: INDICADORES DA GESTÃO
+       ==================================================================== -->
+  <div class="front-view" id="frontGestao">
+    <div class="front-placeholder-view">
+      <div class="placeholder-card">
+        <div class="placeholder-icon info-icon">
+          <i class="ti ti-info-circle"></i>
+        </div>
+        <div class="placeholder-badge" data-i18n="em_desenvolvimento">Em Desenvolvimento</div>
+        <h2 class="placeholder-title" data-i18n="placeholder_ges_title">Estamos trabalhando para entregar o melhor para você</h2>
+        <p class="placeholder-desc" data-i18n="placeholder_ges_desc">
+          A frente de Indicadores da Gestão reunirá análises sobre custos unitários, regulação contratual, processos licitatórios, prestação de contas e governança institucional do transporte escolar.
+        </p>
+        <button class="placeholder-back-btn" onclick="switchFront('transporte', document.getElementById('frontTabTransporte'))">
+          <i class="ti ti-arrow-left"></i> <span data-i18n="voltar_transporte">Voltar aos Indicadores do Transporte Escolar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       PÁGINA PRINCIPAL: INDICADORES DO TRANSPORTE ESCOLAR (LONGA, EDITORIAL)
+       ==================================================================== -->
+  <main class="front-view active" id="frontTransporte">
+    <div class="editorial-container">
+
+      <!-- SEÇÃO 00: HEAD EDITORIAL / CONTEXTUALIZAÇÃO -->
+      <section class="sec-editorial-intro">
+        <div class="sei-eyebrow" data-i18n="frente_01">Frente Analítica 01</div>
+        <h1 class="sei-title" data-i18n="transporte_title">Indicadores do Transporte Escolar</h1>
+        <p class="sei-lead" data-i18n="transporte_lead">
+          Plataforma Nacional de Inteligência com diagnóstico estrutural do transporte escolar brasileiro. Reúne métricas de cobertura, regularidade, frota, segurança viária e acesso dos estudantes, apoiando a formulação de políticas públicas e a gestão técnica eficiente.
+        </p>
+        <div class="sei-meta-grid">
+          <div class="sei-meta-item">
+            <div class="smi-label" data-i18n="meta_base_title">Base Metodológica</div>
+            <div class="smi-val" data-i18n="meta_base_desc">Relatórios Técnicos CECATE/UFG &amp; FNDE</div>
+          </div>
+          <div class="sei-meta-item">
+            <div class="smi-label" data-i18n="meta_fontes_title">Fontes Integradas</div>
+            <div class="smi-val" data-i18n="meta_fontes_desc">SETE, Censo Escolar (INEP) &amp; IBGE</div>
+          </div>
+          <div class="sei-meta-item">
+            <div class="smi-label" data-i18n="meta_obj_title">Objetivo Analítico</div>
+            <div class="smi-val" data-i18n="meta_obj_desc">Avaliar eficiência, segurança, custos e acessibilidade do transporte escolar</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 01: INDICADORES, METODOLOGIA E MEMÓRIA DE CÁLCULO (EXPANSÍVEL) -->
+      <section class="sec-expandable" id="secMetodologia">
+        <div class="sec-exp-header" onclick="toggleSection('secMetodologia')">
+          <div class="seh-left">
+            <div class="sec-badge" data-i18n="sec1_badge">01</div>
             <div>
-              <div class="cc-title" style="display:flex;align-items:center;gap:8px">
-                Indicadores Finalísticos — Impacto, Segurança & Acesso Escolar
-                <span class="badge-novo" style="margin:0;font-size:9px">Foco Estratégico</span>
-              </div>
-              <div class="cc-sub">Metas centrais de erradicação de veículos inadequados, proteção embarcada, cobertura da rede e inclusão</div>
+              <div class="sec-title" data-i18n="sec1_title">Metodologia, Indicadores e Memória de Cálculo</div>
+              <div class="sec-sub" data-i18n="sec1_sub">31 indicadores estruturados em Descritivos, Desempenho e Finalísticos com fórmulas, parâmetros e calculadora integrada.</div>
             </div>
           </div>
-          <div class="ech-right">
-            <span class="elyra-scope-pill" style="background:rgba(255, 205, 66, 0.18); color:#a67c00; border-color:rgba(255, 205, 66, 0.35)">
-              <i class="ti ti-shield-check"></i> 5 Indicadores Estratégicos
+          <button class="expand-btn" type="button">
+            <span class="exp-text" data-i18n="mostrar_mais">Mostrar mais</span>
+            <i class="ti ti-chevron-down exp-icon"></i>
+          </button>
+        </div>
+        <div class="sec-exp-content">
+          <div class="exp-inner-tabs">
+            <button class="eit-btn active" onclick="switchInnerTab('secMetodologia', 'tabSubInd', this)" data-i18n="subtab_ind">A. Indicadores (31)</button>
+            <button class="eit-btn" onclick="switchInnerTab('secMetodologia', 'tabSubMem', this)" data-i18n="subtab_mem">B. Memória de Cálculo</button>
+            <button class="eit-btn" onclick="switchInnerTab('secMetodologia', 'tabSubCalc', this)" data-i18n="subtab_calc">C. Calculadora de Indicadores</button>
+          </div>
+
+          <!-- SUB-BLOCO A: TABELA DOS 31 INDICADORES -->
+          <div class="eit-panel active" id="tabSubInd">
+            <div class="search-bar" style="margin-bottom:14px">
+              <input type="text" class="search-input" id="giSearch" data-i18n-ph="search_ind_ph" placeholder="Buscar indicador por sigla, nome ou fórmula..." oninput="renderGiTable()">
+            </div>
+            <div class="table-wrap" style="max-height:480px;overflow-y:auto">
+              <table class="data-table" id="giTable">
+                <thead>
+                  <tr>
+                    <th data-i18n="th_sigla">Sigla</th>
+                    <th data-i18n="th_nome">Nome do Indicador</th>
+                    <th data-i18n="th_tipo">Tipo</th>
+                    <th data-i18n="th_formula">Fórmula</th>
+                    <th data-i18n="th_fonte">Fonte</th>
+                    <th data-i18n="th_valor">Valor Atual</th>
+                    <th data-i18n="th_status">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="giTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SUB-BLOCO B: MEMÓRIA DE CÁLCULO DETALHADA -->
+          <div class="eit-panel" id="tabSubMem">
+            <div style="font-size:12.5px;color:var(--text-2);margin-bottom:16px;line-height:1.6">
+              A memória de cálculo detalha as variáveis brutas, substituição numérica passo a passo e fontes metodológicas para o território atualmente selecionado.
+            </div>
+            <div id="memoriaList" style="display:flex;flex-direction:column;gap:14px"></div>
+          </div>
+
+          <!-- SUB-BLOCO C: CALCULADORA DE INDICADORES -->
+          <div class="eit-panel" id="tabSubCalc">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+              <div>
+                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px" data-i18n="calc_sel_lbl">Selecione o indicador para simulação:</label>
+                <select id="calcSelect" class="form-select" onchange="buildCalcForm()" style="width:100%;margin-bottom:16px"></select>
+                <div id="calcFormula" style="font-size:12px;color:var(--text-2);background:var(--bg-input);padding:10px 14px;border-radius:10px;margin-bottom:14px;display:none"></div>
+                <div id="calcInputs"></div>
+                <div style="display:flex;gap:10px;margin-top:16px">
+                  <button class="btn btn-primary" id="calcBtn" onclick="calcular()" style="padding:8px 18px;border-radius:20px;display:none" data-i18n="calc_btn">Calcular Indicador</button>
+                </div>
+              </div>
+              <div>
+                <div class="card" style="padding:20px;height:100%">
+                  <div style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--c-blue);margin-bottom:12px" data-i18n="calc_res_lbl">Resultado do Cálculo</div>
+                  <div id="calcResult" style="display:none;padding:16px;border-radius:12px;font-size:14px"></div>
+                  <div id="calcResFallback" style="font-size:13.5px;color:var(--text-2);line-height:1.6">
+                    Selecione um indicador à esquerda, preencha os parâmetros e clique em <b>Calcular Indicador</b> para simular o resultado em tempo real.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 02: DADOS SETE (EXPANSÍVEL) -->
+      <section class="sec-expandable" id="secDadosSete">
+        <div class="sec-exp-header" onclick="toggleSection('secDadosSete')">
+          <div class="seh-left">
+            <div class="sec-badge" data-i18n="sec2_badge">02</div>
+            <div>
+              <div class="sec-title" data-i18n="sec2_title">Dados SETE — Microdados Operacionais</div>
+              <div class="sec-sub" data-i18n="sec2_sub">Microdados utilizados na construção dos indicadores e agregações operacionais por UF e município.</div>
+            </div>
+          </div>
+          <button class="expand-btn" type="button">
+            <span class="exp-text" data-i18n="mostrar_mais">Mostrar mais</span>
+            <i class="ti ti-chevron-down exp-icon"></i>
+          </button>
+        </div>
+        <div class="sec-exp-content">
+          <div class="exp-inner-tabs">
+            <button class="eit-btn active" onclick="switchInnerTab('secDadosSete', 'tabSeteUf', this)">Agregado por UF</button>
+            <button class="eit-btn" onclick="switchInnerTab('secDadosSete', 'tabSeteMun', this)">Detalhamento Municipal (SETE)</button>
+          </div>
+
+          <!-- TABELA UF AGREGADA -->
+          <div class="eit-panel active" id="tabSeteUf">
+            <div class="table-wrap" style="max-height:420px;overflow-y:auto">
+              <table class="data-table">
+                <thead id="seteUfHead"></thead>
+                <tbody id="seteUfBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TABELA MUNICIPAL DETALHADA -->
+          <div class="eit-panel" id="tabSeteMun">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+              <div style="display:flex;gap:8px;align-items:center">
+                <input type="text" class="search-input" id="seteMunSearch" data-i18n-ph="search_sete_ph" placeholder="Buscar município por nome ou código IBGE..." style="width:280px" oninput="seteMunPage=0;renderSeteMun()">
+                <select id="seteUfSel" class="form-select" onchange="seteMunPage=0;renderSeteMun()">
+                  <option value="" data-i18n="filter_uf_all">Todas as UFs</option>
+                </select>
+              </div>
+              <div class="pill-group">
+                <button class="pill-opt active" id="seteViewBtnReg" onclick="seteSetView('reg')" data-i18n="sete_toggle_reg">Registros Operacionais</button>
+                <button class="pill-opt" id="seteViewBtnInd" onclick="seteSetView('ind')" data-i18n="sete_toggle_ind">Indicadores Calculados</button>
+              </div>
+            </div>
+            <div id="seteMunSub" style="font-size:11px;color:var(--text-3);margin-bottom:8px"></div>
+            <div class="table-wrap" style="max-height:460px;overflow-y:auto">
+              <table class="data-table">
+                <thead id="seteMunHead"></thead>
+                <tbody id="seteMunBody"></tbody>
+              </table>
+            </div>
+            <div class="pagination-bar" id="seteMunPageInfo" style="margin-top:12px;display:flex;justify-content:space-between;align-items:center"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 03: SELEÇÃO TERRITORIAL DEDICADA (NACIONAL, REGIÃO, ESTADO, MUNICÍPIO) -->
+      <section class="sec-territorio-card" id="secTerritorio">
+        <div class="sec-territorio-header">
+          <div class="sth-left">
+            <div class="sec-badge" data-i18n="sec3_badge">03</div>
+            <div>
+              <div class="sec-title" data-i18n="sec3_title">Selecione o território</div>
+              <div class="sec-sub" data-i18n="sec3_sub">Defina o escopo espacial para toda a análise e visualizações abaixo.</div>
+            </div>
+          </div>
+          <div class="territory-active-badge">
+            <i class="ti ti-map-pin"></i>
+            <span id="territoryActiveBadge">Brasil (Nacional)</span>
+          </div>
+        </div>
+
+        <!-- PÍLULAS DE NÍVEL TERRITORIAL -->
+        <div class="territory-level-pills">
+          <button class="tl-pill active" id="tlPillNacional" onclick="setTerritoryLevel('nacional')">
+            <i class="ti ti-world"></i> <span data-i18n="territory_nacional">Nacional</span>
+          </button>
+          <button class="tl-pill" id="tlPillRegiao" onclick="setTerritoryLevel('regiao')">
+            <i class="ti ti-layout-grid"></i> <span data-i18n="territory_regiao">Região</span>
+          </button>
+          <button class="tl-pill" id="tlPillEstado" onclick="setTerritoryLevel('estado')">
+            <i class="ti ti-map"></i> <span data-i18n="territory_estado">Estado</span>
+          </button>
+          <button class="tl-pill" id="tlPillMunicipio" onclick="setTerritoryLevel('municipio')">
+            <i class="ti ti-building-community"></i> <span data-i18n="territory_municipio">Município</span>
+          </button>
+        </div>
+
+        <!-- SUB-SELETORES DINÂMICOS -->
+        <div class="territory-subselects" id="territorySubselects">
+          <div id="subNacional" class="subselect-group">
+            <span style="font-size:13px;color:var(--text-2);display:inline-flex;align-items:center;gap:6px">
+              <i class="ti ti-check" style="color:var(--c-mint)"></i> <span data-i18n="scope_nac_desc">Escopo Nacional — Brasil (Todos os municípios e estados integrados)</span>
             </span>
           </div>
+          <div id="subRegiao" class="subselect-group" style="display:none">
+            <label data-i18n="sel_regiao_lbl">Selecione a Região:</label>
+            <select id="selRegiaoDropdown" class="form-select" onchange="onTerritoryChange()" style="max-width:320px">
+              <option value="centro-oeste" selected data-i18n="regiao_centro_oeste">Centro-Oeste</option>
+              <option value="norte" data-i18n="regiao_norte">Norte</option>
+              <option value="nordeste" data-i18n="regiao_nordeste">Nordeste</option>
+              <option value="sudeste" data-i18n="regiao_sudeste">Sudeste</option>
+              <option value="sul" data-i18n="regiao_sul">Sul</option>
+            </select>
+          </div>
+          <div id="subEstado" class="subselect-group" style="display:none">
+            <label data-i18n="sel_estado_lbl">Selecione a UF / Estado:</label>
+            <select id="selEstadoDropdown" class="form-select" onchange="onTerritoryChange()" style="max-width:320px"></select>
+          </div>
+          <div id="subMunicipio" class="subselect-group" style="display:none">
+            <div style="display:flex;gap:14px;flex-wrap:wrap">
+              <div style="flex:1;min-width:180px">
+                <label data-i18n="sel_mun_uf_lbl">1. Selecione a UF do Município:</label>
+                <select id="selMunUf" class="form-select" onchange="onMunUfChange()" style="width:100%"></select>
+              </div>
+              <div style="flex:2;min-width:260px">
+                <label data-i18n="sel_mun_lbl">2. Selecione o Município:</label>
+                <select id="selMunCity" class="form-select" onchange="onTerritoryChange()" style="width:100%"></select>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+
+      <!-- SEÇÃO 04: INDICADORES FINALÍSTICOS -->
+      <section class="sec-card-standard" id="secFinalisticos">
+        <div class="sec-header-standard">
+          <div class="sec-badge" data-i18n="sec4_badge">04</div>
+          <div>
+            <div class="sec-title" data-i18n="sec4_title">Indicadores Finalísticos — Impacto, Segurança &amp; Acesso Escolar</div>
+            <div class="sec-sub" data-i18n="sec4_sub">Dimensões estratégicas que mensuram o impacto direto do transporte sobre a permanência e proteção dos estudantes.</div>
+          </div>
+        </div>
+
         <div class="elyra-performance-grid" id="elyraPerformanceGrid"></div>
-        <div class="fnl-meta-strip" style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:10px 14px;border-radius:10px;background:var(--bg-input);border:1px solid var(--border);font-size:11.5px;color:var(--text-2);flex-wrap:wrap;gap:8px">
-          <div style="display:flex;align-items:center;gap:6px">
-            <span class="badge-novo" style="margin:0">Novo</span>
-            <strong style="color:var(--text-1)">DMC — Distância Média de Caminhada:</strong>
-            <span>Deslocamento a pé residência-embarque com média referencial de <b style="color:var(--text-1)" id="fnlDmcVal">820 metros</b>.</span>
-          </div>
-          <div style="font-size:10.5px;color:var(--text-3)"><i class="ti ti-database"></i> Microdados SETE 2025 · Grão Aluno/Rota</div>
-        </div>
-      </div>
 
-      <!-- LINHA 3: 3-COLUMN METRIC CARDS COM WAFFLE GRID (Anexo 4) -->
-      <div class="elyra-metric-columns">
-        <!-- Coluna 1: Descritivos -->
-        <div class="elyra-card elyra-group-card">
-          <span class="egc-badge badge-group-d">Descritivos (D)</span>
-          <div class="egc-desc">16 indicadores de caracterização da rede, rotas mapeadas, alunos atendidos e abrangência territorial.</div>
-          <div class="egc-value" id="cardDVal">16</div>
-          <div class="egc-val-sub">indicadores mapeados no SETE</div>
-          <div class="egc-waffle-grid" id="waffleGridD"></div>
-        </div>
-        <!-- Coluna 2: Desempenho -->
-        <div class="elyra-card elyra-group-card">
-          <span class="egc-badge badge-group-p">Desempenho (P)</span>
-          <div class="egc-desc">10 indicadores de eficiência do serviço, vínculos formais de motoristas/monitores e idade da frota.</div>
-          <div class="egc-value" id="cardPVal">10</div>
-          <div class="egc-val-sub">indicadores de gestão e controle</div>
-          <div class="egc-waffle-grid" id="waffleGridP"></div>
-        </div>
-        <!-- Coluna 3: Finalísticos (Destaque Proeminente) -->
-        <div class="elyra-card elyra-group-card" style="border: 1.5px solid rgba(255, 205, 66, 0.45); background: linear-gradient(180deg, var(--bg-card) 60%, rgba(255, 205, 66, 0.04));">
-          <span class="egc-badge badge-group-fnl" style="font-weight:700;box-shadow: 0 0 0 1px rgba(255, 205, 66, 0.3)">★ Finalísticos (FNL) · Foco Estratégico</span>
-          <div class="egc-desc">5 indicadores estratégicos de segurança no deslocamento, proteção embarcada, atendimento a PCDs e acesso escolar.</div>
-          <div class="egc-value" id="cardFNLVal" style="color:#B38600">5</div>
-          <div class="egc-val-sub">indicadores de impacto direto na educação</div>
-          <div class="egc-waffle-grid" id="waffleGridFNL"></div>
-        </div>
-      </div>
-
-      <!-- LINHA 4: TABELAS DE INDICADORES -->
-      <div class="bottom-row">
-        <div class="elyra-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <!-- BANNER DE DISTÂNCIA MÉDIA DE CAMINHADA (DMC) -->
+        <div style="margin-top:20px;background:var(--bg-input);border:1px solid var(--border);border-radius:14px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(37,137,244,0.12);color:var(--c-blue);display:flex;align-items:center;justify-content:center;font-size:20px">
+              <i class="ti ti-walk"></i>
+            </div>
             <div>
-              <div class="cc-title">Indicadores SETE</div>
-              <div class="cc-sub">Consolidação de microdados oficiais por grupo</div>
-            </div>
-            <div class="tab-row" id="indTabRow">
-              <button class="tab-btn active" onclick="setIndTab(this,'FNL')">Finalísticos (5) ★</button>
-              <button class="tab-btn" onclick="setIndTab(this,'D')">Descritivos (16)</button>
-              <button class="tab-btn" onclick="setIndTab(this,'P')">Desempenho (10)</button>
+              <div style="font-size:13px;font-weight:700;color:var(--text-1)">DMC — <span data-i18n="dmc_lbl">Distância Média de Caminhada</span></div>
+              <div style="font-size:11.5px;color:var(--text-3)" data-i18n="dmc_sub">Raio médio percorrido pelo aluno até o ponto de embarque da rota</div>
             </div>
           </div>
-          <div style="overflow-x:auto">
-            <table class="ind-t">
-              <thead><tr><th>Sigla</th><th>Indicador</th><th style="text-align:right">Valor</th><th>Status</th></tr></thead>
-              <tbody id="indTableBody"></tbody>
-            </table>
+          <div style="display:flex;align-items:baseline;gap:8px">
+            <span style="font-family:var(--font-serif);font-size:28px;font-weight:500;color:var(--c-blue)" id="fnlDmcVal">820 metros</span>
+            <span class="badge-novo" style="font-size:9px;padding:2px 7px">[Novo] FNL</span>
           </div>
         </div>
-        <div class="elyra-card">
-          <div style="margin-bottom:12px">
-            <div class="cc-title">Indicadores Censo Escolar 2024</div>
-            <div class="cc-sub">Atendimento educacional e contexto territorial</div>
+      </section>
+
+      <!-- SEÇÃO 05: PANORAMA OPERACIONAL SETE -->
+      <section class="sec-card-standard" id="secOperacional">
+        <div class="sec-header-standard">
+          <div class="sec-badge" data-i18n="sec5_badge">05</div>
+          <div>
+            <div class="sec-title" data-i18n="sec5_title">Panorama Operacional SETE</div>
+            <div class="sec-sub" data-i18n="sec5_sub">Volume de atendimento, extensão de rede e cobertura do transporte escolar.</div>
           </div>
-          <div style="overflow-x:auto">
-            <table class="ind-t">
-              <thead><tr><th>Indicador</th><th style="text-align:right">Valor</th><th>Fonte</th></tr></thead>
-              <tbody id="censoBody"></tbody>
-            </table>
+        </div>
+
+        <div class="elyra-metric-columns" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+          <!-- CARD 1: DESCRITIVOS (FROTA PRÓPRIA VS TERCEIRIZADA) -->
+          <div class="card elyra-group-card" style="padding:22px;border-radius:18px;background:var(--bg-input);border:1px solid var(--border)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <span style="font-size:11px;font-weight:700;color:var(--c-rose);background:rgba(223,109,124,0.12);padding:2px 8px;border-radius:12px">PVP / PVT</span>
+              <span class="badge-revisado" style="font-size:9px;padding:2px 6px">[Rev] D</span>
+            </div>
+            <div style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:4px">Frota Própria Municipal</div>
+            <div style="font-size:28px;font-family:var(--font-serif);font-weight:500;color:var(--text-1);line-height:1.1;margin-bottom:8px" id="elyraValFrotaPropria">50.7%</div>
+            <div class="egc-waffle-grid" id="waffleGridD" style="display:grid;grid-template-columns:repeat(8,1fr);gap:5px;max-width:170px;margin:8px 0"></div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:auto">Veículos municipais em serviço</div>
+          </div>
+
+          <!-- CARD 2: DESEMPENHO (COBERTURA GEORREFERENCIADA) -->
+          <div class="card elyra-group-card" style="padding:22px;border-radius:18px;background:var(--bg-input);border:1px solid var(--border)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <span style="font-size:11px;font-weight:700;color:var(--c-mint);background:rgba(63,198,136,0.14);padding:2px 8px;border-radius:12px">PRGM</span>
+              <span class="badge-revisado" style="font-size:9px;padding:2px 6px">[Rev] P</span>
+            </div>
+            <div style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:4px">Cobertura Georreferenciada</div>
+            <div style="font-size:28px;font-family:var(--font-serif);font-weight:500;color:var(--text-1);line-height:1.1;margin-bottom:8px" id="elyraValRotasGeorref">38.2%</div>
+            <div class="egc-waffle-grid" id="waffleGridP" style="display:grid;grid-template-columns:repeat(8,1fr);gap:5px;max-width:170px;margin:8px 0"></div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:auto">Meta nacional PNE: 80%</div>
+          </div>
+
+          <!-- CARD 3: REGULARIDADE DAS ROTAS -->
+          <div class="card elyra-group-card" style="padding:22px;border-radius:18px;background:var(--bg-input);border:1px solid var(--border)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <span style="font-size:11px;font-weight:700;color:#B38600;background:rgba(255,205,66,0.16);padding:2px 8px;border-radius:12px">PRRM</span>
+              <span class="badge-revisado" style="font-size:9px;padding:2px 6px">[Rev] P</span>
+            </div>
+            <div style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:4px">Rotas Regulares Cadastradas</div>
+            <div style="font-size:28px;font-family:var(--font-serif);font-weight:500;color:var(--text-1);line-height:1.1;margin-bottom:8px" id="elyraValRegularidade">92.4%</div>
+            <div class="egc-waffle-grid" id="waffleGridFNL" style="display:grid;grid-template-columns:repeat(8,1fr);gap:5px;max-width:170px;margin:8px 0"></div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:auto">Estabilidade: &ge; 90%</div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <!-- TAB INDICADORES GERAIS -->
-    <div class="tab-content" id="tab-indicadores">
-      <div class="full-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-          <div class="cc-title">Todos os Indicadores do Sistema</div>
-          <span class="src-badge"><i class="ti ti-file-text" style="font-size:11px"></i>Relatórios CECATE/UFG 2024–2025</span>
+      <!-- SEÇÃO 06: DISTRIBUIÇÃO MODAL -->
+      <section class="sec-card-standard" id="secModal">
+        <div class="sec-header-standard">
+          <div class="sec-badge" data-i18n="sec6_badge">06</div>
+          <div>
+            <div class="sec-title" data-i18n="sec6_title">Distribuição Modal</div>
+            <div class="sec-sub" data-i18n="sec6_sub">Composição dos modos de transporte utilizados no deslocamento dos estudantes.</div>
+          </div>
         </div>
-        <div class="tab-row" id="giTabRow" style="margin-bottom:12px">
-          <button class="tab-btn active" onclick="setGiTab(this,'todos')">Todos (31)</button>
-          <button class="tab-btn" onclick="setGiTab(this,'D')">Descritivos — D (16)</button>
-          <button class="tab-btn" onclick="setGiTab(this,'P')">Desempenho — P (10)</button>
-          <button class="tab-btn" onclick="setGiTab(this,'FNL')">Finalísticos — FNL (5)</button>
-        </div>
-        <div style="overflow-x:auto">
-          <table class="gi-t">
-            <thead><tr><th>Sigla</th><th>Nome</th><th>Tipo</th><th>Fórmula</th><th>Fonte</th><th style="text-align:right">Valor Nacional</th><th style="text-align:center">Status</th></tr></thead>
-            <tbody id="giTableBody"></tbody>
-          </table>
-        </div>
-        <div style="margin-top:14px;font-size:10px;color:var(--text-3);display:flex;gap:16px;flex-wrap:wrap">
-          <span><span style="color:var(--accent);font-weight:700">✓ Disponível</span> — dados presentes nos relatórios</span>
-          
-          <span style="color:var(--text-3)">Passe o cursor sobre um indicador para ver o objetivo metodológico. Indicadores incalculáveis nesta base (PRPM, IPE, PVPCE, ICA) foram substituídos — ver aba Calcular.</span>
-        </div>
-      </div>
-    </div>
 
+        <div class="elyra-dist-body" style="display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center">
+          <!-- MATRIX WAFFLE ROWS (ESQUERDA) -->
+          <div class="modal-waffles-box" style="background:var(--bg-input);padding:20px 24px;border-radius:16px;border:1px solid var(--border)">
+            <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--text-2);margin-bottom:16px;letter-spacing:.05em">
+              Matriz de Modais e Propriedade
+            </div>
+            <div class="elyra-waffle-rows" id="modalWaffleRows" style="display:flex;flex-direction:column;gap:12px"></div>
+          </div>
 
-    <!-- TAB MAPA -->
-    <div class="tab-content" id="tab-mapa">
-      <div class="full-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
-          <div class="cc-title">Indicadores Georreferenciados por Unidade da Federação</div>
+          <!-- SEGMENTED DONUT (DIREITA) -->
+          <div class="modal-donut-box" style="background:var(--bg-input);padding:20px 24px;border-radius:16px;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center">
+            <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--text-2);margin-bottom:14px;letter-spacing:.05em;align-self:flex-start">
+              Proporção de Rotas por Modal
+            </div>
+            <div class="elyra-donut-wrap" style="width:200px;height:200px;position:relative">
+              <canvas id="chartModalDonut"></canvas>
+            </div>
+            <div class="donut-legend" id="donutLegend" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px;font-size:11px"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 07: ANÁLISE DE ROTAS (REDESENHADA) -->
+      <section class="sec-card-standard" id="secRotas">
+        <div class="sec-header-standard">
+          <div class="sec-badge" data-i18n="sec7_badge">07</div>
+          <div>
+            <div class="sec-title" data-i18n="sec7_title">Análise de Rotas</div>
+            <div class="sec-sub" data-i18n="sec7_sub">Diagnóstico de extensão, georreferenciamento e tempos médios de percurso por território.</div>
+          </div>
+        </div>
+
+        <!-- FAIXA DE RESUMO OPERACIONAL -->
+        <div class="rotas-summary-strip">
+          <div class="rotas-sum-card">
+            <div class="rsc-lbl" data-i18n="rotas_prgm_nac">PRGM Nacional</div>
+            <div class="rsc-val" id="rotasSumPrgm">38.2%</div>
+          </div>
+          <div class="rotas-sum-card">
+            <div class="rsc-lbl" data-i18n="rotas_georref">Rotas Georreferenciadas</div>
+            <div class="rsc-val" id="rotasSumGeorref">31.626</div>
+          </div>
+          <div class="rotas-sum-card">
+            <div class="rsc-lbl" data-i18n="rotas_totais">Total de Rotas</div>
+            <div class="rsc-val" id="rotasSumTotal">82.887</div>
+          </div>
+          <div class="rotas-sum-card">
+            <div class="rsc-lbl" data-i18n="rotas_extensao_media">Extensão Média por Rota</div>
+            <div class="rsc-val" id="rotasSumKm">46.5 km</div>
+          </div>
+        </div>
+
+        <!-- COMPARATIVO ESTADUAL REDESENHADO -->
+        <div>
+          <div style="font-size:12.5px;font-weight:700;color:var(--text-1);margin-bottom:12px" data-i18n="rotas_comp_title">
+            Comparativo Estadual de Georreferenciamento (PRGM)
+          </div>
+          <div class="rotas-ranking-grid" id="rotasRankingGrid"></div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 08: MAPA DE INDICADORES (COMPACTO COM ESCALA ADAPTATIVA) -->
+      <section class="sec-card-standard" id="secMapa">
+        <div class="sec-header-standard">
+          <div class="sec-badge" data-i18n="sec8_badge">08</div>
+          <div>
+            <div class="sec-title" data-i18n="sec8_title">Mapa de Indicadores</div>
+            <div id="mapaActiveIndTitle" style="font-size:14px;font-weight:600;color:var(--c-blue);margin-top:2px"></div>
+            <div class="sec-sub" data-i18n="sec8_sub">Visualização geográfica com escala cromática adaptativa e sensível à natureza do indicador.</div>
+          </div>
+        </div>
+
+        <div class="mapa-compact-controls">
           <div style="display:flex;align-items:center;gap:8px">
-            <label style="font-size:11px;color:var(--text-3)">Indicador:</label>
-            <select class="fs" id="mapaIndSelect" onchange="renderMapa()" style="min-width:240px"></select>
+            <label style="font-size:12px;font-weight:600;color:var(--text-2)" data-i18n="mapa_sel_ind">Indicador no Mapa:</label>
+            <select id="mapaIndSelect" class="form-select" onchange="renderMapa()" style="min-width:240px"></select>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <label style="font-size:12px;font-weight:600;color:var(--text-2)" data-i18n="mapa_sel_geo">Nível Geográfico:</label>
+            <div class="pill-group" id="mapaLvlPills">
+              <button class="pill-opt active" onclick="setMapLevel('estado', this)" data-i18n="mapa_geo_uf">Estados (UFs)</button>
+              <button class="pill-opt" onclick="setMapLevel('regiao', this)" data-i18n="mapa_geo_reg">Grandes Regiões</button>
+            </div>
           </div>
         </div>
-        <div class="mapa-layout">
-          <div>
-            <div class="mapa-svg-wrap" id="mapaSvgWrap">
-              <div class="map-tooltip" id="mapTooltip"></div>
-            </div>
-            <div class="map-legend" id="mapLegend"></div>
-            <div style="margin-top:8px;font-size:10px;color:var(--text-3)">Malha: IBGE — BR_UF_2025 (SIRGAS 2000), geometria simplificada; regiões obtidas por agregação (dissolve) das UFs. O nível exibido segue o filtro do topo: Nacional e Estado mostram as 27 UFs; Região mostra as 5 macrorregiões. Clique no mapa para fixar os detalhes.</div>
+
+        <div class="mapa-compact-layout">
+          <!-- MAPA SVG À ESQUERDA -->
+          <div class="mapa-compact-left">
+            <div class="mapa-svg-wrap" id="mapaSvgWrap"></div>
+            <div class="map-legend" id="mapLegend" style="margin-top:14px"></div>
           </div>
-          <div>
-            <div class="map-side-card" id="mapaDetail"></div>
-            <div class="map-side-card">
-              <div class="msc-title" id="mapaRankTitle">Ranking</div>
+
+          <!-- DETALHES E RANKING À DIREITA -->
+          <div class="mapa-side-cards" style="display:flex;flex-direction:column;gap:16px">
+            <div class="card" id="mapaDetail" style="padding:18px"></div>
+            <div class="card" id="mapaRank" style="padding:18px;max-height:300px;overflow-y:auto">
+              <div class="msc-title" id="mapaRankTitle" style="font-size:13px;font-weight:700;margin-bottom:10px">Ranking Territorial</div>
               <div id="mapaRankList"></div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
     </div>
 
-
-    <!-- TAB DADOS SETE (município/UF) -->
-    <div class="tab-content" id="tab-sete">
-      <div class="metric-grid" id="seteGrid"></div>
-
-      <div class="full-card">
-        <div class="cc-h"><div><div class="cc-title">Agregado por Unidade da Federação</div><div class="cc-sub">Contagem bruta de registros dos 14 arquivos SETE/PDDE · nomes e códigos via DTB/IBGE 2024 · clique no cabeçalho para ordenar</div></div></div>
-        <div style="overflow-x:auto"><table class="gi-t" id="seteUfTable" style="min-width:1100px">
-          <thead><tr id="seteUfHead"></tr></thead>
-          <tbody id="seteUfBody"></tbody>
-        </table></div>
-      </div>
-
-      <div class="full-card">
-        <div class="cc-h" style="flex-wrap:wrap;gap:10px"><div><div class="cc-title">Detalhamento por Município</div><div class="cc-sub" id="seteMunSub"></div></div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-            <div class="tab-row">
-              <button class="tab-btn active" id="seteViewBtnReg" onclick="setSeteView('reg')">Registros</button>
-              <button class="tab-btn" id="seteViewBtnInd" onclick="setSeteView('ind')">Indicadores</button>
-            </div>
-            <select id="seteUfSel" class="fs" onchange="seteMunPage=0;onSeteFilterChange()"><option value="">Todas as UFs</option></select>
-            <input id="seteMunSearch" type="text" placeholder="Buscar município ou código IBGE..." oninput="seteMunPage=0;onSeteFilterChange()" style="padding:6px 10px;font-size:11px;border:1px solid var(--border);border-radius:8px;background:var(--bg-input);color:var(--text-1);font-family:inherit;width:220px">
-          </div>
+    <!-- RODAPÉ EDITORIAL -->
+    <footer class="editorial-footer">
+      <div class="ef-container">
+        <div class="ef-left">
+          <span class="ef-badge" id="pniteVersionBadge">v.2.0.0</span>
+          <span>PNITE — Plataforma Nacional de Inteligência em Transporte Escolar</span>
         </div>
-        <div style="overflow-x:auto"><table class="gi-t" id="seteMunTable" style="min-width:1250px">
-          <thead><tr id="seteMunHead"></tr></thead>
-          <tbody id="seteMunBody"></tbody>
-        </table></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:8px">
-          <div style="font-size:10px;color:var(--text-3)" id="seteMunPageInfo"></div>
-          <div style="display:flex;gap:6px">
-            <button class="tab-btn" onclick="seteMunNav(-1)">← Anterior</button>
-            <button class="tab-btn" onclick="seteMunNav(1)">Próxima →</button>
-          </div>
+        <div class="ef-right">
+          <span>Última atualização: <b id="pniteLastUpdate">16/09/2026</b> às <b id="pniteLastTime">11:00</b></span>
         </div>
-      </div>
-
-      <div class="full-card" style="font-size:10px;color:var(--text-3);line-height:1.8">
-        <div class="cc-title" style="margin-bottom:6px">Nota metodológica</div>
-        <strong style="color:var(--text-2)">Origem e escopo.</strong> Esta aba apresenta os microdados SETE/PDDE agregados por município (código IBGE de 7 dígitos do campo <code>codigo_cidade</code>) e por UF, com nomes territoriais da Divisão Territorial Brasileira (DTB) 2024 do IBGE. Foram identificados <b id="seteNMun" style="color:var(--text-1)"></b> municípios com ao menos um registro, todos com correspondência exata no DTB (nenhum código órfão). A visão <b>Registros</b> traz contagens brutas por tabela; a visão <b>Indicadores</b> aplica, por município, as mesmas fórmulas documentadas na aba Memória de Cálculo.<br>
-        <strong style="color:var(--text-2)">Indicadores validados por reagregação.</strong> PRGM, PRDAM, PRRM, PRHM, PRMM, PVP, MON_CVE e MOT_CVE municipais, quando reagregados por UF, reproduzem exatamente os valores estaduais das demais abas (zero divergências em 27 UFs).<br>
-        <strong style="color:var(--yellow,#b8860b)">⚠ Indicadores da cadeia de alunos (ATE, MEDATE, IUC, TETI).</strong> São calculados no grão (município, id) e <b>não reagregam</b> para os valores estaduais das demais abas. Causa identificada: o campo <code>id_aluno</code> mistura uma sequência global com sequências legadas locais — 11.827 ids ocorrem em mais de um município — e o cálculo estadual por ids distintos colapsa alunos diferentes de municípios diferentes (ex.: RO tem 46.194 pares município+id contra 24.968 ids distintos). O grão municipal usado aqui é referencialmente correto; os agregados estaduais das demais abas devem ser revisados à luz desse achado. O mesmo vale para junções por <code>id_rota</code>/<code>id_veiculo</code>/<code>id_escola</code> sem o município (afeta al_adeq/TETI e esc_at/ATE).<br>
-        <strong style="color:var(--text-2)">Divergências de contagem bruta.</strong> Alunos = 3.761.370 registros brutos vs. 3.406.265 ids distintos usados nos indicadores; escolas = 65.569 vs. 61.722; motoristas = 63.739 registros vs. 44.152 com vínculo informado. Rotas (82.887), veículos (67.730) e monitores (22.678) coincidem exatamente.<br>
-        <strong style="color:var(--yellow,#b8860b)">⚠ Interpretações de código não confirmadas.</strong> Origem 1 = próprio / 2 = terceirizado; tipo de rota 1 = rodoviária, 2 = aquaviária, 3 = mista; vínculo 1/2 = vínculo formal; tipos de veículo 1, 2 e 3 = adequados (TETI). Nenhuma dessas interpretações foi validada contra a documentação oficial do SETE e não devem fundamentar decisões antes dessa verificação. PECS, PATM, PATE e IPTE exigem Censo Escolar municipal e não estão disponíveis neste escopo; PRPM, PVPCE, IPE e ICA permanecem incalculáveis por ausência estrutural de dados.<br>
-        <strong style="color:var(--text-2)">Km total.</strong> Soma do campo <code>km</code> das rotas com valor entre 0 e 2.000 km (nulos, zero e aberrantes excluídos; "rotas c/ km" indica quantas entraram na soma). "Alunos transportados" = pares distintos (município, id_aluno) presentes em rota_atende_aluno.
-      </div>
-    </div>
-
-    <!-- TAB ROTAS -->
-    <div class="tab-content" id="tab-rotas">
-      <div class="metric-grid" id="rotasGrid"></div>
-      <div class="full-card">
-        <div class="cc-h"><div><div class="cc-title">Rotas Georreferenciadas por Estado (PRGM)</div><div class="cc-sub">Fonte: SETE 2025 — Verde ≥50% · Amarelo ≥30% · Vermelho &lt;30%</div></div></div>
-        <div style="position:relative;height:360px"><canvas id="chartPRGM" role="img" aria-label="PRGM por estado"></canvas></div>
-      </div>
-    </div>
-
-    <!-- TAB FROTA -->
-    <div class="tab-content" id="tab-frota">
-      <div class="metric-grid" id="frotaGrid"></div>
-      <div class="full-card">
-        <div class="cc-h"><div><div class="cc-title">Composição da Frota por Estado</div><div class="cc-sub">Fonte: SETE 2025 — própria, terceirizada, Caminho da Escola</div></div></div>
-        <div style="position:relative;height:380px"><canvas id="chartFrotaEstado" role="img" aria-label="Frota por estado"></canvas></div>
-        <div id="frotaEstadoLegend" style="display:flex;gap:14px;margin-top:10px;font-size:10px;color:var(--text-3);justify-content:center"></div>
-      </div>
-    </div>
-
-    <!-- TAB CALCULAR -->
-    <div class="tab-content" id="tab-calculo">
-      <div class="bottom-row">
-        <div class="ic">
-          <div class="cc-title">Calcular Indicador</div>
-          <div style="margin-top:10px">
-            <label class="igl" style="margin-bottom:4px">Selecione o indicador</label>
-            <select id="calcSelect" style="width:100%;padding:8px 12px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--bg-input);color:var(--text-1);font-family:inherit" onchange="buildCalcForm()">
-              <option value="">Selecione o indicador...</option>
-              <optgroup label="Descritivos (D)">
-                <option value="PRIO">PRIO — Rotas com Impedância Operacional [Revisado]</option>
-                <option value="PARI">PARI — Alunos em Rotas com Impedância [Novo]</option>
-                <option value="PRRM">PRRM — Rotas Rodoviárias</option>
-                <option value="PRPNP">PRPNP — Rotas Pavimentadas e Não Pavimentadas [Novo]</option>
-                <option value="PRHM">PRHM — Rotas Hidroviárias</option>
-                <option value="PAIH">PAIH — Dificuldade Acesso Hidroviário [Novo]</option>
-                <option value="PRMM">PRMM — Rotas Multimodais</option>
-                <option value="PATM">PATM — Alunos Transportados no Município [Novo]</option>
-                <option value="ATE">ATE — Alunos Transportados por Escola [Revisado]</option>
-                <option value="MEDATE">MEDATE — Mediana de Alunos por Escola</option>
-                <option value="IPTE">IPTE — Índice Prop. Municipal e Estadual</option>
-                <option value="PVP">PVP — Percentual de Veículos Próprios [Revisado]</option>
-                <option value="PVPCE">PVPCE — Veículos do Caminho da Escola [Revisado]</option>
-                <option value="IMFP">IMFP — Idade Média da Frota Própria [Novo]</option>
-                <option value="IMFT">IMFT — Idade Média da Frota Terceirizada [Novo]</option>
-                <option value="MIFCE">MIFCE — Mediana Idade Caminho da Escola [Novo]</option>
-              </optgroup>
-              <optgroup label="Desempenho (P)">
-                <option value="PRGM">PRGM — Rotas Georreferenciadas</option>
-                <option value="PRPM">PRPM — Rotas com Presença de Monitores</option>
-                <option value="IUC">IUC — Índice de Utilização da Capacidade</option>
-                <option value="PMVE">PMVE — Motoristas com Vínculo Formal [Revisado]</option>
-                <option value="PMNVE">PMNVE — Monitores com Vínculo Formal [Revisado]</option>
-                <option value="PAFI">PAFI — Adequação da Frota por Idade [Novo]</option>
-                <option value="PVRO">PVRO — Veículos Recebidos em Operação [Novo]</option>
-                <option value="PVCED">PVCED — Veículos CE Descontinuados [Novo]</option>
-                <option value="MQT">MQT — Extremos de Quilometragem e Tempo [Novo]</option>
-                <option value="TVA">TVA — Tempo de Viagem Hidroviário [Novo]</option>
-              </optgroup>
-              <optgroup label="Finalísticos (FNL)">
-                <option value="TETI">TETI — Erradicação Transporte Inadequado [Revisado]</option>
-                <option value="IPE">IPE — Proteção Embarcada por Modo [Revisado]</option>
-                <option value="PCSC">PCSC — Cobertura SETE x Censo Escolar [Novo]</option>
-                <option value="PAD">PAD — Alunos com Deficiência Atendidos [Novo]</option>
-                <option value="DMC">DMC — Distância Média de Caminhada [Novo]</option>
-              </optgroup>
-            </select>
-          </div>
-          <div id="calcInputs" class="ig"></div>
-          <button class="cb" id="calcBtn" onclick="calcular()" style="display:none">Calcular ↗</button>
-          <div class="cr" id="calcResult"></div>
-          <div class="cf" id="calcFormula"></div>
-        </div>
-        <div class="ic">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-            <div class="cc-title">Indicadores substituídos</div>
-          </div>
-          <table class="gi-t">
-            <thead><tr><th>Sigla</th><th>Nome Oficial</th><th>Grupo</th><th>Motivo da Exclusão / Deliberação 2026</th></tr></thead>
-            <tbody id="missingTable"></tbody>
-          </table>
-          <div style="margin-top:12px;font-size:10px;color:var(--text-3);line-height:1.7;padding:10px 12px;background:var(--bg-input);border-radius:8px;border-left:3px solid var(--blue)">
-            <strong style="color:var(--blue)">Sobre a substituição:</strong> os indicadores acima foram identificados como incalculáveis de forma direta nesta base (documento "Indicadores substitutos"). A correspondência IPE → TETI e PVPCE → PVP foi derivada das alternativas operacionais viáveis; o indicador ICA não possui substituto direto nesta versão. A calculadora ao lado permite estimar indicadores manualmente caso dados adicionais sejam obtidos.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB MEMÓRIA DE CÁLCULO -->
-    <div class="tab-content" id="tab-memoria">
-      <div class="full-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:8px">
-          <div class="cc-title">Memória de Cálculo — valores nacionais</div>
-          <span class="src-badge"><i class="ti ti-math-function" style="font-size:11px"></i>Microdados SETE/PDDE</span>
-        </div>
-        <div style="font-size:11px;color:var(--text-3);margin-bottom:14px;line-height:1.6">
-          Cada indicador abaixo mostra os dados brutos utilizados, a fórmula e a substituição dos números reais. Os valores referem-se ao total nacional. Cálculos por estado e região seguem a mesma fórmula, agregando por UF via o código IBGE do município.
-        </div>
-        <div id="memoriaList"></div>
-      </div>
-    </div>
-
-    <!-- FOOTER / CONTROLE DE VERSÃO WEB -->
-    <footer class="pnite-footer-clean">
-      <div class="pfc-content">
-        <span class="pfc-brand"><i class="ti ti-bus" style="margin-right:6px"></i>PNITE</span>
-        <span class="pfc-desc">Plataforma Nacional de Inteligência em Transporte Escolar · CECATE/UFG &amp; FNDE</span>
       </div>
     </footer>
   </main>
 </div>
 
-<!-- MODAL CONFIGURAÇÕES -->
-<div class="modal-overlay" id="settingsModal" onclick="closeSettingsOutside(event)">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <div class="modal-title"><i class="ti ti-settings" style="margin-right:8px;font-size:16px;vertical-align:-2px"></i>Configurações</div>
-      <button class="modal-close" onclick="closeSettings()"><i class="ti ti-x"></i></button>
+<!-- ====================================================================
+     MODAL DE CONFIGURAÇÕES E SELEÇÃO DE IDIOMA
+     ==================================================================== -->
+<div class="settings-modal-overlay" id="settingsModalOverlay" onclick="if(event.target===this)closeSettingsModal()">
+  <div class="settings-modal-box">
+    <div class="smb-header">
+      <div class="smb-title" data-i18n="settings_modal_title">Configurações da Plataforma</div>
+      <button class="smb-close" onclick="closeSettingsModal()" title="Fechar"><i class="ti ti-x"></i></button>
     </div>
-    <div class="modal-body">
-      <div class="setting-row">
-        <div>
-          <div class="setting-label">Modo escuro</div>
-          <div class="setting-desc">Alterna entre tema claro e escuro</div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="darkToggle" onchange="toggleDark(this.checked)">
-          <span class="toggle-slider"></span>
-        </label>
+
+    <!-- SELETOR DE IDIOMA -->
+    <div class="smb-sec">
+      <div class="smb-sec-title" data-i18n="settings_lang_title">Idioma da Plataforma</div>
+      <div class="smb-sec-desc" data-i18n="settings_lang_desc">Selecione o idioma desejado para a interface completa da PNITE.</div>
+      <div class="lang-selector-grid">
+        <button class="lang-btn active" id="langBtn_pt" onclick="setLanguage('pt')">
+          <span class="lang-flag">🇧🇷</span> <span>Português</span>
+        </button>
+        <button class="lang-btn" id="langBtn_es" onclick="setLanguage('es')">
+          <span class="lang-flag">🇪🇸</span> <span>Español</span>
+        </button>
+        <button class="lang-btn" id="langBtn_en" onclick="setLanguage('en')">
+          <span class="lang-flag">🇺🇸</span> <span>English</span>
+        </button>
+        <button class="lang-btn" id="langBtn_it" onclick="setLanguage('it')">
+          <span class="lang-flag">🇮🇹</span> <span>Italiano</span>
+        </button>
+        <button class="lang-btn" id="langBtn_ru" onclick="setLanguage('ru')">
+          <span class="lang-flag">🇷🇺</span> <span>Русский</span>
+        </button>
       </div>
-      <div class="setting-row">
-        <div>
-          <div class="setting-label">Fonte de dados</div>
-          <div class="setting-desc">Censo Escolar 2024 · SETE 2025</div>
-        </div>
-        <span class="src-badge" style="font-size:10px">CECATE/UFG</span>
+    </div>
+
+    <!-- APARÊNCIA E TEMA -->
+    <div class="smb-sec">
+      <div class="smb-sec-title" data-i18n="settings_theme_title">Aparência e Tema</div>
+      <div class="smb-sec-desc" data-i18n="settings_theme_desc">Alterne entre o modo claro profissional e o modo escuro de alto contraste.</div>
+      <button class="btn btn-outline" onclick="toggleTheme()" style="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:20px">
+        <i class="ti ti-moon"></i> <span data-i18n="theme_toggle">Alternar Tema</span>
+      </button>
+    </div>
+
+    <!-- INFORMAÇÕES DA VERSÃO -->
+    <div class="smb-sec">
+      <div class="smb-sec-title" data-i18n="settings_info_title">Informações da Versão</div>
+      <div style="font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:4px;margin-top:6px">
+        <div><span data-i18n="settings_version">Versão:</span> <b style="color:var(--c-blue)">v.2.0.0</b></div>
+        <div><span data-i18n="settings_updated">Última Atualização:</span> <b>16/09/2026 às 11:00</b></div>
+        <div><span data-i18n="settings_author">Responsável Técnico:</span> <b>Equipe PNITE</b></div>
       </div>
-      <div class="setting-row">
-        <div>
-          <div class="setting-label">Versão do sistema (PNITE)</div>
-          <div class="setting-desc">Plataforma Nacional de Inteligência em Transporte Escolar</div>
-        </div>
-        <span style="font-size:11px;font-weight:600;color:var(--accent)" id="pniteVersionDisplay" class="pnite-version-val">v.1.4.3</span>
-      </div>
-      <div class="setting-row">
-        <div>
-          <div class="setting-label">Data da última alteração</div>
-          <div class="setting-desc">Registro para controle da versão web</div>
-        </div>
-        <span style="font-size:11px;font-weight:600;color:var(--text-2)" id="pniteDateDisplay" class="pnite-date-val">15/09/2026</span>
-      </div>
+    </div>
+
+    <div style="text-align:right;margin-top:20px">
+      <button class="btn btn-primary" onclick="closeSettingsModal()" style="padding:8px 24px;border-radius:20px" data-i18n="btn_close">Fechar</button>
     </div>
   </div>
 </div>
 
+
+    <!-- ELEMENTOS DE COMPATIBILIDADE PARA FUNÇÕES EXISTENTES -->
+    <div style="display:none !important">
+      <select id="regionSelect"></select>
+      <div id="metricGrid"></div>
+      <div id="indTableBody"></div>
+      <div id="censoBody"></div>
+      <canvas id="chartFrota"></canvas>
+      <canvas id="chartPRGM"></canvas>
+      <canvas id="chartFrotaEstado"></canvas>
+      <div id="frotaLegend"></div>
+      <div id="frotaEstadoLegend"></div>
+      <div id="rotasGrid"></div>
+      <div id="frotaGrid"></div>
+      <div id="missingTable"></div>
+      <span id="seteNMun"></span>
+      <span id="darkToggle"></span>
+    </div>
+    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.1.4.3";
-const PNITE_LAST_UPDATE = "15/09/2026";
-const PNITE_LAST_TIME = "17:25";
-const PNITE_LAST_AUTHOR = "Vítor Lima";
+const PNITE_VERSION = "v.2.0.0";
+const PNITE_LAST_UPDATE = "16/09/2026";
+const PNITE_LAST_TIME = "11:00";
+const PNITE_LAST_AUTHOR = "Equipe PNITE";
 // ================================================================
 // DADOS REAIS — Relatórios CECATE/UFG 2024-2025
 // ================================================================
 const DATA = {"nacional":{"label":"Brasil","PRGM":38.16,"PRDAM":17.8,"PRRM":92.43,"PRHM":2.04,"PRMM":5.52,"PVP":50.68,"PVT":49.32,"PVPCE":null,"PECS":34.19,"IUC":0.53,"MON_CVE":18.89,"MOT_CVE":21.29,"PRPM":null,"ATE":38.9,"TETI":56.18,"IPE":null,"TEDC":30.96,"PATM":19.73,"PATE":19.73,"IPTE":0.187,"MEDATE":26.0,"ICA":null},"regiao":{"norte":{"label":"Norte","PRGM":32.85,"PRDAM":19.1,"PRRM":73.02,"PRHM":21.42,"PRMM":5.56,"PVP":55.01,"PVT":44.99,"PVPCE":null,"PECS":38.87,"IUC":0.59,"MON_CVE":16.39,"MOT_CVE":16.66,"PRPM":null,"ATE":33.79,"TETI":50.41,"IPE":null,"TEDC":null,"PATM":22.53,"PATE":22.53,"IPTE":0.167,"MEDATE":20.0,"ICA":null},"nordeste":{"label":"Nordeste","PRGM":35.5,"PRDAM":20.2,"PRRM":91.33,"PRHM":0.23,"PRMM":8.44,"PVP":52.93,"PVT":47.07,"PVPCE":null,"PECS":41.77,"IUC":0.58,"MON_CVE":15.16,"MOT_CVE":16.64,"PRPM":null,"ATE":40.0,"TETI":54.21,"IPE":null,"TEDC":null,"PATM":26.22,"PATE":26.22,"IPTE":0.129,"MEDATE":32.0,"ICA":null},"sudeste":{"label":"Sudeste","PRGM":31.46,"PRDAM":14.14,"PRRM":96.3,"PRHM":0.12,"PRMM":3.58,"PVP":44.86,"PVT":55.14,"PVPCE":null,"PECS":25.83,"IUC":0.45,"MON_CVE":19.26,"MOT_CVE":19.52,"PRPM":null,"ATE":35.92,"TETI":57.81,"IPE":null,"TEDC":null,"PATM":16.78,"PATE":16.78,"IPTE":0.267,"MEDATE":20.0,"ICA":null},"sul":{"label":"Sul","PRGM":54.14,"PRDAM":11.43,"PRRM":95.96,"PRHM":0.08,"PRMM":3.97,"PVP":54.42,"PVT":45.58,"PVPCE":null,"PECS":36.37,"IUC":0.48,"MON_CVE":21.91,"MOT_CVE":34.38,"PRPM":null,"ATE":41.07,"TETI":70.76,"IPE":null,"TEDC":null,"PATM":17.02,"PATE":17.02,"IPTE":0.082,"MEDATE":28.0,"ICA":null},"centro-oeste":{"label":"Centro Oeste","PRGM":41.53,"PRDAM":21.88,"PRRM":96.91,"PRHM":0.16,"PRMM":2.92,"PVP":76.38,"PVT":23.62,"PVPCE":null,"PECS":33.73,"IUC":0.39,"MON_CVE":38.88,"MOT_CVE":34.04,"PRPM":null,"ATE":48.18,"TETI":63.33,"IPE":null,"TEDC":null,"PATM":12.03,"PATE":12.03,"IPTE":0.579,"MEDATE":32.0,"ICA":null}},"estado":{"ac":{"label":"Acre","PRGM":18.75,"PRDAM":14.06,"PRRM":76.56,"PRHM":23.44,"PRMM":0.0,"PVP":81.2,"PVT":18.8,"PVPCE":null,"PECS":39.17,"IUC":0.49,"MON_CVE":4.04,"MOT_CVE":37.1,"PRPM":null,"ATE":22.1,"TETI":38.56,"IPE":null,"TEDC":null,"PATM":26.75,"PATE":26.75,"IPTE":0.963,"MEDATE":7.0,"ICA":null},"al":{"label":"Alagoas","PRGM":56.65,"PRDAM":10.63,"PRRM":88.92,"PRHM":0.37,"PRMM":10.71,"PVP":62.29,"PVT":37.71,"PVPCE":null,"PECS":43.62,"IUC":0.37,"MON_CVE":6.87,"MOT_CVE":11.82,"PRPM":null,"ATE":47.9,"TETI":74.26,"IPE":null,"TEDC":null,"PATM":38.23,"PATE":38.23,"IPTE":0.229,"MEDATE":44.0,"ICA":null},"am":{"label":"Amazonas","PRGM":57.53,"PRDAM":14.16,"PRRM":37.35,"PRHM":62.65,"PRMM":0.0,"PVP":42.19,"PVT":57.81,"PVPCE":null,"PECS":31.03,"IUC":0.46,"MON_CVE":30.53,"MOT_CVE":10.31,"PRPM":null,"ATE":24.8,"TETI":40.33,"IPE":null,"TEDC":null,"PATM":17.45,"PATE":17.45,"IPTE":0.332,"MEDATE":15.0,"ICA":null},"ap":{"label":"Amapá","PRGM":2.13,"PRDAM":27.66,"PRRM":76.6,"PRHM":23.4,"PRMM":0.0,"PVP":42.11,"PVT":57.89,"PVPCE":null,"PECS":9.37,"IUC":1.26,"MON_CVE":17.65,"MOT_CVE":10.98,"PRPM":null,"ATE":55.7,"TETI":81.54,"IPE":null,"TEDC":null,"PATM":18.46,"PATE":18.46,"IPTE":0.965,"MEDATE":null,"ICA":null},"ba":{"label":"Bahia","PRGM":37.18,"PRDAM":11.66,"PRRM":94.0,"PRHM":0.24,"PRMM":5.76,"PVP":35.97,"PVT":64.03,"PVPCE":null,"PECS":43.12,"IUC":0.55,"MON_CVE":10.71,"MOT_CVE":8.95,"PRPM":null,"ATE":34.5,"TETI":37.79,"IPE":null,"TEDC":null,"PATM":28.02,"PATE":28.02,"IPTE":0.042,"MEDATE":31.0,"ICA":null},"ce":{"label":"Ceará","PRGM":13.37,"PRDAM":19.44,"PRRM":89.18,"PRHM":0.02,"PRMM":10.79,"PVP":52.03,"PVT":47.97,"PVPCE":null,"PECS":48.78,"IUC":0.79,"MON_CVE":8.56,"MOT_CVE":17.49,"PRPM":null,"ATE":50.7,"TETI":58.77,"IPE":null,"TEDC":null,"PATM":26.4,"PATE":26.4,"IPTE":0.067,"MEDATE":55.0,"ICA":null},"df":{"label":"Distrito Federal","PRGM":60.0,"PRDAM":0.0,"PRRM":100.0,"PRHM":0.0,"PRMM":0.0,"PVP":99.28,"PVT":0.72,"PVPCE":null,"PECS":6.68,"IUC":0.01,"MON_CVE":null,"MOT_CVE":null,"PRPM":null,"ATE":21.0,"TETI":66.67,"IPE":null,"TEDC":null,"PATM":14.24,"PATE":14.24,"IPTE":null,"MEDATE":5.0,"ICA":null},"es":{"label":"Espírito Santo","PRGM":31.56,"PRDAM":6.7,"PRRM":93.76,"PRHM":0.05,"PRMM":6.19,"PVP":30.01,"PVT":69.99,"PVPCE":null,"PECS":26.99,"IUC":0.52,"MON_CVE":10.63,"MOT_CVE":10.67,"PRPM":null,"ATE":36.0,"TETI":46.15,"IPE":null,"TEDC":null,"PATM":16.6,"PATE":16.6,"IPTE":0.374,"MEDATE":29.5,"ICA":null},"go":{"label":"Goiás","PRGM":35.61,"PRDAM":32.12,"PRRM":94.9,"PRHM":0.08,"PRMM":5.02,"PVP":51.18,"PVT":48.82,"PVPCE":null,"PECS":34.87,"IUC":0.68,"MON_CVE":41.7,"MOT_CVE":36.45,"PRPM":null,"ATE":44.0,"TETI":40.49,"IPE":null,"TEDC":null,"PATM":10.47,"PATE":10.47,"IPTE":0.054,"MEDATE":24.0,"ICA":null},"ma":{"label":"Maranhão","PRGM":25.66,"PRDAM":38.47,"PRRM":86.28,"PRHM":0.61,"PRMM":13.11,"PVP":33.83,"PVT":66.17,"PVPCE":null,"PECS":32.62,"IUC":0.69,"MON_CVE":14.39,"MOT_CVE":9.62,"PRPM":null,"ATE":36.4,"TETI":40.58,"IPE":null,"TEDC":null,"PATM":19.58,"PATE":19.58,"IPTE":0.004,"MEDATE":24.0,"ICA":null},"mg":{"label":"Minas Gerais","PRGM":37.34,"PRDAM":26.93,"PRRM":96.15,"PRHM":0.25,"PRMM":3.6,"PVP":48.02,"PVT":51.98,"PVPCE":null,"PECS":51.26,"IUC":0.54,"MON_CVE":25.92,"MOT_CVE":18.27,"PRPM":null,"ATE":38.0,"TETI":52.28,"IPE":null,"TEDC":null,"PATM":17.02,"PATE":17.02,"IPTE":0.008,"MEDATE":20.0,"ICA":null},"ms":{"label":"Mato Grosso do Sul","PRGM":38.8,"PRDAM":32.21,"PRRM":96.71,"PRHM":0.48,"PRMM":2.81,"PVP":68.94,"PVT":31.06,"PVPCE":null,"PECS":34.43,"IUC":0.48,"MON_CVE":50.2,"MOT_CVE":28.28,"PRPM":null,"ATE":78.8,"TETI":70.9,"IPE":null,"TEDC":null,"PATM":10.76,"PATE":10.76,"IPTE":0.375,"MEDATE":43.0,"ICA":null},"mt":{"label":"Mato Grosso","PRGM":31.7,"PRDAM":23.19,"PRRM":96.04,"PRHM":0.09,"PRMM":3.87,"PVP":86.13,"PVT":13.87,"PVPCE":null,"PECS":44.54,"IUC":0.39,"MON_CVE":24.75,"MOT_CVE":37.39,"PRPM":null,"ATE":48.9,"TETI":75.26,"IPE":null,"TEDC":null,"PATM":14.12,"PATE":14.12,"IPTE":0.608,"MEDATE":35.0,"ICA":null},"pa":{"label":"Pará","PRGM":18.39,"PRDAM":18.02,"PRRM":57.81,"PRHM":40.03,"PRMM":2.16,"PVP":49.44,"PVT":50.56,"PVPCE":null,"PECS":40.2,"IUC":0.91,"MON_CVE":15.42,"MOT_CVE":17.8,"PRPM":null,"ATE":34.3,"TETI":27.29,"IPE":null,"TEDC":null,"PATM":27.54,"PATE":27.54,"IPTE":0.027,"MEDATE":23.0,"ICA":null},"pb":{"label":"Paraíba","PRGM":16.56,"PRDAM":24.37,"PRRM":89.91,"PRHM":0.0,"PRMM":10.09,"PVP":72.28,"PVT":27.72,"PVPCE":null,"PECS":36.28,"IUC":0.5,"MON_CVE":23.02,"MOT_CVE":31.41,"PRPM":null,"ATE":34.0,"TETI":57.8,"IPE":null,"TEDC":null,"PATM":22.86,"PATE":22.86,"IPTE":0.264,"MEDATE":23.0,"ICA":null},"pe":{"label":"Pernambuco","PRGM":49.45,"PRDAM":7.17,"PRRM":91.55,"PRHM":0.47,"PRMM":7.98,"PVP":47.21,"PVT":52.79,"PVPCE":null,"PECS":48.24,"IUC":0.51,"MON_CVE":17.2,"MOT_CVE":9.4,"PRPM":null,"ATE":38.8,"TETI":62.61,"IPE":null,"TEDC":null,"PATM":21.75,"PATE":21.75,"IPTE":0.161,"MEDATE":30.0,"ICA":null},"pi":{"label":"Piauí","PRGM":36.0,"PRDAM":19.09,"PRRM":93.52,"PRHM":0.1,"PRMM":6.38,"PVP":44.29,"PVT":55.71,"PVPCE":null,"PECS":45.93,"IUC":0.49,"MON_CVE":25.11,"MOT_CVE":13.03,"PRPM":null,"ATE":37.7,"TETI":52.53,"IPE":null,"TEDC":null,"PATM":34.39,"PATE":34.39,"IPTE":0.491,"MEDATE":41.0,"ICA":null},"pr":{"label":"Paraná","PRGM":63.87,"PRDAM":7.83,"PRRM":98.92,"PRHM":0.08,"PRMM":1.0,"PVP":46.79,"PVT":53.21,"PVPCE":null,"PECS":37.7,"IUC":0.2,"MON_CVE":15.63,"MOT_CVE":30.48,"PRPM":null,"ATE":18.3,"TETI":75.82,"IPE":null,"TEDC":null,"PATM":17.64,"PATE":17.64,"IPTE":0.0,"MEDATE":20.0,"ICA":null},"rj":{"label":"Rio de Janeiro","PRGM":29.78,"PRDAM":9.55,"PRRM":97.77,"PRHM":0.09,"PRMM":2.13,"PVP":54.67,"PVT":45.33,"PVPCE":null,"PECS":13.64,"IUC":0.33,"MON_CVE":14.78,"MOT_CVE":16.89,"PRPM":null,"ATE":34.0,"TETI":80.49,"IPE":null,"TEDC":null,"PATM":37.87,"PATE":37.87,"IPTE":0.642,"MEDATE":20.0,"ICA":null},"rn":{"label":"Rio Grande do Norte","PRGM":32.41,"PRDAM":20.96,"PRRM":92.26,"PRHM":0.08,"PRMM":7.66,"PVP":59.58,"PVT":40.42,"PVPCE":null,"PECS":40.72,"IUC":0.64,"MON_CVE":19.74,"MOT_CVE":17.19,"PRPM":null,"ATE":35.0,"TETI":48.45,"IPE":null,"TEDC":null,"PATM":24.81,"PATE":24.81,"IPTE":0.111,"MEDATE":17.5,"ICA":null},"ro":{"label":"Rondônia","PRGM":36.71,"PRDAM":26.28,"PRRM":93.47,"PRHM":0.29,"PRMM":6.24,"PVP":61.11,"PVT":38.89,"PVPCE":null,"PECS":41.72,"IUC":0.25,"MON_CVE":11.95,"MOT_CVE":15.94,"PRPM":null,"ATE":38.8,"TETI":85.03,"IPE":null,"TEDC":null,"PATM":18.92,"PATE":18.92,"IPTE":0.124,"MEDATE":60.0,"ICA":null},"rr":{"label":"Roraima","PRGM":41.94,"PRDAM":6.45,"PRRM":100.0,"PRHM":0.0,"PRMM":0.0,"PVP":63.49,"PVT":36.51,"PVPCE":null,"PECS":48.42,"IUC":0.41,"MON_CVE":12.5,"MOT_CVE":5.56,"PRPM":null,"ATE":27.5,"TETI":26.92,"IPE":null,"TEDC":null,"PATM":14.5,"PATE":14.5,"IPTE":0.947,"MEDATE":2.5,"ICA":null},"rs":{"label":"Rio Grande do Sul","PRGM":47.04,"PRDAM":11.5,"PRRM":97.65,"PRHM":0.08,"PRMM":2.27,"PVP":50.94,"PVT":49.06,"PVPCE":null,"PECS":36.26,"IUC":0.63,"MON_CVE":25.2,"MOT_CVE":31.98,"PRPM":null,"ATE":44.4,"TETI":61.91,"IPE":null,"TEDC":null,"PATM":13.91,"PATE":13.91,"IPTE":0.29,"MEDATE":30.0,"ICA":null},"sc":{"label":"Santa Catarina","PRGM":51.5,"PRDAM":14.97,"PRRM":91.3,"PRHM":0.07,"PRMM":8.63,"PVP":65.52,"PVT":34.48,"PVPCE":null,"PECS":34.67,"IUC":0.6,"MON_CVE":24.9,"MOT_CVE":40.68,"PRPM":null,"ATE":60.5,"TETI":74.56,"IPE":null,"TEDC":null,"PATM":20.03,"PATE":20.03,"IPTE":0.04,"MEDATE":35.0,"ICA":null},"se":{"label":"Sergipe","PRGM":52.26,"PRDAM":29.97,"PRRM":96.34,"PRHM":0.17,"PRMM":3.48,"PVP":68.88,"PVT":31.12,"PVPCE":null,"PECS":32.93,"IUC":0.72,"MON_CVE":10.81,"MOT_CVE":30.85,"PRPM":null,"ATE":45.0,"TETI":55.12,"IPE":null,"TEDC":null,"PATM":30.99,"PATE":30.99,"IPTE":0.363,"MEDATE":22.0,"ICA":null},"sp":{"label":"São Paulo","PRGM":27.16,"PRDAM":13.39,"PRRM":97.53,"PRHM":0.08,"PRMM":2.4,"PVP":46.73,"PVT":53.27,"PVPCE":null,"PECS":17.19,"IUC":0.42,"MON_CVE":25.7,"MOT_CVE":32.25,"PRPM":null,"ATE":35.7,"TETI":52.3,"IPE":null,"TEDC":null,"PATM":9.4,"PATE":9.4,"IPTE":0.126,"MEDATE":18.0,"ICA":null},"to":{"label":"Tocantins","PRGM":54.5,"PRDAM":27.1,"PRRM":69.38,"PRHM":0.12,"PRMM":30.5,"PVP":45.52,"PVT":54.48,"PVPCE":null,"PECS":65.91,"IUC":0.36,"MON_CVE":22.67,"MOT_CVE":18.94,"PRPM":null,"ATE":33.3,"TETI":53.22,"IPE":null,"TEDC":null,"PATM":16.5,"PATE":16.5,"IPTE":0.294,"MEDATE":21.5,"ICA":null}}};
 const RAW_DATA = {"nacional":{"tot_rotas":82887,"georref":31626,"dif":14751,"t1":76616,"t2":1693,"t3":4578,"tot_veic":67730,"vp":34328,"vt":33402,"n_veic_validos":67391,"cap_media":31.61,"tot_mon":22678,"mon_cv":4283,"tot_mot_info":44152,"mot_cv":13573,"al_cad":3406265,"al_transp":1054709,"esc_at":27094,"medate_n":20563,"medate_val":25.0,"al_adeq":584008,"al_transp_teti":1054709,"cs_mat":46018380,"cs_transp":9078809,"cs_test":1431234,"cs_tmun":7647575,"cs_esc_ativas":180540,"cs_esc_transp":100655,"sete_esc":61722},"ac":{"tot_rotas":128,"georref":24,"dif":18,"t1":98,"t2":30,"t3":0,"tot_veic":133,"vp":108,"vt":25,"n_veic_validos":133,"cap_media":36.22,"tot_mon":99,"mon_cv":4,"tot_mot_info":103,"mot_cv":46,"al_cad":6802,"al_transp":2383,"esc_at":108,"medate_n":85,"medate_val":7.0,"al_adeq":919,"al_transp_teti":2383,"cs_mat":242727,"cs_transp":64941,"cs_test":31854,"cs_tmun":33087,"cs_esc_ativas":1524,"cs_esc_transp":909,"sete_esc":597},"al":{"tot_rotas":1345,"georref":762,"dif":143,"t1":1196,"t2":5,"t3":144,"tot_veic":1628,"vp":1014,"vt":614,"n_veic_validos":1619,"cap_media":38.01,"tot_mon":1150,"mon_cv":79,"tot_mot_info":1235,"mot_cv":218,"al_cad":152648,"al_transp":22860,"esc_at":477,"medate_n":279,"medate_val":44.0,"al_adeq":16975,"al_transp_teti":22860,"cs_mat":831546,"cs_transp":317905,"cs_test":59324,"cs_tmun":258581,"cs_esc_ativas":2882,"cs_esc_transp":2086,"sete_esc":1257},"am":{"tot_rotas":332,"georref":191,"dif":47,"t1":124,"t2":208,"t3":0,"tot_veic":320,"vp":135,"vt":185,"n_veic_validos":319,"cap_media":27.66,"tot_mon":95,"mon_cv":29,"tot_mot_info":181,"mot_cv":30,"al_cad":83405,"al_transp":4017,"esc_at":162,"medate_n":698,"medate_val":15.0,"al_adeq":1620,"al_transp_teti":4017,"cs_mat":1131739,"cs_transp":197502,"cs_test":49235,"cs_tmun":148267,"cs_esc_ativas":5562,"cs_esc_transp":3289,"sete_esc":1726},"ap":{"tot_rotas":47,"georref":1,"dif":13,"t1":36,"t2":11,"t3":0,"tot_veic":57,"vp":24,"vt":33,"n_veic_validos":57,"cap_media":30.18,"tot_mon":51,"mon_cv":9,"tot_mot_info":52,"mot_cv":9,"al_cad":4384,"al_transp":2172,"esc_at":39,"medate_n":0,"medate_val":null,"al_adeq":1771,"al_transp_teti":2172,"cs_mat":212026,"cs_transp":39131,"cs_test":19222,"cs_tmun":19909,"cs_esc_ativas":875,"cs_esc_transp":510,"sete_esc":82},"ba":{"tot_rotas":10080,"georref":3748,"dif":1175,"t1":9475,"t2":24,"t3":581,"tot_veic":6439,"vp":2316,"vt":4123,"n_veic_validos":6382,"cap_media":27.05,"tot_mon":1783,"mon_cv":191,"tot_mot_info":4008,"mot_cv":581,"al_cad":451349,"al_transp":94271,"esc_at":2731,"medate_n":2154,"medate_val":31.0,"al_adeq":35628,"al_transp_teti":94271,"cs_mat":3345058,"cs_transp":937240,"cs_test":37866,"cs_tmun":899374,"cs_esc_ativas":16106,"cs_esc_transp":11434,"sete_esc":6945},"ce":{"tot_rotas":4382,"georref":586,"dif":852,"t1":3908,"t2":1,"t3":473,"tot_veic":3106,"vp":1616,"vt":1490,"n_veic_validos":3080,"cap_media":35.25,"tot_mon":1624,"mon_cv":139,"tot_mot_info":2372,"mot_cv":576,"al_cad":248358,"al_transp":86224,"esc_at":1699,"medate_n":1176,"medate_val":55.0,"al_adeq":50676,"al_transp_teti":86224,"cs_mat":2108135,"cs_transp":556628,"cs_test":35157,"cs_tmun":521471,"cs_esc_ativas":7716,"cs_esc_transp":4985,"sete_esc":3764},"df":{"tot_rotas":5,"georref":3,"dif":0,"t1":5,"t2":0,"t3":0,"tot_veic":139,"vp":138,"vt":1,"n_veic_validos":134,"cap_media":45.69,"al_cad":4683,"al_transp":42,"esc_at":2,"medate_n":3,"medate_val":5.0,"al_adeq":28,"al_transp_teti":42,"cs_mat":620272,"cs_transp":88301,"cs_test":88301,"cs_tmun":0,"cs_esc_ativas":1332,"cs_esc_transp":570,"sete_esc":89},"es":{"tot_rotas":1971,"georref":622,"dif":132,"t1":1848,"t2":1,"t3":122,"tot_veic":843,"vp":253,"vt":590,"n_veic_validos":841,"cap_media":28.78,"tot_mon":461,"mon_cv":49,"tot_mot_info":495,"mot_cv":95,"al_cad":33852,"al_transp":12707,"esc_at":353,"medate_n":202,"medate_val":29.5,"al_adeq":5864,"al_transp_teti":12707,"cs_mat":867017,"cs_transp":143945,"cs_test":39210,"cs_tmun":104735,"cs_esc_ativas":3046,"cs_esc_transp":1652,"sete_esc":822},"go":{"tot_rotas":2491,"georref":887,"dif":800,"t1":2364,"t2":2,"t3":125,"tot_veic":1858,"vp":951,"vt":907,"n_veic_validos":1855,"cap_media":27.8,"tot_mon":283,"mon_cv":118,"tot_mot_info":1346,"mot_cv":631,"al_cad":78285,"al_transp":34945,"esc_at":795,"medate_n":615,"medate_val":24.0,"al_adeq":14148,"al_transp_teti":34945,"cs_mat":1526256,"cs_transp":159846,"cs_test":8164,"cs_tmun":151682,"cs_esc_ativas":4752,"cs_esc_transp":2171,"sete_esc":1657},"ma":{"tot_rotas":1968,"georref":505,"dif":757,"t1":1698,"t2":12,"t3":258,"tot_veic":1753,"vp":593,"vt":1160,"n_veic_validos":1749,"cap_media":30.89,"tot_mon":1223,"mon_cv":176,"tot_mot_info":1498,"mot_cv":183,"al_cad":135561,"al_transp":37021,"esc_at":1018,"medate_n":911,"medate_val":24.0,"al_adeq":15023,"al_transp_teti":37021,"cs_mat":1821863,"cs_transp":356685,"cs_test":1563,"cs_tmun":355122,"cs_esc_ativas":11219,"cs_esc_transp":5658,"sete_esc":3660},"mg":{"tot_rotas":15679,"georref":5855,"dif":4222,"t1":15075,"t2":39,"t3":565,"tot_veic":13338,"vp":6405,"vt":6933,"n_veic_validos":13264,"cap_media":26.61,"tot_mon":3325,"mon_cv":862,"tot_mot_info":7936,"mot_cv":2172,"al_cad":412477,"al_transp":190011,"esc_at":4996,"medate_n":3995,"medate_val":20.0,"al_adeq":99329,"al_transp_teti":190011,"cs_mat":4220829,"cs_transp":718249,"cs_test":5924,"cs_tmun":712325,"cs_esc_ativas":15910,"cs_esc_transp":9824,"sete_esc":8155},"ms":{"tot_rotas":1245,"georref":483,"dif":401,"t1":1204,"t2":6,"t3":35,"tot_veic":1288,"vp":888,"vt":400,"n_veic_validos":1281,"cap_media":38.81,"tot_mon":255,"mon_cv":128,"tot_mot_info":861,"mot_cv":360,"al_cad":40027,"al_transp":24042,"esc_at":305,"medate_n":247,"medate_val":43.0,"al_adeq":17045,"al_transp_teti":24042,"cs_mat":675479,"cs_transp":72697,"cs_test":19816,"cs_tmun":52881,"cs_esc_ativas":1859,"cs_esc_transp":833,"sete_esc":640},"mt":{"tot_rotas":2199,"georref":697,"dif":510,"t1":2112,"t2":2,"t3":85,"tot_veic":2596,"vp":2236,"vt":360,"n_veic_validos":2583,"cap_media":40.42,"tot_mon":303,"mon_cv":75,"tot_mot_info":1620,"mot_cv":744,"al_cad":68220,"al_transp":40377,"esc_at":825,"medate_n":665,"medate_val":35.0,"al_adeq":30388,"al_transp_teti":40377,"cs_mat":888828,"cs_transp":125484,"cs_test":47440,"cs_tmun":78044,"cs_esc_ativas":2710,"cs_esc_transp":1524,"sete_esc":1207},"pa":{"tot_rotas":3235,"georref":595,"dif":583,"t1":1870,"t2":1295,"t3":70,"tot_veic":1341,"vp":663,"vt":678,"n_veic_validos":1331,"cap_media":33.65,"tot_mon":642,"mon_cv":99,"tot_mot_info":1102,"mot_cv":238,"al_cad":284571,"al_transp":40870,"esc_at":1193,"medate_n":972,"medate_val":23.0,"al_adeq":11152,"al_transp_teti":40870,"cs_mat":2146239,"cs_transp":591018,"cs_test":15277,"cs_tmun":575741,"cs_esc_ativas":10530,"cs_esc_transp":7080,"sete_esc":4233},"pb":{"tot_rotas":1715,"georref":284,"dif":418,"t1":1542,"t2":0,"t3":173,"tot_veic":1396,"vp":1009,"vt":387,"n_veic_validos":1391,"cap_media":32.61,"tot_mon":126,"mon_cv":29,"tot_mot_info":878,"mot_cv":409,"al_cad":67350,"al_transp":22795,"esc_at":671,"medate_n":519,"medate_val":23.0,"al_adeq":13176,"al_transp_teti":22795,"cs_mat":942549,"cs_transp":215512,"cs_test":45078,"cs_tmun":170434,"cs_esc_ativas":4636,"cs_esc_transp":2910,"sete_esc":1682},"pe":{"tot_rotas":6139,"georref":3036,"dif":440,"t1":5620,"t2":29,"t3":490,"tot_veic":5124,"vp":2419,"vt":2705,"n_veic_validos":5116,"cap_media":31.0,"tot_mon":2035,"mon_cv":350,"tot_mot_info":3859,"mot_cv":525,"al_cad":306988,"al_transp":80993,"esc_at":2086,"medate_n":1212,"medate_val":30.0,"al_adeq":50711,"al_transp_teti":80993,"cs_mat":2076655,"cs_transp":451632,"cs_test":62693,"cs_tmun":388939,"cs_esc_ativas":7992,"cs_esc_transp":4496,"sete_esc":3855},"pi":{"tot_rotas":1928,"georref":694,"dif":368,"t1":1803,"t2":2,"t3":123,"tot_veic":1673,"vp":741,"vt":932,"n_veic_validos":1670,"cap_media":33.25,"tot_mon":892,"mon_cv":224,"tot_mot_info":923,"mot_cv":222,"al_cad":95923,"al_transp":27160,"esc_at":720,"medate_n":556,"medate_val":41.0,"al_adeq":14266,"al_transp_teti":27160,"cs_mat":823199,"cs_transp":283104,"cs_test":93290,"cs_tmun":189814,"cs_esc_ativas":4017,"cs_esc_transp":2889,"sete_esc":1845},"pr":{"tot_rotas":6095,"georref":3893,"dif":477,"t1":6029,"t2":5,"t3":61,"tot_veic":5055,"vp":2365,"vt":2690,"n_veic_validos":5022,"cap_media":34.02,"tot_mon":1209,"mon_cv":189,"tot_mot_info":3457,"mot_cv":1450,"al_cad":132681,"al_transp":33337,"esc_at":1824,"medate_n":807,"medate_val":20.0,"al_adeq":25275,"al_transp_teti":33337,"cs_mat":2438428,"cs_transp":430205,"cs_test":95,"cs_tmun":430110,"cs_esc_ativas":9576,"cs_esc_transp":5211,"sete_esc":3610},"rj":{"tot_rotas":1078,"georref":321,"dif":103,"t1":1054,"t2":1,"t3":23,"tot_veic":1811,"vp":990,"vt":821,"n_veic_validos":1801,"cap_media":33.01,"tot_mon":1157,"mon_cv":171,"tot_mot_info":1029,"mot_cv":255,"al_cad":132284,"al_transp":19874,"esc_at":585,"medate_n":428,"medate_val":20.0,"al_adeq":15997,"al_transp_teti":19874,"cs_mat":3319771,"cs_transp":1257278,"cs_test":491385,"cs_tmun":765893,"cs_esc_ativas":11647,"cs_esc_transp":5286,"sete_esc":1589},"rn":{"tot_rotas":1188,"georref":385,"dif":249,"t1":1096,"t2":1,"t3":91,"tot_veic":814,"vp":485,"vt":329,"n_veic_validos":809,"cap_media":37.97,"tot_mon":152,"mon_cv":30,"tot_mot_info":567,"mot_cv":142,"al_cad":58685,"al_transp":19539,"esc_at":558,"medate_n":442,"medate_val":17.5,"al_adeq":9466,"al_transp_teti":19539,"cs_mat":756434,"cs_transp":187676,"cs_test":18786,"cs_tmun":168890,"cs_esc_ativas":3416,"cs_esc_transp":2210,"sete_esc":1391},"ro":{"tot_rotas":1362,"georref":500,"dif":358,"t1":1273,"t2":4,"t3":85,"tot_veic":1206,"vp":737,"vt":469,"n_veic_validos":1205,"cap_media":44.11,"tot_mon":686,"mon_cv":82,"tot_mot_info":668,"mot_cv":154,"al_cad":24968,"al_transp":13389,"esc_at":345,"medate_n":279,"medate_val":60.0,"al_adeq":11385,"al_transp_teti":13389,"cs_mat":376264,"cs_transp":71179,"cs_test":7866,"cs_tmun":63313,"cs_esc_ativas":1220,"cs_esc_transp":668,"sete_esc":509},"rr":{"tot_rotas":62,"georref":26,"dif":4,"t1":62,"t2":0,"t3":0,"tot_veic":63,"vp":40,"vt":23,"n_veic_validos":63,"cap_media":36.06,"tot_mon":24,"mon_cv":3,"tot_mot_info":32,"mot_cv":3,"al_cad":45735,"al_transp":936,"esc_at":34,"medate_n":40,"medate_val":2.5,"al_adeq":252,"al_transp_teti":936,"cs_mat":186395,"cs_transp":27027,"cs_test":13148,"cs_tmun":13879,"cs_esc_ativas":915,"cs_esc_transp":442,"sete_esc":443},"rs":{"tot_rotas":6522,"georref":3068,"dif":750,"t1":6369,"t2":5,"t3":148,"tot_veic":5175,"vp":2636,"vt":2539,"n_veic_validos":5145,"cap_media":32.02,"tot_mon":758,"mon_cv":191,"tot_mot_info":3464,"mot_cv":1468,"al_cad":219165,"al_transp":103363,"esc_at":2328,"medate_n":1820,"medate_val":30.0,"al_adeq":63993,"al_transp_teti":103363,"cs_mat":2189268,"cs_transp":304471,"cs_test":68522,"cs_tmun":235949,"cs_esc_ativas":9946,"cs_esc_transp":5382,"sete_esc":3606},"sc":{"tot_rotas":2839,"georref":1462,"dif":425,"t1":2592,"t2":2,"t3":245,"tot_veic":2848,"vp":1866,"vt":982,"n_veic_validos":2838,"cap_media":36.72,"tot_mon":783,"mon_cv":195,"tot_mot_info":1929,"mot_cv":1065,"al_cad":131491,"al_transp":62636,"esc_at":1036,"medate_n":771,"medate_val":35.0,"al_adeq":46702,"al_transp_teti":62636,"cs_mat":1769938,"cs_transp":354510,"cs_test":13705,"cs_tmun":340805,"cs_esc_ativas":6750,"cs_esc_transp":3463,"sete_esc":2340},"se":{"tot_rotas":574,"georref":300,"dif":172,"t1":553,"t2":1,"t3":20,"tot_veic":466,"vp":321,"vt":145,"n_veic_validos":463,"cap_media":44.15,"tot_mon":296,"mon_cv":32,"tot_mot_info":412,"mot_cv":145,"al_cad":35245,"al_transp":14666,"esc_at":326,"medate_n":231,"medate_val":22.0,"al_adeq":8084,"al_transp_teti":14666,"cs_mat":520379,"cs_transp":161276,"cs_test":42940,"cs_tmun":118336,"cs_esc_ativas":2004,"cs_esc_transp":1298,"sete_esc":660},"sp":{"tot_rotas":6632,"georref":1801,"dif":888,"t1":6468,"t2":5,"t3":159,"tot_veic":6133,"vp":2866,"vt":3267,"n_veic_validos":6116,"cap_media":30.03,"tot_mon":2922,"mon_cv":751,"tot_mot_info":3379,"mot_cv":1635,"al_cad":187590,"al_transp":76716,"esc_at":2149,"medate_n":1689,"medate_val":18.0,"al_adeq":40119,"al_transp_teti":76716,"cs_mat":9600318,"cs_transp":902541,"cs_test":101090,"cs_tmun":801451,"cs_esc_ativas":30817,"cs_esc_transp":12726,"sete_esc":5297},"to":{"tot_rotas":1646,"georref":897,"dif":446,"t1":1142,"t2":2,"t3":502,"tot_veic":1127,"vp":513,"vt":614,"n_veic_validos":1124,"cap_media":31.5,"tot_mon":344,"mon_cv":78,"tot_mot_info":746,"mot_cv":217,"al_cad":44201,"al_transp":12853,"esc_at":386,"medate_n":302,"medate_val":21.5,"al_adeq":6840,"al_transp_teti":12853,"cs_mat":380768,"cs_transp":62826,"cs_test":14283,"cs_tmun":48543,"cs_esc_ativas":1581,"cs_esc_transp":1149,"sete_esc":1042},"norte":{"tot_rotas":6812,"georref":2234,"dif":1469,"t1":4605,"t2":1550,"t3":657,"tot_veic":4247,"vp":2220,"vt":2027,"n_veic_validos":4232,"cap_media":35.68,"tot_mon":1941,"mon_cv":304,"tot_mot_info":2884,"mot_cv":697,"al_cad":477037,"al_transp":75248,"esc_at":2206,"medate_n":2338,"medate_val":20.0,"al_adeq":32946,"al_transp_teti":75248,"cs_mat":4676158,"cs_transp":1053624,"cs_test":150885,"cs_tmun":902739,"cs_esc_ativas":22207,"cs_esc_transp":14047,"sete_esc":8632},"nordeste":{"tot_rotas":29319,"georref":10300,"dif":4574,"t1":26891,"t2":75,"t3":2353,"tot_veic":22399,"vp":10514,"vt":11885,"n_veic_validos":22279,"cap_media":31.75,"tot_mon":9281,"mon_cv":1250,"tot_mot_info":15752,"mot_cv":3001,"al_cad":1520080,"al_transp":396806,"esc_at":10080,"medate_n":7315,"medate_val":31.0,"al_adeq":206365,"al_transp_teti":396806,"cs_mat":13225818,"cs_transp":3467658,"cs_test":396697,"cs_tmun":3070961,"cs_esc_ativas":59988,"cs_esc_transp":37966,"sete_esc":25059},"sudeste":{"tot_rotas":25360,"georref":8599,"dif":5345,"t1":24445,"t2":46,"t3":869,"tot_veic":22125,"vp":10514,"vt":11611,"n_veic_validos":22022,"cap_media":28.16,"tot_mon":7865,"mon_cv":1833,"tot_mot_info":12839,"mot_cv":4157,"al_cad":761273,"al_transp":296771,"esc_at":7994,"medate_n":6255,"medate_val":20.0,"al_adeq":159014,"al_transp_teti":296771,"cs_mat":18007935,"cs_transp":3022013,"cs_test":637609,"cs_tmun":2384404,"cs_esc_ativas":61420,"cs_esc_transp":29488,"sete_esc":15863},"sul":{"tot_rotas":15456,"georref":8423,"dif":1652,"t1":14990,"t2":12,"t3":454,"tot_veic":13078,"vp":6867,"vt":6211,"n_veic_validos":13005,"cap_media":33.82,"tot_mon":2750,"mon_cv":575,"tot_mot_info":8850,"mot_cv":3983,"al_cad":479443,"al_transp":197424,"esc_at":5132,"medate_n":3351,"medate_val":28.0,"al_adeq":134540,"al_transp_teti":197424,"cs_mat":6397634,"cs_transp":1089186,"cs_test":82322,"cs_tmun":1006864,"cs_esc_ativas":26272,"cs_esc_transp":14056,"sete_esc":9556},"centro-oeste":{"tot_rotas":5940,"georref":2070,"dif":1711,"t1":5685,"t2":10,"t3":245,"tot_veic":5881,"vp":4213,"vt":1668,"n_veic_validos":5853,"cap_media":36.19,"tot_mon":841,"mon_cv":321,"tot_mot_info":3827,"mot_cv":1735,"al_cad":188165,"al_transp":97588,"esc_at":1888,"medate_n":1484,"medate_val":31.0,"al_adeq":59883,"al_transp_teti":97588,"cs_mat":3710835,"cs_transp":446328,"cs_test":163721,"cs_tmun":282607,"cs_esc_ativas":10653,"cs_esc_transp":5098,"sete_esc":3593}};
 // ================================================================
-// PNITE v.1.4.3 — PADRONIZAÇÃO E INJEÇÃO DOS INDICADORES REVISADOS
+// PNITE v.2.0.0 — PADRONIZAÇÃO E INJEÇÃO DOS INDICADORES REVISADOS
 // ================================================================
 (function patchPniteDataScopes() {
   function patchScope(d) {
@@ -2224,9 +3211,25 @@ let chartModal=null, chartFrota=null, chartPRGM=null, chartFrotaEstado=null;
 
 function getD(){
   if(currentScope==='nacional') return DATA.nacional;
-  const k=(document.getElementById('regionSelect').value||'').trim();
+  const k = (typeof currentScopeKey !== 'undefined' && currentScopeKey)
+    ? String(currentScopeKey).trim()
+    : ((document.getElementById('regionSelect') ? document.getElementById('regionSelect').value : '') || '').trim();
+
   if(currentScope==='regiao'){
     return (k && DATA.regiao[k]) ? DATA.regiao[k] : DATA.regiao['centro-oeste'];
+  }
+  if(currentScope==='municipio'){
+    const munCod = parseInt(k, 10);
+    if(typeof SETE_MUN !== 'undefined' && SETE_MUN.municipios){
+      const row = SETE_MUN.municipios.find(m => m[0] === munCod);
+      if(row){
+        const munObj = { label: row[1] + ' (' + row[2] + ')' };
+        SETE_MUN.cols.forEach((col, idx) => {
+          munObj[col] = row[idx];
+        });
+        return munObj;
+      }
+    }
   }
   // estado
   return (k && DATA.estado[k]) ? DATA.estado[k] : DATA.estado['go'];
@@ -3390,14 +4393,40 @@ function mapaProject(){
   };
 }
 
-function mapaColor(t,dark){
-  // interpolação claro -> verde escuro (t em [0,1])
-  const c0=dark?[26,40,36]:[228,245,239];
-  const c1=dark?[34,196,126]:[15,110,86];
-  const r=Math.round(c0[0]+(c1[0]-c0[0])*t);
-  const g=Math.round(c0[1]+(c1[1]-c0[1])*t);
-  const b=Math.round(c0[2]+(c1[2]-c0[2])*t);
-  return 'rgb('+r+','+g+','+b+')';
+function mapaColor(t, dark, sigla){
+  t = Math.max(0, Math.min(1, t));
+  const s = (sigla || '').toUpperCase();
+  let theme = 'blue';
+
+  if (['TETI', 'PVP', 'PRRM', 'IPE'].includes(s)) {
+    theme = 'green';
+  } else if (['PRGM', 'PCSC', 'ATE', 'MEDATE', 'PRDAM', 'PECS'].includes(s)) {
+    theme = 'blue';
+  } else if (['PRIO', 'PARI', 'TEDC', 'PVT', 'PATM', 'PATE'].includes(s)) {
+    theme = 'red';
+  } else if (['IUC', 'TVA', 'PRMM', 'MON_CVE', 'MOT_CVE', 'IPTE'].includes(s)) {
+    theme = 'amber';
+  }
+
+  let c0, c1;
+  if (theme === 'green') {
+    c0 = dark ? [22, 45, 35] : [232, 248, 241];
+    c1 = dark ? [46, 204, 113] : [16, 140, 80];
+  } else if (theme === 'blue') {
+    c0 = dark ? [20, 36, 60] : [230, 242, 255];
+    c1 = dark ? [37, 137, 244] : [15, 80, 190];
+  } else if (theme === 'red') {
+    c0 = dark ? [50, 25, 30] : [255, 235, 238];
+    c1 = dark ? [239, 83, 80] : [185, 28, 28];
+  } else {
+    c0 = dark ? [50, 40, 20] : [255, 248, 225];
+    c1 = dark ? [255, 179, 0] : [195, 120, 0];
+  }
+
+  const r = Math.round(c0[0] + (c1[0] - c0[0]) * t);
+  const g = Math.round(c0[1] + (c1[1] - c0[1]) * t);
+  const b = Math.round(c0[2] + (c1[2] - c0[2]) * t);
+  return 'rgb(' + r + ',' + g + ',' + b + ')';
 }
 
 function mapaFmt(v,unit){
@@ -3407,7 +4436,7 @@ function mapaFmt(v,unit){
   return v.toFixed(1);
 }
 
-function mapaLevel(){return currentScope==='regiao'?'regiao':'estado';}
+function mapaLevel(){ return currentMapLevel; }
 
 function mapaKeyFromRegion(nm){return nm.toLowerCase();}
 
@@ -3469,7 +4498,7 @@ function renderMapa(){
       d+='Z';
     });});
     const noData=(v===null||v===undefined);
-    const fill=noData?'':' fill="'+mapaColor((v-mn)/span,dark)+'"';
+    const fill=noData?'':' fill="'+mapaColor((v-mn)/span, dark, sigla)+'"';
     const cls='uf-path'+(noData?' uf-nodata':'')+(mapaSelected===u.key?' selected':'');
     paths+='<path class="'+cls+'" d="'+d+'"'+fill+' data-k="'+u.key+'" data-nm="'+u.nome+'"'+
       ' onmousemove="mapaHover(event,this)" onmouseleave="mapaOut()" onclick="mapaClick(\''+u.key+'\')"></path>';
@@ -3480,7 +4509,7 @@ function renderMapa(){
     '<svg viewBox="0 0 '+proj.W.toFixed(0)+' '+proj.H.toFixed(0)+'" xmlns="http://www.w3.org/2000/svg">'+paths+'</svg>';
 
   // legenda
-  const stops=[0,.25,.5,.75,1].map(t=>mapaColor(t,dark)+' '+(t*100)+'%').join(',');
+  const stops=[0,.25,.5,.75,1].map(t=>mapaColor(t, dark, sigla)+' '+(t*100)+'%').join(',');
   document.getElementById('mapLegend').innerHTML=hasData?(
     '<span>'+mapaFmt(mn,ind.unit)+'</span>'+
     '<div class="grad" style="background:linear-gradient(90deg,'+stops+')"></div>'+
@@ -3488,6 +4517,10 @@ function renderMapa(){
     '<span style="margin-left:10px;display:inline-flex;align-items:center;gap:4px"><span style="width:11px;height:11px;border-radius:3px;background:var(--bg-badge);border:1px solid var(--border);display:inline-block"></span> sem dados</span>')
     :'<span style="color:var(--orange);font-weight:600">Sem dados calculados para este indicador no nível '+(mapaLevel()==='regiao'?'regional':'estadual')+'.</span>';
 
+  const titleEl = document.getElementById('mapaActiveIndTitle');
+  if (titleEl && ind) {
+    titleEl.textContent = ind.sigla + ' — ' + ind.nome;
+  }
   renderMapaDetail(ind,vals);
   renderMapaRank(ind,vals);
 }
@@ -3560,10 +4593,966 @@ function syncVersionInfo(){
 const savedTheme=localStorage.getItem('theme')||'light';
 document.documentElement.setAttribute('data-theme',savedTheme);
 if(savedTheme==='dark') document.getElementById('darkToggle').checked=true;
+
+
+const I18N = {
+  "pt": {
+    "app_title": "PNITE — Plataforma Nacional de Inteligência em Transporte Escolar",
+    "brand_name": "PNITE",
+    "brand_sub": "Plataforma Nacional de Inteligência em Transporte Escolar",
+    "front_transporte": "Indicadores do Transporte Escolar",
+    "front_capacitacao": "Indicadores da Capacitação",
+    "front_gestao": "Indicadores da Gestão",
+    "config": "Configurações",
+    "theme_toggle": "Alternar Tema",
+    "em_desenvolvimento": "Em Desenvolvimento",
+    "placeholder_cap_title": "Estamos preparando tudo por aqui",
+    "placeholder_cap_desc": "A frente de Indicadores da Capacitação está em fase de estruturação e em breve trará métricas consolidadas sobre a formação e qualificação de motoristas, monitores e técnicos da gestão escolar em todo o Brasil.",
+    "placeholder_ges_title": "Estamos trabalhando para entregar o melhor para você",
+    "placeholder_ges_desc": "A frente de Indicadores da Gestão reunirá análises sobre custos unitários, regulação contratual, processos licitatórios, prestação de contas e governança institucional do transporte escolar.",
+    "voltar_transporte": "Voltar aos Indicadores do Transporte Escolar",
+    "frente_01": "Frente Analítica 01",
+    "transporte_title": "Indicadores do Transporte Escolar",
+    "transporte_lead": "Plataforma Nacional de Inteligência com diagnóstico estrutural do transporte escolar brasileiro. Reúne métricas de cobertura, regularidade, frota, segurança viária e acesso dos estudantes, apoiando a formulação de políticas públicas e a gestão técnica eficiente.",
+    "meta_base_title": "Base Metodológica",
+    "meta_base_desc": "Relatórios Técnicos CECATE/UFG & FNDE",
+    "meta_fontes_title": "Fontes Integradas",
+    "meta_fontes_desc": "SETE, Censo Escolar (INEP) & IBGE",
+    "meta_obj_title": "Objetivo Analítico",
+    "meta_obj_desc": "Avaliar eficiência, segurança, custos e acessibilidade do transporte escolar",
+    "mostrar_mais": "Mostrar mais",
+    "mostrar_menos": "Mostrar menos",
+    "sec1_badge": "01",
+    "sec1_title": "Metodologia, Indicadores e Memória de Cálculo",
+    "sec1_sub": "31 indicadores estruturados em Descritivos, Desempenho e Finalísticos com fórmulas, parâmetros e calculadora integrada.",
+    "subtab_ind": "A. Indicadores (31)",
+    "subtab_mem": "B. Memória de Cálculo",
+    "subtab_calc": "C. Calculadora de Indicadores",
+    "cat_todos": "Todos (31)",
+    "cat_desc": "Descritivos (14)",
+    "cat_desemp": "Desempenho (12)",
+    "cat_final": "Finalísticos (5)",
+    "search_ind_ph": "Buscar indicador por sigla, nome ou fórmula...",
+    "th_sigla": "Sigla",
+    "th_nome": "Nome do Indicador",
+    "th_tipo": "Tipo",
+    "th_formula": "Fórmula",
+    "th_fonte": "Fonte",
+    "th_valor": "Valor Atual",
+    "th_status": "Status",
+    "calc_sel_lbl": "Selecione o indicador para simulação:",
+    "calc_btn": "Calcular Indicador",
+    "calc_reset": "Limpar Parâmetros",
+    "calc_res_lbl": "Resultado do Cálculo",
+    "calc_formula_used": "Fórmula aplicada",
+    "sec2_badge": "02",
+    "sec2_title": "Dados SETE — Microdados Operacionais",
+    "sec2_sub": "Microdados utilizados na construção dos indicadores e agregações operacionais por UF e município.",
+    "sete_toggle_reg": "Registros Operacionais",
+    "sete_toggle_ind": "Indicadores Calculados",
+    "search_sete_ph": "Buscar município por nome ou código IBGE...",
+    "filter_uf_all": "Todas as UFs",
+    "sec3_badge": "03",
+    "sec3_title": "Selecione o território",
+    "sec3_sub": "Defina o escopo espacial para toda a análise e visualizações abaixo.",
+    "territory_nacional": "Nacional",
+    "territory_regiao": "Região",
+    "territory_estado": "Estado",
+    "territory_municipio": "Município",
+    "territory_active_lbl": "Território Ativo:",
+    "sel_regiao_lbl": "Selecione a Região:",
+    "sel_estado_lbl": "Selecione a UF / Estado:",
+    "sel_mun_uf_lbl": "1. Selecione a UF do Município:",
+    "sel_mun_lbl": "2. Selecione o Município:",
+    "search_mun_ph": "Digite o nome da cidade...",
+    "scope_nac_desc": "Escopo Nacional — Brasil (Todos os municípios e estados integrados)",
+    "sec4_badge": "04",
+    "sec4_title": "Indicadores Finalísticos — Impacto, Segurança & Acesso Escolar",
+    "sec4_sub": "Dimensões estratégicas que mensuram o impacto direto do transporte sobre a permanência e proteção dos estudantes.",
+    "dmc_lbl": "Distância Média de Caminhada",
+    "dmc_sub": "Raio médio percorrido pelo aluno até o ponto de embarque da rota",
+    "sec5_badge": "05",
+    "sec5_title": "Panorama Operacional SETE",
+    "sec5_sub": "Volume de atendimento, extensão de rede e cobertura do transporte escolar.",
+    "kpi_alunos": "Alunos Atendidos",
+    "kpi_rotas": "Rotas Cadastradas",
+    "kpi_veiculos": "Veículos em Operação",
+    "kpi_extensao": "Extensão Total da Rede",
+    "sec6_badge": "06",
+    "sec6_title": "Distribuição Modal",
+    "sec6_sub": "Composição dos modos de transporte utilizados no deslocamento dos estudantes.",
+    "modal_rodoviario": "Rodoviário",
+    "modal_hidroviario": "Hidroviário",
+    "modal_multimodal": "Multimodal",
+    "modal_propria": "Frota Própria",
+    "modal_terceirizada": "Frota Terceirizada",
+    "sec7_badge": "07",
+    "sec7_title": "Análise de Rotas",
+    "sec7_sub": "Diagnóstico de extensão, georreferenciamento e tempos médios de percurso por território.",
+    "rotas_prgm_nac": "PRGM Nacional",
+    "rotas_georref": "Rotas Georreferenciadas",
+    "rotas_totais": "Total de Rotas",
+    "rotas_extensao_media": "Extensão Média por Rota",
+    "rotas_comp_title": "Comparativo Estadual de Georreferenciamento (PRGM)",
+    "sec8_badge": "08",
+    "sec8_title": "Mapa de Indicadores",
+    "sec8_sub": "Visualização geográfica com escala cromática adaptativa e sensível à natureza do indicador.",
+    "mapa_sel_ind": "Indicador no Mapa:",
+    "mapa_sel_geo": "Nível Geográfico:",
+    "mapa_geo_uf": "Estados (UFs)",
+    "mapa_geo_reg": "Grandes Regiões",
+    "mapa_no_data": "Sem dados",
+    "mapa_hint": "Passe o cursor sobre o mapa para ver os valores e clique em um território para fixar os detalhes.",
+    "mapa_val_nac": "Valor Nacional:",
+    "mapa_detalhes": "Detalhes do Território",
+    "mapa_ranking": "Ranking Territorial",
+    "settings_modal_title": "Configurações da Plataforma",
+    "settings_lang_title": "Idioma da Plataforma",
+    "settings_lang_desc": "Selecione o idioma desejado para a interface completa da PNITE.",
+    "settings_theme_title": "Aparência e Tema",
+    "settings_theme_desc": "Alterne entre o modo claro profissional e o modo escuro de alto contraste.",
+    "settings_info_title": "Informações da Versão",
+    "settings_version": "Versão:",
+    "settings_updated": "Última Atualização:",
+    "settings_author": "Responsável Técnico:",
+    "btn_close": "Fechar",
+    "regiao_norte": "Norte",
+    "regiao_nordeste": "Nordeste",
+    "regiao_sudeste": "Sudeste",
+    "regiao_sul": "Sul",
+    "regiao_centro_oeste": "Centro-Oeste"
+  },
+  "es": {
+    "app_title": "PNITE — Plataforma Nacional de Inteligencia en Transporte Escolar",
+    "brand_name": "PNITE",
+    "brand_sub": "Plataforma Nacional de Inteligencia en Transporte Escolar",
+    "front_transporte": "Indicadores del Transporte Escolar",
+    "front_capacitacao": "Indicadores de Capacitación",
+    "front_gestao": "Indicadores de Gestión",
+    "config": "Configuración",
+    "theme_toggle": "Cambiar Tema",
+    "em_desenvolvimento": "En Desarrollo",
+    "placeholder_cap_title": "Estamos preparando todo por aquí",
+    "placeholder_cap_desc": "El área de Indicadores de Capacitación está en estructuración y pronto presentará métricas consolidadas sobre la capacitación de conductores, monitores y gestores del transporte escolar en todo Brasil.",
+    "placeholder_ges_title": "Estamos trabajando para entregar lo mejor para usted",
+    "placeholder_ges_desc": "El área de Indicadores de Gestión reunirá análisis sobre costos unitarios, regulación contractual, licitaciones, rendición de cuentas y gobernanza institucional del transporte escolar.",
+    "voltar_transporte": "Volver a Indicadores del Transporte Escolar",
+    "frente_01": "Frente Analítico 01",
+    "transporte_title": "Indicadores del Transporte Escolar",
+    "transporte_lead": "Plataforma Nacional de Inteligencia con diagnóstico estructural del transporte escolar brasileño. Reúne métricas de cobertura, regularidad, flota, seguridad vial y acceso estudiantil, respaldando políticas públicas y una gestión técnica eficiente.",
+    "meta_base_title": "Base Metodológica",
+    "meta_base_desc": "Informes Técnicos CECATE/UFG & FNDE",
+    "meta_fontes_title": "Fuentes Integradas",
+    "meta_fontes_desc": "SETE, Censo Escolar (INEP) & IBGE",
+    "meta_obj_title": "Objetivo Analítico",
+    "meta_obj_desc": "Evaluar eficiencia, seguridad, costos y accesibilidad del transporte escolar",
+    "mostrar_mais": "Mostrar más",
+    "mostrar_menos": "Mostrar menos",
+    "sec1_badge": "01",
+    "sec1_title": "Metodología, Indicadores y Memoria de Cálculo",
+    "sec1_sub": "31 indicadores estructurados en Descriptivos, Desempeño y Finalísticos con fórmulas, parámetros y calculadora integrada.",
+    "subtab_ind": "A. Indicadores (31)",
+    "subtab_mem": "B. Memoria de Cálculo",
+    "subtab_calc": "C. Calculadora de Indicadores",
+    "cat_todos": "Todos (31)",
+    "cat_desc": "Descriptivos (14)",
+    "cat_desemp": "Desempeño (12)",
+    "cat_final": "Finalísticos (5)",
+    "search_ind_ph": "Buscar indicador por sigla, nombre o fórmula...",
+    "th_sigla": "Sigla",
+    "th_nome": "Nombre del Indicador",
+    "th_tipo": "Tipo",
+    "th_formula": "Fórmula",
+    "th_fonte": "Fuente",
+    "th_valor": "Valor Actual",
+    "th_status": "Estado",
+    "calc_sel_lbl": "Seleccione el indicador para la simulación:",
+    "calc_btn": "Calcular Indicador",
+    "calc_reset": "Limpiar Parámetros",
+    "calc_res_lbl": "Resultado del Cálculo",
+    "calc_formula_used": "Fórmula aplicada",
+    "sec2_badge": "02",
+    "sec2_title": "Datos SETE — Microdatos Operativos",
+    "sec2_sub": "Microdatos utilizados en la construcción de indicadores y agregaciones operativas por estado y municipio.",
+    "sete_toggle_reg": "Registros Operativos",
+    "sete_toggle_ind": "Indicadores Calculados",
+    "search_sete_ph": "Buscar municipio por nombre o código IBGE...",
+    "filter_uf_all": "Todos los Estados",
+    "sec3_badge": "03",
+    "sec3_title": "Seleccione el territorio",
+    "sec3_sub": "Defina el alcance espacial para todos los análisis y visualizaciones a continuación.",
+    "territory_nacional": "Nacional",
+    "territory_regiao": "Región",
+    "territory_estado": "Estado",
+    "territory_municipio": "Municipio",
+    "territory_active_lbl": "Territorio Activo:",
+    "sel_regiao_lbl": "Seleccione la Región:",
+    "sel_estado_lbl": "Seleccione el Estado / UF:",
+    "sel_mun_uf_lbl": "1. Seleccione el Estado del Municipio:",
+    "sel_mun_lbl": "2. Seleccione el Municipio:",
+    "search_mun_ph": "Escriba el nombre de la ciudad...",
+    "scope_nac_desc": "Ámbito Nacional — Brasil (Todos los municipios y estados integrados)",
+    "sec4_badge": "04",
+    "sec4_title": "Indicadores Finalísticos — Impacto, Seguridad & Acceso Escolar",
+    "sec4_sub": "Dimensiones estratégicas que miden el impacto directo del transporte en la permanencia y protección estudiantil.",
+    "dmc_lbl": "Distancia Media de Caminata",
+    "dmc_sub": "Radio promedio recorrido por el estudiante hasta el punto de embarque",
+    "sec5_badge": "05",
+    "sec5_title": "Panorama Operativo SETE",
+    "sec5_sub": "Volumen de atención, extensión de red y cobertura del transporte escolar.",
+    "kpi_alunos": "Estudiantes Atendidos",
+    "kpi_rotas": "Rutas Registradas",
+    "kpi_veiculos": "Vehículos en Operación",
+    "kpi_extensao": "Extensión Total de la Red",
+    "sec6_badge": "06",
+    "sec6_title": "Distribución Modal",
+    "sec6_sub": "Composición de modos de transporte utilizados en el traslado de estudiantes.",
+    "modal_rodoviario": "Terrestre / Vial",
+    "modal_hidroviario": "Fluvial / Acuático",
+    "modal_multimodal": "Multimodal",
+    "modal_propria": "Flota Propia",
+    "modal_terceirizada": "Flota Tercerizada",
+    "sec7_badge": "07",
+    "sec7_title": "Análisis de Rutas",
+    "sec7_sub": "Diagnóstico de extensión, georreferenciación y tiempos promedio de viaje por territorio.",
+    "rotas_prgm_nac": "PRGM Nacional",
+    "rotas_georref": "Rutas Georreferenciadas",
+    "rotas_totais": "Total de Rutas",
+    "rotas_extensao_media": "Extensión Media por Ruta",
+    "rotas_comp_title": "Comparativa Estatal de Georreferenciación (PRGM)",
+    "sec8_badge": "08",
+    "sec8_title": "Mapa de Indicadores",
+    "sec8_sub": "Visualización geográfica con escala cromática adaptativa según la naturaleza del indicador.",
+    "mapa_sel_ind": "Indicador en el Mapa:",
+    "mapa_sel_geo": "Nivel Geográfico:",
+    "mapa_geo_uf": "Estados (UFs)",
+    "mapa_geo_reg": "Grandes Regiones",
+    "mapa_no_data": "Sin datos",
+    "mapa_hint": "Pase el cursor sobre el mapa para ver los valores y haga clic en un territorio para fijar los detalles.",
+    "mapa_val_nac": "Valor Nacional:",
+    "mapa_detalhes": "Detalles del Territorio",
+    "mapa_ranking": "Clasificación Territorial",
+    "settings_modal_title": "Configuración de la Plataforma",
+    "settings_lang_title": "Idioma de la Plataforma",
+    "settings_lang_desc": "Seleccione el idioma deseado para la interfaz completa de PNITE.",
+    "settings_theme_title": "Apariencia y Tema",
+    "settings_theme_desc": "Alterne entre el modo claro profesional y el modo oscuro de alto contraste.",
+    "settings_info_title": "Información de la Versión",
+    "settings_version": "Versión:",
+    "settings_updated": "Última Actualización:",
+    "settings_author": "Responsable Técnico:",
+    "btn_close": "Cerrar",
+    "regiao_norte": "Norte",
+    "regiao_nordeste": "Nordeste",
+    "regiao_sudeste": "Sureste",
+    "regiao_sul": "Sur",
+    "regiao_centro_oeste": "Centro-Oeste"
+  },
+  "en": {
+    "app_title": "PNITE — National Intelligence Platform for School Transportation",
+    "brand_name": "PNITE",
+    "brand_sub": "National School Transportation Intelligence Platform",
+    "front_transporte": "School Transportation Indicators",
+    "front_capacitacao": "Training Indicators",
+    "front_gestao": "Management Indicators",
+    "config": "Settings",
+    "theme_toggle": "Toggle Theme",
+    "em_desenvolvimento": "In Development",
+    "placeholder_cap_title": "We are getting everything ready here",
+    "placeholder_cap_desc": "The Training Indicators section is currently under development and will soon provide comprehensive metrics on qualifications for drivers, monitors, and school transport coordinators nationwide.",
+    "placeholder_ges_title": "We are working to deliver the best experience for you",
+    "placeholder_ges_desc": "The Management Indicators section will bring in-depth analyses on operational unit costs, contract regulations, procurement processes, accountability, and institutional governance.",
+    "voltar_transporte": "Back to School Transportation Indicators",
+    "frente_01": "Analytical Front 01",
+    "transporte_title": "School Transportation Indicators",
+    "transporte_lead": "National Intelligence Platform providing structural diagnosis of Brazilian school transportation. Combines metrics on coverage, regularity, fleet, road safety, and student access to empower evidence-based public policies and technical management.",
+    "meta_base_title": "Methodological Framework",
+    "meta_base_desc": "CECATE/UFG & FNDE Technical Reports",
+    "meta_fontes_title": "Integrated Sources",
+    "meta_fontes_desc": "SETE, School Census (INEP) & IBGE",
+    "meta_obj_title": "Analytical Goal",
+    "meta_obj_desc": "Evaluate efficiency, safety, cost structure, and accessibility in school transport",
+    "mostrar_mais": "Show more",
+    "mostrar_menos": "Show less",
+    "sec1_badge": "01",
+    "sec1_title": "Methodology, Indicators & Calculation Memory",
+    "sec1_sub": "31 indicators structured into Descriptive, Performance, and Outcome metrics with verified formulas, real parameters, and interactive simulator.",
+    "subtab_ind": "A. Indicators (31)",
+    "subtab_mem": "B. Calculation Memory",
+    "subtab_calc": "C. Indicator Calculator",
+    "cat_todos": "All (31)",
+    "cat_desc": "Descriptive (14)",
+    "cat_desemp": "Performance (12)",
+    "cat_final": "Outcome (5)",
+    "search_ind_ph": "Search indicator by acronym, name, or formula...",
+    "th_sigla": "Code",
+    "th_nome": "Indicator Name",
+    "th_tipo": "Type",
+    "th_formula": "Formula",
+    "th_fonte": "Source",
+    "th_valor": "Current Value",
+    "th_status": "Status",
+    "calc_sel_lbl": "Select indicator to simulate:",
+    "calc_btn": "Calculate Indicator",
+    "calc_reset": "Clear Inputs",
+    "calc_res_lbl": "Calculation Result",
+    "calc_formula_used": "Applied Formula",
+    "sec2_badge": "02",
+    "sec2_title": "SETE Data — Operational Microdata",
+    "sec2_sub": "Microdata used in indicator formulation and operational aggregations across states and municipalities.",
+    "sete_toggle_reg": "Operational Records",
+    "sete_toggle_ind": "Calculated Indicators",
+    "search_sete_ph": "Search municipality by name or IBGE code...",
+    "filter_uf_all": "All States",
+    "sec3_badge": "03",
+    "sec3_title": "Select Territory",
+    "sec3_sub": "Define spatial scope for all analytical dashboards and maps below.",
+    "territory_nacional": "National",
+    "territory_regiao": "Region",
+    "territory_estado": "State",
+    "territory_municipio": "Municipality",
+    "territory_active_lbl": "Active Scope:",
+    "sel_regiao_lbl": "Select Region:",
+    "sel_estado_lbl": "Select State / UF:",
+    "sel_mun_uf_lbl": "1. Select State of Municipality:",
+    "sel_mun_lbl": "2. Select Municipality:",
+    "search_mun_ph": "Type municipality name...",
+    "scope_nac_desc": "National Scope — Brazil (All integrated municipalities and states)",
+    "sec4_badge": "04",
+    "sec4_title": "Outcome Indicators — Impact, Safety & School Access",
+    "sec4_sub": "Strategic dimensions directly measuring transport quality, student retention, and passenger safety.",
+    "dmc_lbl": "Average Walking Distance",
+    "dmc_sub": "Average radius walked by students to route pick-up location",
+    "sec5_badge": "05",
+    "sec5_title": "SETE Operational Overview",
+    "sec5_sub": "Service volume, route network extension, and student coverage.",
+    "kpi_alunos": "Served Students",
+    "kpi_rotas": "Registered Routes",
+    "kpi_veiculos": "Operating Vehicles",
+    "kpi_extensao": "Total Network Distance",
+    "sec6_badge": "06",
+    "sec6_title": "Modal Distribution",
+    "sec6_sub": "Breakdown of transportation modes utilized for student transit.",
+    "modal_rodoviario": "Road / Terrestrial",
+    "modal_hidroviario": "Waterway / Fluvial",
+    "modal_multimodal": "Multimodal",
+    "modal_propria": "Municipally-Owned Fleet",
+    "modal_terceirizada": "Contracted / Third-Party Fleet",
+    "sec7_badge": "07",
+    "sec7_title": "Route Analysis",
+    "sec7_sub": "Diagnosis of route distances, georeferencing coverage, and average travel times.",
+    "rotas_prgm_nac": "National PRGM",
+    "rotas_georref": "Georeferenced Routes",
+    "rotas_totais": "Total Routes",
+    "rotas_extensao_media": "Average Route Length",
+    "rotas_comp_title": "State Georeferencing Benchmark (PRGM)",
+    "sec8_badge": "08",
+    "sec8_title": "Indicators Map",
+    "sec8_sub": "Geographic visualization with dynamic chromatic scaling tailored to each indicator's nature.",
+    "mapa_sel_ind": "Indicator on Map:",
+    "mapa_sel_geo": "Geographic Level:",
+    "mapa_geo_uf": "States (UFs)",
+    "mapa_geo_reg": "Macro-Regions",
+    "mapa_no_data": "No data",
+    "mapa_hint": "Hover over map to view values and click on any territory to lock details.",
+    "mapa_val_nac": "National Value:",
+    "mapa_detalhes": "Territory Details",
+    "mapa_ranking": "Territorial Ranking",
+    "settings_modal_title": "Platform Settings",
+    "settings_lang_title": "Platform Language",
+    "settings_lang_desc": "Select preferred language for the complete PNITE interface.",
+    "settings_theme_title": "Appearance & Theme",
+    "settings_theme_desc": "Switch between professional Light Mode and high-contrast Dark Mode.",
+    "settings_info_title": "Version Information",
+    "settings_version": "Version:",
+    "settings_updated": "Last Update:",
+    "settings_author": "Technical Lead:",
+    "btn_close": "Close",
+    "regiao_norte": "North",
+    "regiao_nordeste": "Northeast",
+    "regiao_sudeste": "Southeast",
+    "regiao_sul": "South",
+    "regiao_centro_oeste": "Central-West"
+  },
+  "it": {
+    "app_title": "PNITE — Piattaforma Nazionale di Intelligence sul Trasporto Scolastico",
+    "brand_name": "PNITE",
+    "brand_sub": "Piattaforma Nazionale di Intelligence sul Trasporto Scolastico",
+    "front_transporte": "Indicatori del Trasporto Scolastico",
+    "front_capacitacao": "Indicatori di Formazione",
+    "front_gestao": "Indicatori di Gestione",
+    "config": "Impostazioni",
+    "theme_toggle": "Cambia Tema",
+    "em_desenvolvimento": "In Sviluppo",
+    "placeholder_cap_title": "Stiamo preparando tutto qui",
+    "placeholder_cap_desc": "L'area degli Indicatori di Formazione è in fase di sviluppo e presto offrirà metriche consolidate sulla formazione e qualificazione di autisti, assistenti e coordinatori in tutto il Brasile.",
+    "placeholder_ges_title": "Stiamo lavorando per offrirvi il meglio",
+    "placeholder_ges_desc": "L'area degli Indicatori di Gestione raccoglierà analisi su costi operativi unitari, regolamentazione contrattuale, appalti, rendicontazione e governance istituzionale.",
+    "voltar_transporte": "Torna agli Indicatori del Trasporto Scolastico",
+    "frente_01": "Fronte Analitico 01",
+    "transporte_title": "Indicatori del Trasporto Scolastico",
+    "transporte_lead": "Piattaforma Nazionale di Intelligence per la diagnosi strutturale del trasporto scolastico brasiliano. Riunisce metriche su copertura, regolarità, flotta, sicurezza stradale e accesso degli studenti per supportare politiche pubbliche informate.",
+    "meta_base_title": "Quadro Metodologico",
+    "meta_base_desc": "Rapporti Tecnici CECATE/UFG & FNDE",
+    "meta_fontes_title": "Fonti Integrate",
+    "meta_fontes_desc": "SETE, Censimento Scolastico (INEP) & IBGE",
+    "meta_obj_title": "Obiettivo Analitico",
+    "meta_obj_desc": "Valutare efficienza, sicurezza, costi e accessibilità del trasporto scolastico",
+    "mostrar_mais": "Mostra altro",
+    "mostrar_menos": "Mostra meno",
+    "sec1_badge": "01",
+    "sec1_title": "Metodologia, Indicatori e Memoria di Calcolo",
+    "sec1_sub": "31 indicatori strutturati in Descrittivi, Prestazionali e Conclusivi con formule, parametri e calcolatore integrato.",
+    "subtab_ind": "A. Indicatori (31)",
+    "subtab_mem": "B. Memoria di Calcolo",
+    "subtab_calc": "C. Calcolatore di Indicatori",
+    "cat_todos": "Tutti (31)",
+    "cat_desc": "Descrittivi (14)",
+    "cat_desemp": "Prestazionali (12)",
+    "cat_final": "Conclusivi (5)",
+    "search_ind_ph": "Cerca indicatore per sigla, nome o formula...",
+    "th_sigla": "Sigla",
+    "th_nome": "Nome dell'Indicatore",
+    "th_tipo": "Tipo",
+    "th_formula": "Formula",
+    "th_fonte": "Fonte",
+    "th_valor": "Valore Attuale",
+    "th_status": "Stato",
+    "calc_sel_lbl": "Seleziona l'indicatore da simulare:",
+    "calc_btn": "Calcola Indicatore",
+    "calc_reset": "Cancella Parametri",
+    "calc_res_lbl": "Risultato del Calcolo",
+    "calc_formula_used": "Formula applicata",
+    "sec2_badge": "02",
+    "sec2_title": "Dati SETE — Microdati Operativi",
+    "sec2_sub": "Microdati utilizzati nella costruzione degli indicatori e aggregazioni operative per stato e comune.",
+    "sete_toggle_reg": "Registrazioni Operative",
+    "sete_toggle_ind": "Indicatori Calcolati",
+    "search_sete_ph": "Cerca comune per nome o codice IBGE...",
+    "filter_uf_all": "Tutti gli Stati",
+    "sec3_badge": "03",
+    "sec3_title": "Seleziona il territorio",
+    "sec3_sub": "Definisci l'ambito spaziale per tutte le analisi e visualizzazioni sottostanti.",
+    "territory_nacional": "Nazionale",
+    "territory_regiao": "Regione",
+    "territory_estado": "Stato",
+    "territory_municipio": "Comune",
+    "territory_active_lbl": "Ambito Attivo:",
+    "sel_regiao_lbl": "Seleziona la Regione:",
+    "sel_estado_lbl": "Seleziona lo Stato / UF:",
+    "sel_mun_uf_lbl": "1. Seleziona lo Stato del Comune:",
+    "sel_mun_lbl": "2. Seleziona il Comune:",
+    "search_mun_ph": "Digita il nome del comune...",
+    "scope_nac_desc": "Ambito Nazionale — Brasile (Tutti i comuni e stati integrati)",
+    "sec4_badge": "04",
+    "sec4_title": "Indicatori Conclusivi — Impatto, Sicurezza & Accesso Scolastico",
+    "sec4_sub": "Dimensioni strategiche che misurano l'impatto diretto del trasporto su permanenza e protezione degli studenti.",
+    "dmc_lbl": "Distanza Media a Piedi",
+    "dmc_sub": "Raggio medio percorso dallo studente fino al punto di imbarco",
+    "sec5_badge": "05",
+    "sec5_title": "Panoramica Operativa SETE",
+    "sec5_sub": "Volume di servizio, estensione della rete e copertura del trasporto scolastico.",
+    "kpi_alunos": "Studenti Assistiti",
+    "kpi_rotas": "Percorsi Registrati",
+    "kpi_veiculos": "Veicoli Operativi",
+    "kpi_extensao": "Estensione Totale della Rete",
+    "sec6_badge": "06",
+    "sec6_title": "Distribuzione Modale",
+    "sec6_sub": "Composizione delle modalità di trasporto utilizzate nello spostamento degli studenti.",
+    "modal_rodoviario": "Stradale / Terrestre",
+    "modal_hidroviario": "Fluviale / Idroviario",
+    "modal_multimodal": "Multimodale",
+    "modal_propria": "Flotta Propria",
+    "modal_terceirizada": "Flotta Esterna / Appaltata",
+    "sec7_badge": "07",
+    "sec7_title": "Analisi dei Percorsi",
+    "sec7_sub": "Diagnosi di estensione, georeferenziazione e tempi medi di percorrenza per territorio.",
+    "rotas_prgm_nac": "PRGM Nazionale",
+    "rotas_georref": "Percorsi Georeferenziati",
+    "rotas_totais": "Totale Percorsi",
+    "rotas_extensao_media": "Lunghezza Media per Percorso",
+    "rotas_comp_title": "Confronto Statale di Georeferenziazione (PRGM)",
+    "sec8_badge": "08",
+    "sec8_title": "Mappa degli Indicatori",
+    "sec8_sub": "Visualizzazione geografica con scala cromatica adattativa basata sulla natura dell'indicatore.",
+    "mapa_sel_ind": "Indicatore sulla Mappa:",
+    "mapa_sel_geo": "Livello Geografico:",
+    "mapa_geo_uf": "Stati (UFs)",
+    "mapa_geo_reg": "Grandi Regioni",
+    "mapa_no_data": "Nessun dato",
+    "mapa_hint": "Passa il mouse sulla mappa per vedere i valori e fai clic su un territorio per fissare i dettagli.",
+    "mapa_val_nac": "Valore Nazionale:",
+    "mapa_detalhes": "Dettagli del Territorio",
+    "mapa_ranking": "Classifica Territoriale",
+    "settings_modal_title": "Impostazioni della Piattaforma",
+    "settings_lang_title": "Lingua della Piattaforma",
+    "settings_lang_desc": "Seleziona la lingua desiderata per l'intera interfaccia PNITE.",
+    "settings_theme_title": "Aspetto e Tema",
+    "settings_theme_desc": "Passa dalla modalità chiara professionale alla modalità scura ad alto contrasto.",
+    "settings_info_title": "Informazioni sulla Versione",
+    "settings_version": "Versione:",
+    "settings_updated": "Ultimo Aggiornamento:",
+    "settings_author": "Responsabile Tecnico:",
+    "btn_close": "Chiudi",
+    "regiao_norte": "Nord",
+    "regiao_nordeste": "Nord-Est",
+    "regiao_sudeste": "Sud-Est",
+    "regiao_sul": "Sud",
+    "regiao_centro_oeste": "Centro-Ovest"
+  },
+  "ru": {
+    "app_title": "PNITE — Национальная платформа аналитики школьного транспорта",
+    "brand_name": "PNITE",
+    "brand_sub": "Национальная платформа аналитики школьного транспорта",
+    "front_transporte": "Показатели школьного транспорта",
+    "front_capacitacao": "Показатели квалификации и обучения",
+    "front_gestao": "Показатели управления",
+    "config": "Настройки",
+    "theme_toggle": "Сменить тему",
+    "em_desenvolvimento": "В разработке",
+    "placeholder_cap_title": "Мы готовим этот раздел для вас",
+    "placeholder_cap_desc": "Раздел показателей квалификации находится в стадии разработки и скоро предоставит сводные метрики подготовки водителей, сопровождающих и специалистов управления по всей Бразилии.",
+    "placeholder_ges_title": "Мы работаем, чтобы предоставить лучшее решение",
+    "placeholder_ges_desc": "Раздел показателей управления объединит анализ удельных затрат, контрактного регулирования, закупок, отчетности и институционального управления школьным транспортом.",
+    "voltar_transporte": "Вернуться к показателям школьного транспорта",
+    "frente_01": "Аналитический фронт 01",
+    "transporte_title": "Показатели школьного транспорта",
+    "transporte_lead": "Национальная платформа аналитики со структурной диагностикой школьного транспорта Бразилии. Объединяет показатели охвата, регулярности, автопарка, безопасности дорожного движения и доступа учащихся.",
+    "meta_base_title": "Методологическая база",
+    "meta_base_desc": "Технические отчеты CECATE/UFG и FNDE",
+    "meta_fontes_title": "Интегрированные источники",
+    "meta_fontes_desc": "SETE, Школьная перепись (INEP) и IBGE",
+    "meta_obj_title": "Цель анализа",
+    "meta_obj_desc": "Оценка эффективности, безопасности, затрат и доступности школьного транспорта",
+    "mostrar_mais": "Показать больше",
+    "mostrar_menos": "Свернуть",
+    "sec1_badge": "01",
+    "sec1_title": "Методология, показатели и расчетная база",
+    "sec1_sub": "31 показатель, разделенный на описательные, результативные и итоговые с формулами, параметрами и встроенным калькулятором.",
+    "subtab_ind": "А. Показатели (31)",
+    "subtab_mem": "Б. Расчетная база",
+    "subtab_calc": "В. Калькулятор показателей",
+    "cat_todos": "Все (31)",
+    "cat_desc": "Описательные (14)",
+    "cat_desemp": "Результативность (12)",
+    "cat_final": "Итоговые (5)",
+    "search_ind_ph": "Поиск показателя по коду, названию или формуле...",
+    "th_sigla": "Код",
+    "th_nome": "Название показателя",
+    "th_tipo": "Тип",
+    "th_formula": "Формула",
+    "th_fonte": "Источник",
+    "th_valor": "Текущее значение",
+    "th_status": "Статус",
+    "calc_sel_lbl": "Выберите показатель для симуляции:",
+    "calc_btn": "Рассчитать показатель",
+    "calc_reset": "Очистить параметры",
+    "calc_res_lbl": "Результат расчета",
+    "calc_formula_used": "Примененная формула",
+    "sec2_badge": "02",
+    "sec2_title": "Данные SETE — Операционные микроданные",
+    "sec2_sub": "Микроданные, используемые при построении показателей и операционных агрегаций по штатам и муниципалитетам.",
+    "sete_toggle_reg": "Операционные записи",
+    "sete_toggle_ind": "Рассчитанные показатели",
+    "search_sete_ph": "Поиск муниципалитета по названию или коду IBGE...",
+    "filter_uf_all": "Все штаты",
+    "sec3_badge": "03",
+    "sec3_title": "Выберите территорию",
+    "sec3_sub": "Определите пространственный охват для всех панелей и визуализаций ниже.",
+    "territory_nacional": "Национальный",
+    "territory_regiao": "Регион",
+    "territory_estado": "Штат",
+    "territory_municipio": "Муниципалитет",
+    "territory_active_lbl": "Активная территория:",
+    "sel_regiao_lbl": "Выберите регион:",
+    "sel_estado_lbl": "Выберите штат / UF:",
+    "sel_mun_uf_lbl": "1. Выберите штат муниципалитета:",
+    "sel_mun_lbl": "2. Выберите муниципалитет:",
+    "search_mun_ph": "Введите название города...",
+    "scope_nac_desc": "Национальный уровень — Бразилия (Все муниципалитеты и штаты)",
+    "sec4_badge": "04",
+    "sec4_title": "Итоговые показатели — Воздействие, безопасность и доступ",
+    "sec4_sub": "Стратегические аспекты, измеряющие прямое влияние транспорта на сохранение контингента и защиту учащихся.",
+    "dmc_lbl": "Средняя пешая дистанция",
+    "dmc_sub": "Среднее расстояние, преодолеваемое учеником до пункта посадки",
+    "sec5_badge": "05",
+    "sec5_title": "Операционный обзор SETE",
+    "sec5_sub": "Объем обслуживания, протяженность маршрутной сети и охват школьного транспорта.",
+    "kpi_alunos": "Обслужено учащихся",
+    "kpi_rotas": "Зарегистрировано маршрутов",
+    "kpi_veiculos": "Транспортных средств на линии",
+    "kpi_extensao": "Общая протяженность сети",
+    "sec6_badge": "06",
+    "sec6_title": "Модальное распределение",
+    "sec6_sub": "Структура видов транспорта, используемых для перевозки учащихся.",
+    "modal_rodoviario": "Автомобильный / Дорожный",
+    "modal_hidroviario": "Водный / Речной",
+    "modal_multimodal": "Мультимодальный",
+    "modal_propria": "Собственный автопарк",
+    "modal_terceirizada": "Арендованный автопарк",
+    "sec7_badge": "07",
+    "sec7_title": "Анализ маршрутов",
+    "sec7_sub": "Диагностика протяженности, геопривязки и среднего времени в пути по территориям.",
+    "rotas_prgm_nac": "Национальный PRGM",
+    "rotas_georref": "Геопривязанные маршруты",
+    "rotas_totais": "Всего маршрутов",
+    "rotas_extensao_media": "Средняя протяженность маршрута",
+    "rotas_comp_title": "Сравнение штатов по геопривязке маршрутов (PRGM)",
+    "sec8_badge": "08",
+    "sec8_title": "Карта показателей",
+    "sec8_sub": "Географическая визуализация с адаптивной цветовой шкалой в зависимости от природы показателя.",
+    "mapa_sel_ind": "Показатель на карте:",
+    "mapa_sel_geo": "Географический уровень:",
+    "mapa_geo_uf": "Штаты (UF)",
+    "mapa_geo_reg": "Макрорегионы",
+    "mapa_no_data": "Нет данных",
+    "mapa_hint": "Наведите курсор на карту, чтобы увидеть значения, и нажмите на территорию, чтобы зафиксировать детали.",
+    "mapa_val_nac": "Национальное значение:",
+    "mapa_detalhes": "Детали территории",
+    "mapa_ranking": "Рейтинг территорий",
+    "settings_modal_title": "Настройки платформы",
+    "settings_lang_title": "Язык платформы",
+    "settings_lang_desc": "Выберите желаемый язык для всего интерфейса PNITE.",
+    "settings_theme_title": "Внешний вид и тема",
+    "settings_theme_desc": "Переключение между светлой темой и контрастной темной темой.",
+    "settings_info_title": "Информация о версии",
+    "settings_version": "Версия:",
+    "settings_updated": "Последнее обновление:",
+    "settings_author": "Технический руководитель:",
+    "btn_close": "Закрыть",
+    "regiao_norte": "Северный",
+    "regiao_nordeste": "Северо-Восточный",
+    "regiao_sudeste": "Юго-Восточный",
+    "regiao_sul": "Южный",
+    "regiao_centro_oeste": "Центрально-Западный"
+  }
+};
+window.I18N = I18N;
+window.DATA = DATA;
+if(typeof SETE_MUN !== 'undefined') window.SETE_MUN = SETE_MUN;
+
+
+// ==========================================================================
+// PNITE v.2.0.0 — CONTROLADORES DA ARQUITETURA MODULAR, SELEÇÃO E I18N
+// ==========================================================================
+
+let currentFront = 'transporte';
+let currentTerritoryLevel = 'nacional';
+let currentScopeKey = '';
+let currentLang = 'pt';
+let currentMapLevel = 'estado';
+
+// --------------------------------------------------------------------------
+// 1. CONTROLE DAS FRENTES ANALÍTICAS (CÁPSULA DO CABEÇALHO)
+// --------------------------------------------------------------------------
+function switchFront(frontId, navBtn) {
+  currentFront = frontId;
+  document.querySelectorAll('.hcn-tab').forEach(b => b.classList.remove('active'));
+  if (navBtn) navBtn.classList.add('active');
+
+  document.querySelectorAll('.front-view').forEach(v => v.classList.remove('active'));
+
+  if (frontId === 'transporte') {
+    const el = document.getElementById('frontTransporte');
+    if (el) el.classList.add('active');
+    setTimeout(() => { renderAllViews(); }, 50);
+  } else if (frontId === 'capacitacao') {
+    const el = document.getElementById('frontCapacitacao');
+    if (el) el.classList.add('active');
+  } else if (frontId === 'gestao') {
+    const el = document.getElementById('frontGestao');
+    if (el) el.classList.add('active');
+  }
+}
+
+// --------------------------------------------------------------------------
+// 2. SEÇÕES EXPANSÍVEIS (01 e 02)
+// --------------------------------------------------------------------------
+function toggleSection(secId) {
+  const sec = document.getElementById(secId);
+  if (!sec) return;
+  sec.classList.toggle('open');
+  const btnText = sec.querySelector('.exp-text');
+  if (btnText) {
+    const isOpen = sec.classList.contains('open');
+    btnText.textContent = isOpen ? getI18nText('mostrar_menos', 'Mostrar menos') : getI18nText('mostrar_mais', 'Mostrar mais');
+  }
+  if (secId === 'secDadosSete' && sec.classList.contains('open')) {
+    setTimeout(() => { renderSete(); }, 40);
+  }
+}
+
+function switchInnerTab(secId, tabId, btn) {
+  const sec = document.getElementById(secId);
+  if (!sec) return;
+  sec.querySelectorAll('.eit-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  sec.querySelectorAll('.eit-panel').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById(tabId);
+  if (target) target.classList.add('active');
+
+  if (tabId === 'tabSubInd') renderGiTable();
+  if (tabId === 'tabSubMem') renderMemoria();
+  if (tabId === 'tabSubCalc') buildCalcForm();
+  if (tabId === 'tabSeteUf') { initSete(); renderSeteUf(); }
+  if (tabId === 'tabSeteMun') { initSete(); renderSeteMun(); }
+}
+
+// --------------------------------------------------------------------------
+// 3. SELEÇÃO TERRITORIAL COMPLETA (NACIONAL, REGIÃO, ESTADO, MUNICÍPIO)
+// --------------------------------------------------------------------------
+const UFS_LIST = [
+  ['ac','Acre'],['al','Alagoas'],['am','Amazonas'],['ap','Amapá'],
+  ['ba','Bahia'],['ce','Ceará'],['df','Distrito Federal'],['es','Espírito Santo'],
+  ['go','Goiás'],['ma','Maranhão'],['mg','Minas Gerais'],['ms','Mato Grosso do Sul'],
+  ['mt','Mato Grosso'],['pa','Pará'],['pb','Paraíba'],['pe','Pernambuco'],
+  ['pi','Piauí'],['pr','Paraná'],['rj','Rio de Janeiro'],['rn','Rio Grande do Norte'],
+  ['ro','Rondônia'],['rr','Roraima'],['rs','Rio Grande do Sul'],['sc','Santa Catarina'],
+  ['se','Sergipe'],['sp','São Paulo'],['to','Tocantins']
+];
+
+function initTerritorySelectors() {
+  const selEstado = document.getElementById('selEstadoDropdown');
+  if (selEstado && selEstado.options.length === 0) {
+    selEstado.innerHTML = UFS_LIST.map(([uf, name]) => `<option value="${uf}">${name} (${uf.toUpperCase()})</option>`).join('');
+    selEstado.value = 'go';
+  }
+
+  const selMunUf = document.getElementById('selMunUf');
+  if (selMunUf && selMunUf.options.length === 0) {
+    selMunUf.innerHTML = UFS_LIST.map(([uf, name]) => `<option value="${uf}">${name} (${uf.toUpperCase()})</option>`).join('');
+    selMunUf.value = 'go';
+  }
+
+  onMunUfChange();
+}
+
+function setTerritoryLevel(level) {
+  currentTerritoryLevel = level;
+  currentScope = level;
+
+  document.querySelectorAll('.tl-pill').forEach(p => p.classList.remove('active'));
+  const activeBtn = document.getElementById('tlPill' + level.charAt(0).toUpperCase() + level.slice(1));
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const gNac = document.getElementById('subNacional');
+  const gReg = document.getElementById('subRegiao');
+  const gEst = document.getElementById('subEstado');
+  const gMun = document.getElementById('subMunicipio');
+
+  if (gNac) gNac.style.display = (level === 'nacional') ? 'block' : 'none';
+  if (gReg) gReg.style.display = (level === 'regiao') ? 'block' : 'none';
+  if (gEst) gEst.style.display = (level === 'estado') ? 'block' : 'none';
+  if (gMun) gMun.style.display = (level === 'municipio') ? 'block' : 'none';
+
+  onTerritoryChange();
+}
+
+function onMunUfChange() {
+  const selMunUf = document.getElementById('selMunUf');
+  const selMunCity = document.getElementById('selMunCity');
+  const seteMunObj = (typeof SETE_MUN !== 'undefined') ? SETE_MUN : (window.SETE_MUN || null);
+  if (!selMunUf || !selMunCity || !seteMunObj || !seteMunObj.municipios) return;
+
+  const ufVal = selMunUf.value.toUpperCase();
+  const ufIndex = seteMunObj.cols.indexOf('uf');
+  const munIndex = seteMunObj.cols.indexOf('mun');
+  const codIndex = seteMunObj.cols.indexOf('cod');
+
+  const munList = seteMunObj.municipios.filter(row => row[ufIndex] === ufVal);
+
+  if (munList.length === 0) {
+    selMunCity.innerHTML = '<option value="">Nenhum município cadastrado no SETE nesta UF</option>';
+  } else {
+    selMunCity.innerHTML = munList.map(row => `<option value="${row[codIndex]}">${row[munIndex]} (IBGE ${row[codIndex]})</option>`).join('');
+  }
+
+  if (currentTerritoryLevel === 'municipio') {
+    onTerritoryChange();
+  }
+}
+
+function onTerritoryChange() {
+  const badge = document.getElementById('territoryActiveBadge');
+
+  if (currentTerritoryLevel === 'nacional') {
+    currentScope = 'nacional';
+    currentScopeKey = '';
+    if (badge) badge.textContent = 'Brasil (Nacional)';
+  } else if (currentTerritoryLevel === 'regiao') {
+    currentScope = 'regiao';
+    const regSel = document.getElementById('selRegiaoDropdown');
+    currentScopeKey = regSel ? regSel.value : 'centro-oeste';
+    const regName = regSel ? regSel.options[regSel.selectedIndex].text : 'Centro-Oeste';
+    if (badge) badge.textContent = 'Região ' + regName;
+  } else if (currentTerritoryLevel === 'estado') {
+    currentScope = 'estado';
+    const estSel = document.getElementById('selEstadoDropdown');
+    currentScopeKey = estSel ? estSel.value : 'go';
+    const estName = estSel ? estSel.options[estSel.selectedIndex].text : 'Goiás (GO)';
+    if (badge) badge.textContent = 'Estado de ' + estName;
+  } else if (currentTerritoryLevel === 'municipio') {
+    currentScope = 'municipio';
+    const munCitySel = document.getElementById('selMunCity');
+    const munUfSel = document.getElementById('selMunUf');
+    const cityName = munCitySel && munCitySel.options.length > 0 && munCitySel.selectedIndex >= 0 ? munCitySel.options[munCitySel.selectedIndex].text.split(' (')[0] : 'Município';
+    const ufCode = munUfSel ? munUfSel.value.toUpperCase() : 'UF';
+    currentScopeKey = munCitySel ? munCitySel.value : '';
+    if (badge) badge.textContent = cityName + ' - ' + ufCode + ' (Município)';
+  }
+
+  const legRegionSelect = document.getElementById('regionSelect');
+  if (legRegionSelect) legRegionSelect.value = currentScopeKey;
+
+  renderAllViews();
+}
+
+// --------------------------------------------------------------------------
+// 4. ANÁLISE DE ROTAS REDESENHADA (SEÇÃO 07)
+// --------------------------------------------------------------------------
+function renderRotasRanking() {
+  const container = document.getElementById('rotasRankingGrid');
+  if (!container) return;
+  const dataObj = (typeof DATA !== 'undefined') ? DATA : (window.DATA || null);
+  if (!dataObj || !dataObj.estado) return;
+
+  const list = Object.keys(dataObj.estado).map(ufKey => {
+    const d = dataObj.estado[ufKey];
+    return {
+      uf: ufKey.toUpperCase(),
+      nome: d.label || ufKey.toUpperCase(),
+      prgm: (d.PRGM !== null && d.PRGM !== undefined) ? d.PRGM : 0
+    };
+  });
+
+  list.sort((a, b) => b.prgm - a.prgm);
+
+  const maxVal = Math.max(...list.map(x => x.prgm), 50);
+
+  container.innerHTML = list.map((item, idx) => {
+    const pct = ((item.prgm / maxVal) * 100).toFixed(0);
+    let barColor = 'var(--c-blue)';
+    if (item.prgm >= 60) barColor = 'var(--c-mint)';
+    else if (item.prgm < 25) barColor = 'var(--c-rose)';
+
+    return `
+      <div class="rotas-rank-row" title="${item.nome}: ${item.prgm.toFixed(1)}%">
+        <span class="rrr-uf">${item.uf}</span>
+        <div class="rrr-bar-wrap">
+          <div class="rrr-bar" style="width:${pct}%;background:${barColor}"></div>
+        </div>
+        <span class="rrr-val">${item.prgm.toFixed(1)}%</span>
+      </div>
+    `;
+  }).join('');
+
+  // Atualiza faixa resumo
+  const d = getD();
+  const sumPrgm = document.getElementById('rotasSumPrgm');
+  const sumGeorref = document.getElementById('rotasSumGeorref');
+  const sumTotal = document.getElementById('rotasSumTotal');
+  const sumKm = document.getElementById('rotasSumKm');
+
+  if (sumPrgm) sumPrgm.textContent = (d.PRGM !== null && d.PRGM !== undefined) ? d.PRGM.toFixed(1) + '%' : '38.2%';
+  if (sumGeorref) sumGeorref.textContent = (d.tot_rotas_georref) ? Number(d.tot_rotas_georref).toLocaleString('pt-BR') : '31.626';
+  if (sumTotal) sumTotal.textContent = (d.tot_rotas) ? Number(d.tot_rotas).toLocaleString('pt-BR') : '82.887';
+  if (sumKm) sumKm.textContent = (d.MEDATE) ? d.MEDATE.toFixed(1) + ' km' : '46.5 km';
+}
+
+// --------------------------------------------------------------------------
+// 5. MAPA COMPACTO: CONTROLE DE NÍVEL
+// --------------------------------------------------------------------------
+function setMapLevel(lvl, btn) {
+  currentMapLevel = lvl;
+  if (btn) {
+    document.querySelectorAll('#mapaLvlPills .pill-opt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  renderMapa();
+}
+
+// --------------------------------------------------------------------------
+// 6. SISTEMA COMPLETO DE INTERNACIONALIZAÇÃO (I18N EM 5 IDIOMAS)
+// --------------------------------------------------------------------------
+function getI18nText(key, fallback) {
+  const i18nObj = (typeof I18N !== 'undefined') ? I18N : (window.I18N || null);
+  if (i18nObj && i18nObj[currentLang] && i18nObj[currentLang][key]) {
+    return i18nObj[currentLang][key];
+  }
+  return fallback || key;
+}
+
+function setLanguage(lang) {
+  const i18nObj = (typeof I18N !== 'undefined') ? I18N : (window.I18N || null);
+  if (!i18nObj || !i18nObj[lang]) return;
+  currentLang = lang;
+  try { localStorage.setItem('pnite_lang', lang); } catch (e) {}
+
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById('langBtn_' + lang);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const dict = i18nObj[lang];
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (dict[k]) {
+      el.textContent = dict[k];
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const k = el.getAttribute('data-i18n-ph');
+    if (dict[k]) {
+      el.setAttribute('placeholder', dict[k]);
+    }
+  });
+
+  renderAllViews();
+}
+
+// --------------------------------------------------------------------------
+// 7. MODAL DE CONFIGURAÇÕES
+// --------------------------------------------------------------------------
+function openSettingsModal() {
+  const modal = document.getElementById('settingsModalOverlay');
+  if (modal) modal.classList.add('open');
+}
+
+function closeSettingsModal() {
+  const modal = document.getElementById('settingsModalOverlay');
+  if (modal) modal.classList.remove('open');
+}
+
+// --------------------------------------------------------------------------
+// 8. RENDERIZAÇÃO GERAL SINCRONIZADA
+// --------------------------------------------------------------------------
+function renderAllViews() {
+  const d = getD();
+  if (typeof renderElyraHero === 'function') renderElyraHero(d);
+  if (typeof renderModalWafflesAndDonut === 'function') renderModalWafflesAndDonut(d);
+  if (typeof renderElyraPerformanceArcs === 'function') renderElyraPerformanceArcs(d);
+  if (typeof renderElyraWaffleGrids === 'function') renderElyraWaffleGrids(d);
+  if (typeof renderRotasRanking === 'function') renderRotasRanking();
+  if (typeof renderMapa === 'function') renderMapa();
+  if (typeof renderGiTable === 'function') renderGiTable();
+  if (typeof renderMemoria === 'function') renderMemoria();
+  if (typeof renderSete === 'function') renderSete();
+  if (typeof syncVersionInfo === 'function') syncVersionInfo();
+}
+
+
 syncVersionInfo();
-render();
-renderGiTable();
-renderMissingTable();
+initTerritorySelectors();
+initMapa();
+try {
+  const savedLang = localStorage.getItem('pnite_lang') || 'pt';
+  setLanguage(savedLang);
+} catch(e) {
+  setLanguage('pt');
+}
+renderAllViews();
 </script>
 
 <!-- WIDGET FLUTUANTE DE INFORMAÇÃO DA VERSÃO (CANTO INFERIOR DIREITO) -->
@@ -3577,7 +5566,7 @@ renderMissingTable();
       </div>
     </div>
     <div class="pif-body">
-      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.1.4.3</strong></div>
+      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.2.0.0</strong></div>
       <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">15/09/2026</span></div>
       <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">15:45</span></div>
       <div class="pif-row"><span>Responsável técnico:</span><span class="pnite-author-val">Vítor Lima</span></div>
@@ -3589,9 +5578,10 @@ renderMissingTable();
   </div>
   <button class="pif-btn" id="pifBtn" aria-label="Informações de Versão">
     <i class="ti ti-info-circle"></i>
-    <span class="pif-btn-label pnite-version-val">v.1.4.3</span>
+    <span class="pif-btn-label pnite-version-val">v.2.0.0</span>
   </button>
 </div>
+
 
 </body>
 </html>
