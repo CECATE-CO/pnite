@@ -2096,7 +2096,7 @@ body {
   --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
 }
 
-/* 2. MODO POUCO ESCURO — AZUL ESCURO SUAVE ESTILO TWITTER/X DIM */
+/* 2. MODO POUCO ESCURO — AZUL ESCURO SUAVE */
 [data-theme="dim"] {
   --c-blue: #4DA3FF;
   --c-slate: #8B98A5;
@@ -2349,6 +2349,297 @@ body {
   line-height: 1.5;
 }
 
+
+/* ==========================================================================
+   PNITE v.2.2.0 — COMPONENTES DE BUSCA, DROPDOWNS PADRONIZADOS E TABELA DE INDICADORES
+   ========================================================================== */
+
+/* 1. CAIXA DE TEXTO E BUSCA COM LUPA INTEGRADA (ANEXO 2) */
+.pnite-search-box-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pnite-search-box {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+}
+.psb-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 48px 0 18px;
+  border-radius: 14px;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border);
+  color: var(--text-1);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  box-sizing: border-box;
+}
+.psb-input:hover {
+  border-color: var(--border-mid);
+  background: var(--bg-card);
+}
+.psb-input:focus {
+  border-color: var(--c-blue);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 3.5px rgba(37, 137, 244, 0.15);
+}
+.psb-btn {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  bottom: 5px;
+  width: 38px;
+  border-radius: 10px;
+  background: var(--c-blue);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.psb-btn:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+.psb-btn:active {
+  transform: scale(0.96);
+}
+
+/* 2. CHIPS DE CATEGORIA DOS INDICADORES */
+.pnite-cat-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 18px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cat-pill:hover {
+  border-color: var(--c-blue);
+  color: var(--c-blue);
+}
+.cat-pill.active {
+  background: var(--c-blue);
+  border-color: var(--c-blue);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 137, 244, 0.3);
+}
+
+/* 3. REORGANIZAÇÃO VISUAL DA TABELA DE INDICADORES (ANEXO 1) */
+.ind-table-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+}
+.ind-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.ind-table th {
+  background: var(--bg-input);
+  color: var(--text-2);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 13px 16px;
+  border-bottom: 1.5px solid var(--border);
+  white-space: nowrap;
+}
+.ind-table td {
+  padding: 14px 16px;
+  font-size: 12.5px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-1);
+  vertical-align: middle;
+  transition: background 0.15s ease;
+}
+.ind-table tr:last-child td {
+  border-bottom: none;
+}
+.ind-table tr:hover td {
+  background: var(--bg-hover);
+}
+.ind-group-header-row td {
+  background: var(--bg-input) !important;
+  padding: 10px 16px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--c-blue);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-top: 1.5px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
+}
+.sigla-chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--c-blue);
+  background: var(--bg-active);
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+}
+.formula-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  color: var(--text-2);
+  background: var(--bg-input);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  display: inline-block;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.badge-tipo-fnl {
+  background: rgba(223, 109, 124, 0.12);
+  color: var(--c-rose);
+  border: 1px solid rgba(223, 109, 124, 0.25);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+.badge-tipo-p {
+  background: rgba(37, 137, 244, 0.12);
+  color: var(--c-blue);
+  border: 1px solid rgba(37, 137, 244, 0.25);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+.badge-tipo-d {
+  background: rgba(63, 198, 136, 0.12);
+  color: var(--c-mint);
+  border: 1px solid rgba(63, 198, 136, 0.25);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+.status-pill-ok {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(63, 198, 136, 0.14);
+  color: var(--c-mint);
+  font-weight: 600;
+  font-size: 11px;
+}
+.status-pill-pendente {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(255, 205, 66, 0.14);
+  color: var(--c-yellow);
+  border: 1px dashed var(--c-yellow);
+  font-weight: 600;
+  font-size: 11px;
+}
+
+/* 4. PADRONIZAÇÃO COMPLETA DAS DROP LISTS (ANEXOS 3 & 4) */
+.form-select, select.pnite-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: 44px;
+  padding: 0 42px 0 16px;
+  border-radius: 12px;
+  background-color: var(--bg-input);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232589F4' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  border: 1.5px solid var(--border);
+  color: var(--text-1);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.form-select:hover, select.pnite-select:hover {
+  border-color: var(--c-blue);
+  background-color: var(--bg-card);
+}
+.form-select:focus, select.pnite-select:focus {
+  border-color: var(--c-blue);
+  background-color: var(--bg-card);
+  box-shadow: 0 0 0 3.5px rgba(37, 137, 244, 0.15);
+}
+.form-select option, select.pnite-select option {
+  background-color: var(--bg-card);
+  color: var(--text-1);
+  padding: 10px;
+}
+.form-select optgroup, select.pnite-select optgroup {
+  background-color: var(--bg-input);
+  color: var(--text-2);
+  font-weight: 700;
+  font-size: 11.5px;
+}
+
+/* 5. INDICADOR DE TEMA NO MODAL DE CONFIGURAÇÕES */
+.theme-active-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 18px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+}
+.tai-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-blue);
+}
+
 </style>
 
 <script>
@@ -2492,28 +2783,43 @@ window.onerror = function(msg, url, line, col, err) {
             <button class="eit-btn" onclick="switchInnerTab('secMetodologia', 'tabSubCalc', this)" data-i18n="subtab_calc">C. Calculadora de Indicadores</button>
           </div>
 
-          <!-- SUB-BLOCO A: TABELA DOS 31 INDICADORES -->
+          <!-- SUB-BLOCO A: TABELA DOS 31 INDICADORES REORGANIZADA (ANEXO 1 E 2) -->
           <div class="eit-panel active" id="tabSubInd">
-            <div class="search-bar" style="margin-bottom:14px">
-              <input type="text" class="search-input" id="giSearch" data-i18n-ph="search_ind_ph" placeholder="Buscar indicador por sigla, nome ou fórmula..." oninput="renderGiTable()">
+            <div class="pnite-search-box-wrap" style="margin-bottom:18px">
+              <div class="pnite-search-box">
+                <input type="text" class="psb-input" id="giSearch" data-i18n-ph="search_ind_ph" placeholder="Buscar indicador por sigla, nome, tipo ou fórmula..." oninput="renderGiTable()" onkeydown="if(event.key==='Enter')renderGiTable()">
+                <button type="button" class="psb-btn" id="giSearchBtn" onclick="renderGiTable()" title="Buscar">
+                  <i class="ti ti-search"></i>
+                </button>
+              </div>
+              <div class="pnite-cat-pills" id="giCategoryChips">
+                <button type="button" class="cat-pill active" onclick="setGiFilter('todos', this)" data-i18n="cat_todos">Todos (31)</button>
+                <button type="button" class="cat-pill" onclick="setGiFilter('FNL', this)" data-i18n="cat_finalisticos">Finalísticos (5)</button>
+                <button type="button" class="cat-pill" onclick="setGiFilter('P', this)" data-i18n="cat_desempenho">Desempenho (10)</button>
+                <button type="button" class="cat-pill" onclick="setGiFilter('D', this)" data-i18n="cat_descritivos">Descritivos (16)</button>
+              </div>
             </div>
-            <div class="table-wrap" style="max-height:480px;overflow-y:auto">
-              <table class="data-table" id="giTable">
-                <thead>
-                  <tr>
-                    <th data-i18n="th_sigla">Sigla</th>
-                    <th data-i18n="th_nome">Nome do Indicador</th>
-                    <th data-i18n="th_tipo">Tipo</th>
-                    <th data-i18n="th_formula">Fórmula</th>
-                    <th data-i18n="th_fonte">Fonte</th>
-                    <th data-i18n="th_valor">Valor Atual</th>
-                    <th data-i18n="th_status">Status</th>
-                  </tr>
-                </thead>
-                <tbody id="giTableBody"></tbody>
-              </table>
+
+            <div class="ind-table-container">
+              <div style="max-height:540px;overflow-y:auto">
+                <table class="ind-table" id="giTable">
+                  <thead>
+                    <tr>
+                      <th style="width:110px" data-i18n="th_sigla">Sigla</th>
+                      <th style="min-width:240px" data-i18n="th_nome">Nome do Indicador</th>
+                      <th style="width:110px" data-i18n="th_tipo">Tipo</th>
+                      <th style="min-width:220px" data-i18n="th_formula">Fórmula</th>
+                      <th style="width:130px" data-i18n="th_fonte">Fonte</th>
+                      <th style="width:120px;text-align:right" data-i18n="th_valor">Valor Atual</th>
+                      <th style="width:110px;text-align:center" data-i18n="th_status">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="giTableBody"></tbody>
+                </table>
+              </div>
             </div>
           </div>
+
 
           <!-- SUB-BLOCO B: MEMÓRIA DE CÁLCULO DETALHADA -->
           <div class="eit-panel" id="tabSubMem">
@@ -2523,23 +2829,23 @@ window.onerror = function(msg, url, line, col, err) {
             <div id="memoriaList" style="display:flex;flex-direction:column;gap:14px"></div>
           </div>
 
-          <!-- SUB-BLOCO C: CALCULADORA DE INDICADORES -->
+          <!-- SUB-BLOCO C: CALCULADORA DE INDICADORES (ANEXO 3) -->
           <div class="eit-panel" id="tabSubCalc">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-              <div>
-                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px" data-i18n="calc_sel_lbl">Selecione o indicador para simulação:</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" class="calc-layout-grid">
+              <div class="calc-form-card" style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:0 2px 10px rgba(0,0,0,0.02)">
+                <label style="font-size:12.5px;font-weight:700;display:block;margin-bottom:8px;color:var(--text-1)" data-i18n="calc_sel_lbl">Selecione o indicador para simulação:</label>
                 <select id="calcSelect" class="form-select" onchange="buildCalcForm()" style="width:100%;margin-bottom:16px"></select>
-                <div id="calcFormula" style="font-size:12px;color:var(--text-2);background:var(--bg-input);padding:10px 14px;border-radius:10px;margin-bottom:14px;display:none"></div>
+                <div id="calcFormula" style="font-size:12px;font-family:ui-monospace,monospace;font-weight:600;color:var(--c-blue);background:var(--bg-active);border:1px solid var(--border);padding:10px 14px;border-radius:10px;margin-bottom:16px;display:none"></div>
                 <div id="calcInputs"></div>
                 <div style="display:flex;gap:10px;margin-top:16px">
-                  <button class="btn btn-primary" id="calcBtn" onclick="calcular()" style="padding:8px 18px;border-radius:20px;display:none" data-i18n="calc_btn">Calcular Indicador</button>
+                  <button class="btn btn-primary" id="calcBtn" onclick="calcular()" style="padding:10px 22px;border-radius:20px;display:none;font-weight:600;box-shadow:0 2px 8px rgba(37,137,244,0.3)" data-i18n="calc_btn">Calcular Indicador</button>
                 </div>
               </div>
               <div>
-                <div class="card" style="padding:20px;height:100%">
-                  <div style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--c-blue);margin-bottom:12px" data-i18n="calc_res_lbl">Resultado do Cálculo</div>
-                  <div id="calcResult" style="display:none;padding:16px;border-radius:12px;font-size:14px"></div>
-                  <div id="calcResFallback" style="font-size:13.5px;color:var(--text-2);line-height:1.6">
+                <div class="card" style="padding:22px;height:100%;border-radius:16px;border:1px solid var(--border);background:var(--bg-card);display:flex;flex-direction:column;justify-content:center">
+                  <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--c-blue);margin-bottom:12px" data-i18n="calc_res_lbl">Resultado do Cálculo</div>
+                  <div id="calcResult" style="display:none;padding:18px;border-radius:12px;font-size:15px;font-weight:700;margin-bottom:12px;border:1.5px solid var(--c-mint);background:rgba(63,198,136,0.12);color:var(--c-mint)"></div>
+                  <div id="calcResFallback" style="font-size:13px;color:var(--text-2);line-height:1.6">
                     Selecione um indicador à esquerda, preencha os parâmetros e clique em <b>Calcular Indicador</b> para simular o resultado em tempo real.
                   </div>
                 </div>
@@ -2584,7 +2890,12 @@ window.onerror = function(msg, url, line, col, err) {
           <div class="eit-panel" id="tabSeteMun">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
               <div style="display:flex;gap:8px;align-items:center">
-                <input type="text" class="search-input" id="seteMunSearch" data-i18n-ph="search_sete_ph" placeholder="Buscar município por nome ou código IBGE..." style="width:280px" oninput="seteMunPage=0;renderSeteMun()">
+                <div class="pnite-search-box" style="width:340px">
+                <input type="text" class="psb-input" id="seteMunSearch" data-i18n-ph="search_sete_ph" style="height:42px" placeholder="Buscar município por nome ou código IBGE..." oninput="seteMunPage=0;renderSeteMun()" onkeydown="if(event.key==='Enter')renderSeteMun()">
+                <button type="button" class="psb-btn" onclick="seteMunPage=0;renderSeteMun()" title="Buscar">
+                  <i class="ti ti-search"></i>
+                </button>
+              </div>
                 <select id="seteUfSel" class="form-select" onchange="seteMunPage=0;renderSeteMun()">
                   <option value="" data-i18n="filter_uf_all">Todas as UFs</option>
                 </select>
@@ -2882,7 +3193,7 @@ window.onerror = function(msg, url, line, col, err) {
     <footer class="editorial-footer">
       <div class="ef-container">
         <div class="ef-left">
-          <span class="ef-badge pnite-version-val" id="pniteVersionBadge">v.2.1.0</span>
+          <span class="ef-badge pnite-version-val" id="pniteVersionBadge">v.2.2.0</span>
           <span>PNITE — Plataforma Nacional de Inteligência em Transporte Escolar</span>
         </div>
         <div class="ef-right">
@@ -2926,23 +3237,18 @@ window.onerror = function(msg, url, line, col, err) {
       </div>
     </div>
 
-    <!-- APARÊNCIA E 3 MODOS DE COR -->
+    <!-- APARÊNCIA E TEMA -->
     <div class="smb-sec">
-      <div class="smb-sec-title" data-i18n="settings_theme_title">Modo de Aparência</div>
-      <div class="smb-sec-desc" data-i18n="settings_theme_desc">Escolha entre as três opções de modo de cor para toda a plataforma.</div>
-      <div class="theme-selector-grid">
-        <button class="theme-card-btn" id="themeBtn_light" onclick="setTheme('light')">
-          <div class="tcb-top"><span>☀️</span> <span data-i18n="theme_light">Modo Claro</span></div>
-          <div class="tcb-desc" data-i18n="theme_light_desc">Fundo claro, branco e cinzas discretos</div>
+      <div class="smb-sec-title" data-i18n="settings_theme_title">Aparência e Tema</div>
+      <div class="smb-sec-desc" data-i18n="settings_theme_desc">Alterne entre os modos de cor disponíveis: Modo Claro, Modo Pouco Escuro e Modo Escuro.</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn btn-outline" id="settingsThemeBtn" onclick="cycleTheme()" style="display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border-radius:20px;font-weight:600">
+          <i class="ti ti-palette"></i> <span data-i18n="theme_toggle">Mudar modo</span>
         </button>
-        <button class="theme-card-btn" id="themeBtn_dim" onclick="setTheme('dim')">
-          <div class="tcb-top"><span>🌅</span> <span data-i18n="theme_dim">Modo Pouco Escuro</span></div>
-          <div class="tcb-desc" data-i18n="theme_dim_desc">Azul escuro suave estilo Twitter/X</div>
-        </button>
-        <button class="theme-card-btn" id="themeBtn_dark" onclick="setTheme('dark')">
-          <div class="tcb-top"><span>🌙</span> <span data-i18n="theme_dark">Modo Escuro</span></div>
-          <div class="tcb-desc" data-i18n="theme_dark_desc">Preto profundo com alto contraste</div>
-        </button>
+        <div class="theme-active-indicator" id="themeActiveIndicator">
+          <span class="tai-dot"></span>
+          <span id="themeActiveText">Modo Claro</span>
+        </div>
       </div>
     </div>
 
@@ -2950,7 +3256,7 @@ window.onerror = function(msg, url, line, col, err) {
     <div class="smb-sec">
       <div class="smb-sec-title" data-i18n="settings_info_title">Informações da Versão</div>
       <div style="font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:4px;margin-top:6px">
-        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.2.1.0</b></div>
+        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.2.2.0</b></div>
         <div><span data-i18n="settings_updated">Última Atualização:</span> <b class="pnite-date-val">16/09/2026</b> às <b class="pnite-time-val">15:30</b></div>
         <div><span data-i18n="settings_author">Responsável Técnico:</span> <b class="pnite-author-val">Equipe PNITE</b></div>
       </div>
@@ -2986,9 +3292,9 @@ window.onerror = function(msg, url, line, col, err) {
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.2.1.0";
+const PNITE_VERSION = "v.2.2.0";
 const PNITE_LAST_UPDATE = "16/09/2026";
-const PNITE_LAST_TIME = "15:30";
+const PNITE_LAST_TIME = "16:50";
 const PNITE_LAST_AUTHOR = "Equipe PNITE";
 // ================================================================
 // DADOS REAIS — Relatórios CECATE/UFG 2024-2025
@@ -4022,24 +4328,65 @@ function renderMissingTable(){
 }
 
 function buildCalcForm(){
-  const key=document.getElementById('calcSelect').value;
-  const cont=document.getElementById('calcInputs'),btn=document.getElementById('calcBtn');
-  const res=document.getElementById('calcResult'),form=document.getElementById('calcFormula');
-  res.style.display='none';
-  if(!key){cont.innerHTML='';btn.style.display='none';form.style.display='none';return;}
-  const def=CALC_DEFS[key];
-  cont.innerHTML=def.fields.map((f,i)=>`<div class="igi"><label class="igl">${String.fromCharCode(65+i)} — ${f}</label><input type="number" id="ci_${i}" min="0" placeholder="0" step="any"/></div>`).join('');
-  btn.style.display='block';form.style.display='block';form.textContent='Fórmula: '+def.formula;
+  const sel = document.getElementById('calcSelect');
+  if (!sel) return;
+  const key = sel.value;
+  const cont = document.getElementById('calcInputs'), btn = document.getElementById('calcBtn');
+  const res = document.getElementById('calcResult'), form = document.getElementById('calcFormula');
+  const fallback = document.getElementById('calcResFallback');
+  if (res) res.style.display = 'none';
+  if (fallback) fallback.style.display = 'block';
+
+  if (!key) {
+    if (cont) cont.innerHTML = '';
+    if (btn) btn.style.display = 'none';
+    if (form) form.style.display = 'none';
+    return;
+  }
+  const def = CALC_DEFS[key];
+  if (!def) return;
+
+  cont.innerHTML = def.fields.map((f, i) => `
+    <div class="igi" style="margin-bottom:12px">
+      <label class="igl" style="font-size:12px;font-weight:600;display:block;margin-bottom:5px;color:var(--text-1)">
+        <span style="color:var(--c-blue);font-weight:700">${String.fromCharCode(65 + i)}</span> — ${f}
+      </label>
+      <input type="number" id="ci_${i}" class="form-input" min="0" placeholder="0" step="any" style="width:100%;height:42px;border-radius:10px;background:var(--bg-input);border:1.5px solid var(--border);padding:0 14px;color:var(--text-1);font-family:inherit;font-size:13px;box-sizing:border-box" onkeydown="if(event.key==='Enter')calcular()"/>
+    </div>
+  `).join('');
+
+  if (btn) btn.style.display = 'inline-flex';
+  if (form) {
+    form.style.display = 'block';
+    form.textContent = t('formula_label', 'Fórmula: ') + def.formula;
+  }
 }
 
 function calcular(){
-  const key=document.getElementById('calcSelect').value; if(!key) return;
-  const def=CALC_DEFS[key];
-  const vals=def.fields.map((_,i)=>parseFloat(document.getElementById('ci_'+i).value)||0);
-  const res=document.getElementById('calcResult'); res.style.display='block';
-  if(vals.some(v=>v===0)){res.style.background='var(--bg-input)';res.style.color='var(--red)';res.textContent='Preencha todos os campos.';return;}
-  res.style.background='var(--accent-light)';res.style.color='var(--accent-dark)';
-  res.textContent=`${key} = ${def.fn(vals)}`;
+  const sel = document.getElementById('calcSelect');
+  if (!sel) return;
+  const key = sel.value;
+  if (!key) return;
+  const def = CALC_DEFS[key];
+  if (!def) return;
+  const vals = def.fields.map((_, i) => parseFloat(document.getElementById('ci_' + i).value) || 0);
+  const res = document.getElementById('calcResult');
+  const fallback = document.getElementById('calcResFallback');
+  if (!res) return;
+  res.style.display = 'block';
+  if (fallback) fallback.style.display = 'none';
+
+  if (vals.some(v => v === 0) && def.fields.length > 1) {
+    res.style.background = 'var(--bg-input)';
+    res.style.color = 'var(--c-rose)';
+    res.style.border = '1px solid var(--c-rose)';
+    res.textContent = t('calc_fill_all', 'Preencha todos os campos com valores válidos.');
+    return;
+  }
+  res.style.background = 'rgba(63, 198, 136, 0.14)';
+  res.style.color = 'var(--c-mint)';
+  res.style.border = '1.5px solid var(--c-mint)';
+  res.textContent = `${key} = ${def.fn(vals)}`;
 }
 
 function onRegionChange(){
@@ -5470,6 +5817,25 @@ const MAPA_INFO_DICT = {
 
 const I18N = {
   "pt": {
+    "cat_todos": "Todos (31)",
+    "cat_finalisticos": "Finalísticos (5)",
+    "cat_desempenho": "Desempenho (10)",
+    "cat_descritivos": "Descritivos (16)",
+    "calc_choose_ind": "— Selecione um indicador para simular —",
+    "grupo_finalisticos": "Indicadores Finalísticos — Impacto, Segurança & Acesso Escolar",
+    "grupo_desempenho": "Indicadores de Desempenho — Eficiência Operacional & Frota",
+    "grupo_descritivos": "Indicadores Descritivos — Caracterização e Perfil do Transporte",
+    "nenhum_ind_encontrado": "Nenhum indicador encontrado",
+    "nenhum_ind_desc": "Tente buscar por outra sigla, termo ou limpe o filtro atual.",
+    "limpar_busca": "Limpar busca",
+    "status_ok": "Calculado",
+    "status_pendente": "Pendente",
+    "tipo_finalistico": "Finalístico",
+    "tipo_desempenho": "Desempenho",
+    "tipo_descritivo": "Descritivo",
+    "tipo_censo": "Censo Escolar",
+    "formula_label": "Fórmula: ",
+    "calc_fill_all": "Preencha todos os campos com valores válidos.",
     "app_title": "PNITE — Plataforma Nacional de Inteligência em Transporte Escolar",
     "brand_name": "PNITE",
     "brand_sub": "Plataforma Nacional de Inteligência em Transporte Escolar",
@@ -5477,12 +5843,12 @@ const I18N = {
     "front_capacitacao": "Indicadores da Capacitação",
     "front_gestao": "Indicadores da Gestão",
     "config": "Configurações",
-    "theme_toggle": "Alternar Modo de Cor",
+    "theme_toggle": "Mudar modo",
     "theme_light": "Modo Claro",
     "theme_dim": "Modo Pouco Escuro",
     "theme_dark": "Modo Escuro",
     "theme_light_desc": "Fundo claro, branco e cinzas discretos",
-    "theme_dim_desc": "Azul escuro suave estilo Twitter/X",
+    "theme_dim_desc": "Azul escuro suave com contraste equilibrado",
     "theme_dark_desc": "Preto profundo com alto contraste",
     "em_desenvolvimento": "Em Desenvolvimento",
     "placeholder_cap_title": "Estamos preparando tudo por aqui",
@@ -5610,6 +5976,25 @@ const I18N = {
     "calc_resultado": "Resultado Calculado:"
   },
   "en": {
+    "cat_todos": "All (31)",
+    "cat_finalisticos": "Outcome (5)",
+    "cat_desempenho": "Performance (10)",
+    "cat_descritivos": "Descriptive (16)",
+    "calc_choose_ind": "— Select an indicator to simulate —",
+    "grupo_finalisticos": "Outcome Indicators — Impact, Safety & School Access",
+    "grupo_desempenho": "Performance Indicators — Operational Efficiency & Fleet",
+    "grupo_descritivos": "Descriptive Indicators — Transportation Profile & Characterization",
+    "nenhum_ind_encontrado": "No indicators found",
+    "nenhum_ind_desc": "Try searching with another acronym, keyword, or clear current filter.",
+    "limpar_busca": "Clear search",
+    "status_ok": "Calculated",
+    "status_pendente": "Pending",
+    "tipo_finalistico": "Outcome",
+    "tipo_desempenho": "Performance",
+    "tipo_descritivo": "Descriptive",
+    "tipo_censo": "School Census",
+    "formula_label": "Formula: ",
+    "calc_fill_all": "Please fill all fields with valid numbers.",
     "app_title": "PNITE — National Intelligence Platform for School Transportation",
     "brand_name": "PNITE",
     "brand_sub": "National Intelligence Platform for School Transportation",
@@ -5617,12 +6002,12 @@ const I18N = {
     "front_capacitacao": "Training Indicators",
     "front_gestao": "Management Indicators",
     "config": "Settings",
-    "theme_toggle": "Toggle Color Mode",
+    "theme_toggle": "Change mode",
     "theme_light": "Light Mode",
     "theme_dim": "Dim Mode",
     "theme_dark": "Dark Mode",
     "theme_light_desc": "Clean white and light gray background",
-    "theme_dim_desc": "Soft deep blue Twitter/X style",
+    "theme_dim_desc": "Soft deep blue with balanced contrast",
     "theme_dark_desc": "Deep black with high contrast",
     "em_desenvolvimento": "Under Development",
     "placeholder_cap_title": "We are preparing everything here",
@@ -5750,6 +6135,25 @@ const I18N = {
     "calc_resultado": "Simulation Result:"
   },
   "es": {
+    "cat_todos": "Todos (31)",
+    "cat_finalisticos": "Finalísticos (5)",
+    "cat_desempenho": "Desempeño (10)",
+    "cat_descritivos": "Descriptivos (16)",
+    "calc_choose_ind": "— Seleccione un indicador para simular —",
+    "grupo_finalisticos": "Indicadores Finalísticos — Impacto, Seguridad y Acceso Escolar",
+    "grupo_desempenho": "Indicadores de Desempeño — Eficiencia Operativa y Flota",
+    "grupo_descritivos": "Indicadores Descriptivos — Caracterización y Perfil del Transporte",
+    "nenhum_ind_encontrado": "No se encontró ningún indicador",
+    "nenhum_ind_desc": "Intente buscar por otra sigla, término o borre el filtro actual.",
+    "limpar_busca": "Limpiar búsqueda",
+    "status_ok": "Calculado",
+    "status_pendente": "Pendiente",
+    "tipo_finalistico": "Finalístico",
+    "tipo_desempenho": "Desempeño",
+    "tipo_descritivo": "Descriptivo",
+    "tipo_censo": "Censo Escolar",
+    "formula_label": "Fórmula: ",
+    "calc_fill_all": "Complete todos los campos con valores válidos.",
     "app_title": "PNITE — Plataforma Nacional de Inteligencia en Transporte Escolar",
     "brand_name": "PNITE",
     "brand_sub": "Plataforma Nacional de Inteligencia en Transporte Escolar",
@@ -5757,12 +6161,12 @@ const I18N = {
     "front_capacitacao": "Indicadores de Capacitación",
     "front_gestao": "Indicadores de Gestión",
     "config": "Configuración",
-    "theme_toggle": "Cambiar Modo de Color",
+    "theme_toggle": "Cambiar modo",
     "theme_light": "Modo Claro",
     "theme_dim": "Modo Poco Oscuro",
     "theme_dark": "Modo Oscuro",
     "theme_light_desc": "Fondo claro, blanco y grises suaves",
-    "theme_dim_desc": "Azul oscuro suave estilo Twitter/X",
+    "theme_dim_desc": "Azul oscuro suave con contraste equilibrado",
     "theme_dark_desc": "Negro profundo con alto contraste",
     "em_desenvolvimento": "En Desarrollo",
     "placeholder_cap_title": "Estamos preparando todo por aquí",
@@ -5890,6 +6294,25 @@ const I18N = {
     "calc_resultado": "Resultado Calculado:"
   },
   "it": {
+    "cat_todos": "Tutti (31)",
+    "cat_finalisticos": "Finalistici (5)",
+    "cat_desempenho": "Prestazione (10)",
+    "cat_descritivos": "Descrittivi (16)",
+    "calc_choose_ind": "— Seleziona un indicatore da simulare —",
+    "grupo_finalisticos": "Indicatori Finalistici — Impatto, Sicurezza e Accesso Scolastico",
+    "grupo_desempenho": "Indicatori di Prestazione — Efficienza Operativa e Flotta",
+    "grupo_descritivos": "Indicatori Descrittivi — Caratterizzazione e Profilo del Trasporto",
+    "nenhum_ind_encontrado": "Nessun indicatore trovato",
+    "nenhum_ind_desc": "Prova a cercare un'altra sigla, termine o cancella il filtro corrente.",
+    "limpar_busca": "Cancella ricerca",
+    "status_ok": "Calcolato",
+    "status_pendente": "In sospeso",
+    "tipo_finalistico": "Finalistico",
+    "tipo_desempenho": "Prestazione",
+    "tipo_descritivo": "Descrittivo",
+    "tipo_censo": "Censimento Scolastico",
+    "formula_label": "Formula: ",
+    "calc_fill_all": "Compila tutti i campi con valori validi.",
     "app_title": "PNITE — Piattaforma Nazionale di Intelligence sul Trasporto Scolastico",
     "brand_name": "PNITE",
     "brand_sub": "Piattaforma Nazionale di Intelligence sul Trasporto Scolastico",
@@ -5902,7 +6325,7 @@ const I18N = {
     "theme_dim": "Modalità Poco Scura",
     "theme_dark": "Modalità Scura",
     "theme_light_desc": "Sfondo chiaro, bianco e grigi discreti",
-    "theme_dim_desc": "Blu scuro morbido in stile Twitter/X",
+    "theme_dim_desc": "Blu scuro morbido con contrasto bilanciato",
     "theme_dark_desc": "Nero profondo ad alto contrasto",
     "em_desenvolvimento": "In Sviluppo",
     "placeholder_cap_title": "Stiamo preparando tutto qui",
@@ -6030,6 +6453,25 @@ const I18N = {
     "calc_resultado": "Risultato Simulato:"
   },
   "ru": {
+    "cat_todos": "Все (31)",
+    "cat_finalisticos": "Итоговые (5)",
+    "cat_desempenho": "Эффективность (10)",
+    "cat_descritivos": "Описательные (16)",
+    "calc_choose_ind": "— Выберите показатель для симуляции —",
+    "grupo_finalisticos": "Итоговые показатели — влияние, безопасность и доступность",
+    "grupo_desempenho": "Показатели эффективности — операционная деятельность и автопарк",
+    "grupo_descritivos": "Описательные показатели — характеристика и профиль перевозок",
+    "nenhum_ind_encontrado": "Показатели не найдены",
+    "nenhum_ind_desc": "Попробуйте выполнить поиск по другой аббревиатуре или сбросьте фильтр.",
+    "limpar_busca": "Очистить поиск",
+    "status_ok": "Рассчитано",
+    "status_pendente": "В ожидании",
+    "tipo_finalistico": "Итоговый",
+    "tipo_desempenho": "Эффективность",
+    "tipo_descritivo": "Описательный",
+    "tipo_censo": "Школьная перепись",
+    "formula_label": "Формула: ",
+    "calc_fill_all": "Заполните все поля допустимыми значениями.",
     "app_title": "PNITE — Национальная платформа аналитики школьного транспорта",
     "brand_name": "PNITE",
     "brand_sub": "Национальная платформа аналитики школьного транспорта",
@@ -6042,7 +6484,7 @@ const I18N = {
     "theme_dim": "Умеренно темная",
     "theme_dark": "Темная тема",
     "theme_light_desc": "Светлый фон, белый и мягкие серые тона",
-    "theme_dim_desc": "Мягкий темно-синий стиль Twitter/X",
+    "theme_dim_desc": "Мягкий темно-синий с гармоничным контрастом",
     "theme_dark_desc": "Глубокий черный с высоким контрастом",
     "em_desenvolvimento": "В разработке",
     "placeholder_cap_title": "Мы готовим этот раздел",
@@ -6223,6 +6665,206 @@ function toggleSection(secId) {
   if (secId === 'secDadosSete' && sec.classList.contains('open')) {
     setTimeout(() => { renderSete(); }, 40);
   }
+}
+
+
+// ==========================================================================
+// PNITE v.2.2.0 — CONTROLADOR DE BUSCA E CATEGORIZAÇÃO DE INDICADORES
+// ==========================================================================
+let currentGiFilter = 'todos';
+
+function setGiFilter(filter, btn) {
+  currentGiFilter = filter;
+  document.querySelectorAll('#giCategoryChips .cat-pill').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderGiTable();
+}
+
+function renderGiTable() {
+  const tb = document.getElementById('giTableBody');
+  if (!tb) return;
+
+  const searchInput = document.getElementById('giSearch');
+  const q = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+  let list = ALL_INDICATORS;
+  if (currentGiFilter !== 'todos') {
+    list = list.filter(i => i.tipo === currentGiFilter);
+  }
+
+  if (q) {
+    list = list.filter(i => 
+      i.sigla.toLowerCase().includes(q) ||
+      i.nome.toLowerCase().includes(q) ||
+      (i.formula || '').toLowerCase().includes(q) ||
+      (i.fonte || '').toLowerCase().includes(q)
+    );
+  }
+
+  if (list.length === 0) {
+    tb.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align:center;padding:36px 16px;color:var(--text-2)">
+          <i class="ti ti-search-off" style="font-size:28px;color:var(--text-3);display:block;margin-bottom:8px"></i>
+          <div style="font-weight:600;font-size:14px;color:var(--text-1)">${t('nenhum_ind_encontrado', 'Nenhum indicador encontrado')}</div>
+          <div style="font-size:12px;margin-top:4px">${t('nenhum_ind_desc', 'Tente buscar por outra sigla, termo ou limpe o filtro atual.')}</div>
+          <button class="btn btn-outline" onclick="document.getElementById('giSearch').value='';setGiFilter('todos',document.querySelector('.cat-pill'));" style="margin-top:12px;padding:6px 16px;font-size:11.5px;border-radius:16px">
+            ${t('limpar_busca', 'Limpar busca')}
+          </button>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  let html = '';
+  const groupOrder = [
+    { key: 'FNL', title: t('grupo_finalisticos', 'Indicadores Finalísticos — Impacto, Segurança & Acesso Escolar') },
+    { key: 'P', title: t('grupo_desempenho', 'Indicadores de Desempenho — Eficiência Operacional & Frota') },
+    { key: 'D', title: t('grupo_descritivos', 'Indicadores Descritivos — Caracterização e Perfil do Transporte') }
+  ];
+
+  if (currentGiFilter === 'todos' && !q) {
+    // Apresentação organizada em 3 blocos hierárquicos (Anexo 1)
+    groupOrder.forEach(grp => {
+      const subList = list.filter(i => i.tipo === grp.key);
+      if (subList.length > 0) {
+        html += `
+          <tr class="ind-group-header-row">
+            <td colspan="7">${grp.title} (${subList.length})</td>
+          </tr>
+        `;
+        html += subList.map(renderGiRow).join('');
+      }
+    });
+  } else {
+    html = list.map(renderGiRow).join('');
+  }
+
+  tb.innerHTML = html;
+}
+
+function renderGiRow(ind) {
+  let badgeHtml = '';
+  if (ind.badge === 'novo') badgeHtml = '<span class="badge-novo" style="margin-left:6px">' + t('badge_novo', 'Novo') + '</span>';
+  else if (ind.badge === 'rev') badgeHtml = '<span class="badge-rev" style="margin-left:6px">' + t('badge_revisado', 'Revisado') + '</span>';
+
+  let tipoBadge = '<span class="badge-tipo-d">' + t('tipo_descritivo', 'Descritivo') + '</span>';
+  if (ind.tipo === 'P') tipoBadge = '<span class="badge-tipo-p">' + t('tipo_desempenho', 'Desempenho') + '</span>';
+  else if (ind.tipo === 'FNL') tipoBadge = '<span class="badge-tipo-fnl">' + t('tipo_finalistico', 'Finalístico') + '</span>';
+
+  const valDisp = (ind.valNac !== null && ind.valNac !== undefined)
+    ? (ind.unit === '%' ? ind.valNac.toFixed(1) + '%' : ind.unit === 'índice' ? ind.valNac.toFixed(2) : ind.valNac.toFixed(1) + ' ' + ind.unit)
+    : '<span style="color:var(--text-3)">—</span>';
+
+  const stDisp = ind.status === 'ok'
+    ? `<span class="status-pill-ok" title="${t('status_disp_title', 'Disponível no sistema')}"><i class="ti ti-check"></i> ${t('status_ok', 'Calculado')}</span>`
+    : `<span class="status-pill-pendente" title="${t('status_pend_title', 'Dado pendente na base atual')}"><i class="ti ti-clock"></i> ${t('status_pendente', 'Pendente')}</span>`;
+
+  return `
+    <tr>
+      <td>
+        <span class="sigla-chip">${ind.sigla}</span>${badgeHtml}
+      </td>
+      <td>
+        <div style="font-weight:600;color:var(--text-1)">${ind.nome}</div>
+        ${ind.obj ? `<div style="font-size:11px;color:var(--text-3);margin-top:2px;line-height:1.3">${ind.obj}</div>` : ''}
+      </td>
+      <td>${tipoBadge}</td>
+      <td>
+        <span class="formula-code" title="${ind.formula}">${ind.formula}</span>
+      </td>
+      <td>
+        <span style="font-size:11.5px;color:var(--text-2);font-weight:500">${ind.fonte}</span>
+      </td>
+      <td style="text-align:right">
+        <span style="font-weight:700;font-size:13px;color:var(--text-1)">${valDisp}</span>
+      </td>
+      <td style="text-align:center">${stDisp}</td>
+    </tr>
+  `;
+}
+
+// ==========================================================================
+// INICIALIZAÇÃO DA LISTA SUSPENSA DA CALCULADORA (ANEXO 3)
+// ==========================================================================
+function initCalcSelect() {
+  const sel = document.getElementById('calcSelect');
+  if (!sel) return;
+
+  const currentVal = sel.value;
+  let html = `<option value="" disabled ${!currentVal ? 'selected' : ''}>${t('calc_choose_ind', '— Selecione um indicador para simular —')}</option>`;
+
+  const types = [
+    { key: 'FNL', label: t('tipo_finalistico', 'Finalísticos') },
+    { key: 'P', label: t('tipo_desempenho', 'Desempenho') },
+    { key: 'D', label: t('tipo_descritivo', 'Descritivos') }
+  ];
+
+  types.forEach(tp => {
+    const inds = ALL_INDICATORS.filter(i => i.tipo === tp.key && CALC_DEFS[i.sigla]);
+    if (inds.length > 0) {
+      html += `<optgroup label="${tp.label}">`;
+      inds.forEach(i => {
+        const isSel = i.sigla === currentVal ? 'selected' : '';
+        html += `<option value="${i.sigla}" ${isSel}>${i.sigla} — ${i.nome}</option>`;
+      });
+      html += `</optgroup>`;
+    }
+  });
+
+  sel.innerHTML = html;
+}
+
+// ==========================================================================
+// POPULAR E TRADUZIR O SELETOR DE INDICADOR NO MAPA
+// ==========================================================================
+function updateMapaIndSelect() {
+  const sel = document.getElementById('mapaIndSelect');
+  if (!sel) return;
+  const currentVal = sel.value || 'PRGM';
+
+  const tipoLabels = {
+    FNL: t('tipo_finalistico', 'Finalísticos'),
+    P: t('tipo_desempenho', 'Desempenho'),
+    D: t('tipo_descritivo', 'Descritivos'),
+    CENSO: t('tipo_censo', 'Censo Escolar')
+  };
+
+  let html = '';
+  ['FNL', 'P', 'D', 'CENSO'].forEach(tKey => {
+    const inds = MAPA_INDS.filter(i => i.tipo === tKey);
+    if (!inds.length) return;
+    html += `<optgroup label="${tipoLabels[tKey] || tKey}">`;
+    inds.forEach(i => {
+      const isSel = i.sigla === currentVal ? 'selected' : '';
+      html += `<option value="${i.sigla}" ${isSel}>${i.sigla} — ${i.nome}</option>`;
+    });
+    html += `</optgroup>`;
+  });
+  sel.innerHTML = html;
+  sel.value = currentVal;
+}
+
+// ==========================================================================
+// PADRONIZAÇÃO E CUSTOMIZAÇÃO DE TODAS AS DROP LISTS (ANEXOS 3 E 4)
+// ==========================================================================
+function initPniteCustomDropdowns() {
+  const selectIds = [
+    'calcSelect',
+    'seteUfSel',
+    'selRegiaoDropdown',
+    'selEstadoDropdown',
+    'selMunUf',
+    'selMunCity',
+    'mapaIndSelect'
+  ];
+
+  selectIds.forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    sel.classList.add('form-select');
+  });
 }
 
 function switchInnerTab(secId, tabId, btn) {
@@ -6497,20 +7139,28 @@ function toggleTheme() {
 function updateThemeUI() {
   const icon = document.getElementById('themeIcon');
   const btn = document.getElementById('headerThemeBtn');
+  const activeTxt = document.getElementById('themeActiveText');
+
+  let modeName = t('theme_light', 'Modo Claro');
+  if (currentTheme === 'dim') modeName = t('theme_dim', 'Modo Pouco Escuro');
+  else if (currentTheme === 'dark') modeName = t('theme_dark', 'Modo Escuro');
+
+  if (activeTxt) activeTxt.textContent = modeName;
+
   if (icon) {
     if (currentTheme === 'light') {
       icon.className = 'ti ti-sun';
-      if (btn) btn.title = t('theme_light', 'Modo Claro');
+      if (btn) btn.title = modeName;
     } else if (currentTheme === 'dim') {
       icon.className = 'ti ti-sunset';
-      if (btn) btn.title = t('theme_dim', 'Modo Pouco Escuro');
+      if (btn) btn.title = modeName;
     } else {
       icon.className = 'ti ti-moon';
-      if (btn) btn.title = t('theme_dark', 'Modo Escuro');
+      if (btn) btn.title = modeName;
     }
   }
 
-  // Atualiza botões no modal de configurações
+  // Atualiza botões no modal de configurações se existirem
   ['light', 'dim', 'dark'].forEach(m => {
     const b = document.getElementById('themeBtn_' + m);
     if (b) {
@@ -6641,13 +7291,22 @@ function renderAllViews() {
   if (typeof renderGiTable === 'function') renderGiTable();
   if (typeof renderMemoria === 'function') renderMemoria();
   if (typeof renderSete === 'function') renderSete();
+  if (typeof initCalcSelect === 'function') initCalcSelect();
+  if (typeof updateMapaIndSelect === 'function') updateMapaIndSelect();
+  if (typeof initPniteCustomDropdowns === 'function') initPniteCustomDropdowns();
+  if (typeof updateThemeUI === 'function') updateThemeUI();
   if (typeof syncVersionInfo === 'function') syncVersionInfo();
 }
 
 
 syncVersionInfo();
+window.addEventListener("DOMContentLoaded", syncVersionInfo);
+setTimeout(syncVersionInfo, 200);
 initTerritorySelectors();
 initMapa();
+initCalcSelect();
+updateMapaIndSelect();
+initPniteCustomDropdowns();
 try {
   const savedTheme = localStorage.getItem('pnite_theme') || 'light';
   setTheme(savedTheme);
@@ -6678,7 +7337,7 @@ updateMapInfoContent();
       </div>
     </div>
     <div class="pif-body">
-      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.2.0.0</strong></div>
+      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.2.2.0</strong></div>
       <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">15/09/2026</span></div>
       <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">15:45</span></div>
       <div class="pif-row"><span>Responsável técnico:</span><span class="pnite-author-val">Vítor Lima</span></div>
@@ -6690,7 +7349,7 @@ updateMapInfoContent();
   </div>
   <button class="pif-btn" id="pifBtn" aria-label="Informações de Versão">
     <i class="ti ti-info-circle"></i>
-    <span class="pif-btn-label pnite-version-val">v.2.0.0</span>
+    <span class="pif-btn-label pnite-version-val">v.2.2.0</span>
   </button>
 </div>
 
