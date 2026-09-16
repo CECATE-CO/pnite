@@ -2067,6 +2067,288 @@ body {
   border-radius: 6px;
 }
 
+
+/* ==========================================================================
+   PNITE v.2.1.0 — SISTEMA DE 3 MODOS DE COR (LIGHT, DIM, DARK)
+   ========================================================================== */
+:root, [data-theme="light"] {
+  --c-blue: #2589F4;
+  --c-slate: #595959;
+  --c-rose: #DF6D7C;
+  --c-mint: #3FC688;
+  --c-yellow: #FFCD42;
+
+  --bg-page: #f8f9fb;
+  --bg-card: #ffffff;
+  --bg-sidebar: #ffffff;
+  --bg-hover: #f1f3f7;
+  --bg-active: #eaf2fd;
+  --bg-input: #f8f9fb;
+  --bg-badge: #f0f2f6;
+  --border: #eaedf2;
+  --border-mid: #d7dbe3;
+  --text-1: #1a1d24;
+  --text-2: #595959;
+  --text-3: #8e95a3;
+  --accent: #2589F4;
+  --accent-dark: #1971d2;
+  --accent-light: #eaf2fd;
+  --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+/* 2. MODO POUCO ESCURO — AZUL ESCURO SUAVE ESTILO TWITTER/X DIM */
+[data-theme="dim"] {
+  --c-blue: #4DA3FF;
+  --c-slate: #8B98A5;
+  --c-rose: #F48A98;
+  --c-mint: #53E2A1;
+  --c-yellow: #FFD966;
+
+  --bg-page: #15202B;
+  --bg-card: #1E2732;
+  --bg-sidebar: #19232D;
+  --bg-hover: #22303C;
+  --bg-active: rgba(77, 163, 255, 0.18);
+  --bg-input: #253341;
+  --bg-badge: #273340;
+  --border: #2C3640;
+  --border-mid: #38444D;
+  --text-1: #F7F9F9;
+  --text-2: #8B98A5;
+  --text-3: #6E767D;
+  --accent: #4DA3FF;
+  --accent-dark: #1D9BF0;
+  --accent-light: rgba(77, 163, 255, 0.18);
+  --shadow: 0 4px 22px rgba(0, 0, 0, 0.28);
+}
+
+/* 3. MODO ESCURO — ALTO CONTRASTE E PRETO PROFUNDO */
+[data-theme="dark"] {
+  --c-blue: #60A5FA;
+  --c-slate: #94A3B8;
+  --c-rose: #FB7185;
+  --c-mint: #4ADE80;
+  --c-yellow: #FBBF24;
+
+  --bg-page: #0B0E14;
+  --bg-card: #151921;
+  --bg-sidebar: #11141B;
+  --bg-hover: #1E2430;
+  --bg-active: rgba(96, 165, 250, 0.20);
+  --bg-input: #1A202C;
+  --bg-badge: #1D2330;
+  --border: #232936;
+  --border-mid: #333C4E;
+  --text-1: #FFFFFF;
+  --text-2: #A6B0BF;
+  --text-3: #788496;
+  --accent: #60A5FA;
+  --accent-dark: #3B82F6;
+  --accent-light: rgba(96, 165, 250, 0.20);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* SELETOR DE TEMAS EM 3 CARDS */
+.theme-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+.theme-card-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  color: var(--text-1);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  text-align: left;
+}
+.theme-card-btn:hover {
+  border-color: var(--c-blue);
+  background: var(--bg-hover);
+  transform: translateY(-1px);
+}
+.theme-card-btn.active {
+  border-color: var(--c-blue);
+  background: var(--bg-active);
+  box-shadow: 0 0 0 1px var(--c-blue);
+}
+.tcb-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.tcb-desc {
+  font-size: 11px;
+  color: var(--text-2);
+  line-height: 1.35;
+}
+
+/* CONTROLES TERRITORIAIS PADRONIZADOS DO MAPA */
+.map-level-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.map-level-pills .tl-pill {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+}
+.map-level-pills .tl-pill:hover {
+  border-color: var(--c-blue);
+  color: var(--c-blue);
+}
+.map-level-pills .tl-pill.active {
+  background: var(--c-blue);
+  border-color: var(--c-blue);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(37, 137, 244, 0.35);
+}
+
+/* BOTÃO 'i' E MODAL DE INFORMAÇÕES DO MAPA */
+.map-info-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--c-blue);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+.map-info-btn:hover {
+  background: var(--bg-active);
+  border-color: var(--c-blue);
+  transform: translateY(-1px);
+}
+.map-info-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.map-info-modal-overlay.open {
+  display: flex;
+}
+.map-info-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.32);
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.mib-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.mib-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mib-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--c-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.mib-ind-sigla {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-1);
+}
+.mib-ind-nome {
+  font-size: 13px;
+  color: var(--text-2);
+}
+.mib-close {
+  background: none;
+  border: none;
+  color: var(--text-2);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 6px;
+  border-radius: 8px;
+}
+.mib-close:hover {
+  background: var(--bg-hover);
+  color: var(--text-1);
+}
+.mib-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.mib-item-lbl {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-blue);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mib-item-val {
+  font-size: 13px;
+  color: var(--text-1);
+  line-height: 1.5;
+}
+
 </style>
 
 <script>
@@ -2110,8 +2392,8 @@ window.onerror = function(msg, url, line, col, err) {
         <button class="header-btn" onclick="openSettingsModal()" title="Configurações e Idioma">
           <i class="ti ti-settings"></i> <span data-i18n="config">Configurações</span>
         </button>
-        <button class="header-btn theme-icon-btn" onclick="toggleTheme()" title="Alternar Modo Claro / Escuro">
-          <i class="ti ti-moon" id="themeIcon"></i>
+        <button class="header-btn theme-icon-btn" id="headerThemeBtn" onclick="cycleTheme()" title="Alternar Modo de Cor">
+          <i class="ti ti-sun" id="themeIcon"></i>
         </button>
       </div>
     </div>
@@ -2554,16 +2836,25 @@ window.onerror = function(msg, url, line, col, err) {
         </div>
 
         <div class="mapa-compact-controls">
-          <div style="display:flex;align-items:center;gap:8px">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
             <label style="font-size:12px;font-weight:600;color:var(--text-2)" data-i18n="mapa_sel_ind">Indicador no Mapa:</label>
-            <select id="mapaIndSelect" class="form-select" onchange="renderMapa()" style="min-width:240px"></select>
+            <select id="mapaIndSelect" class="form-select" onchange="onMapaIndSelectChange()" style="min-width:260px"></select>
           </div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <label style="font-size:12px;font-weight:600;color:var(--text-2)" data-i18n="mapa_sel_geo">Nível Geográfico:</label>
-            <div class="pill-group" id="mapaLvlPills">
-              <button class="pill-opt active" onclick="setMapLevel('estado', this)" data-i18n="mapa_geo_uf">Estados (UFs)</button>
-              <button class="pill-opt" onclick="setMapLevel('regiao', this)" data-i18n="mapa_geo_reg">Grandes Regiões</button>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:8px">
+              <label style="font-size:12px;font-weight:600;color:var(--text-2)" data-i18n="mapa_sel_geo">Nível Geográfico:</label>
+              <div class="map-level-pills" id="mapaLvlPills">
+                <button class="tl-pill active" id="mapPillEstado" onclick="setMapLevel('estado', this)">
+                  <i class="ti ti-map"></i> <span data-i18n="mapa_geo_uf">Estados (UFs)</span>
+                </button>
+                <button class="tl-pill" id="mapPillRegiao" onclick="setMapLevel('regiao', this)">
+                  <i class="ti ti-layout-grid"></i> <span data-i18n="mapa_geo_reg">Grandes Regiões</span>
+                </button>
+              </div>
             </div>
+            <button class="map-info-btn" id="mapInfoBtn" onclick="openMapInfoModal()" title="Como interpretar este indicador">
+              <i class="ti ti-info-circle"></i> <span data-i18n="map_info_btn">Como Interpretar</span>
+            </button>
           </div>
         </div>
 
@@ -2591,7 +2882,7 @@ window.onerror = function(msg, url, line, col, err) {
     <footer class="editorial-footer">
       <div class="ef-container">
         <div class="ef-left">
-          <span class="ef-badge" id="pniteVersionBadge">v.2.0.0</span>
+          <span class="ef-badge pnite-version-val" id="pniteVersionBadge">v.2.1.0</span>
           <span>PNITE — Plataforma Nacional de Inteligência em Transporte Escolar</span>
         </div>
         <div class="ef-right">
@@ -2635,22 +2926,33 @@ window.onerror = function(msg, url, line, col, err) {
       </div>
     </div>
 
-    <!-- APARÊNCIA E TEMA -->
+    <!-- APARÊNCIA E 3 MODOS DE COR -->
     <div class="smb-sec">
-      <div class="smb-sec-title" data-i18n="settings_theme_title">Aparência e Tema</div>
-      <div class="smb-sec-desc" data-i18n="settings_theme_desc">Alterne entre o modo claro profissional e o modo escuro de alto contraste.</div>
-      <button class="btn btn-outline" onclick="toggleTheme()" style="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:20px">
-        <i class="ti ti-moon"></i> <span data-i18n="theme_toggle">Alternar Tema</span>
-      </button>
+      <div class="smb-sec-title" data-i18n="settings_theme_title">Modo de Aparência</div>
+      <div class="smb-sec-desc" data-i18n="settings_theme_desc">Escolha entre as três opções de modo de cor para toda a plataforma.</div>
+      <div class="theme-selector-grid">
+        <button class="theme-card-btn" id="themeBtn_light" onclick="setTheme('light')">
+          <div class="tcb-top"><span>☀️</span> <span data-i18n="theme_light">Modo Claro</span></div>
+          <div class="tcb-desc" data-i18n="theme_light_desc">Fundo claro, branco e cinzas discretos</div>
+        </button>
+        <button class="theme-card-btn" id="themeBtn_dim" onclick="setTheme('dim')">
+          <div class="tcb-top"><span>🌅</span> <span data-i18n="theme_dim">Modo Pouco Escuro</span></div>
+          <div class="tcb-desc" data-i18n="theme_dim_desc">Azul escuro suave estilo Twitter/X</div>
+        </button>
+        <button class="theme-card-btn" id="themeBtn_dark" onclick="setTheme('dark')">
+          <div class="tcb-top"><span>🌙</span> <span data-i18n="theme_dark">Modo Escuro</span></div>
+          <div class="tcb-desc" data-i18n="theme_dark_desc">Preto profundo com alto contraste</div>
+        </button>
+      </div>
     </div>
 
     <!-- INFORMAÇÕES DA VERSÃO -->
     <div class="smb-sec">
       <div class="smb-sec-title" data-i18n="settings_info_title">Informações da Versão</div>
       <div style="font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:4px;margin-top:6px">
-        <div><span data-i18n="settings_version">Versão:</span> <b style="color:var(--c-blue)">v.2.0.0</b></div>
-        <div><span data-i18n="settings_updated">Última Atualização:</span> <b>16/09/2026 às 11:00</b></div>
-        <div><span data-i18n="settings_author">Responsável Técnico:</span> <b>Equipe PNITE</b></div>
+        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.2.1.0</b></div>
+        <div><span data-i18n="settings_updated">Última Atualização:</span> <b class="pnite-date-val">16/09/2026</b> às <b class="pnite-time-val">15:30</b></div>
+        <div><span data-i18n="settings_author">Responsável Técnico:</span> <b class="pnite-author-val">Equipe PNITE</b></div>
       </div>
     </div>
 
@@ -2684,9 +2986,9 @@ window.onerror = function(msg, url, line, col, err) {
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.2.0.0";
+const PNITE_VERSION = "v.2.1.0";
 const PNITE_LAST_UPDATE = "16/09/2026";
-const PNITE_LAST_TIME = "11:00";
+const PNITE_LAST_TIME = "15:30";
 const PNITE_LAST_AUTHOR = "Equipe PNITE";
 // ================================================================
 // DADOS REAIS — Relatórios CECATE/UFG 2024-2025
@@ -4409,18 +4711,19 @@ function mapaColor(t, dark, sigla){
   }
 
   let c0, c1;
+  const isDim = currentTheme === 'dim';
   if (theme === 'green') {
-    c0 = dark ? [22, 45, 35] : [232, 248, 241];
-    c1 = dark ? [46, 204, 113] : [16, 140, 80];
+    c0 = isDim ? [25, 45, 40] : (dark ? [20, 40, 30] : [232, 248, 241]);
+    c1 = isDim ? [83, 226, 161] : (dark ? [74, 222, 128] : [16, 140, 80]);
   } else if (theme === 'blue') {
-    c0 = dark ? [20, 36, 60] : [230, 242, 255];
-    c1 = dark ? [37, 137, 244] : [15, 80, 190];
+    c0 = isDim ? [22, 40, 65] : (dark ? [18, 32, 55] : [230, 242, 255]);
+    c1 = isDim ? [77, 163, 255] : (dark ? [96, 165, 250] : [15, 80, 190]);
   } else if (theme === 'red') {
-    c0 = dark ? [50, 25, 30] : [255, 235, 238];
-    c1 = dark ? [239, 83, 80] : [185, 28, 28];
+    c0 = isDim ? [50, 30, 35] : (dark ? [45, 22, 28] : [255, 235, 238]);
+    c1 = isDim ? [244, 138, 152] : (dark ? [251, 113, 133] : [185, 28, 28]);
   } else {
-    c0 = dark ? [50, 40, 20] : [255, 248, 225];
-    c1 = dark ? [255, 179, 0] : [195, 120, 0];
+    c0 = isDim ? [45, 40, 25] : (dark ? [40, 35, 18] : [255, 248, 225]);
+    c1 = isDim ? [255, 217, 102] : (dark ? [251, 191, 36] : [195, 120, 0]);
   }
 
   const r = Math.round(c0[0] + (c1[0] - c0[0]) * t);
@@ -4589,11 +4892,581 @@ function syncVersionInfo(){
   document.querySelectorAll('.pnite-author-val').forEach(el=>el.textContent=PNITE_LAST_AUTHOR);
 }
 
-// Init
-const savedTheme=localStorage.getItem('theme')||'light';
-document.documentElement.setAttribute('data-theme',savedTheme);
-if(savedTheme==='dark') document.getElementById('darkToggle').checked=true;
+// Init limpo v2.1.0
 
+
+const MAPA_INFO_DICT = {
+  "pt": {
+    "TETI": {
+      "nome": "Taxa de Erradicação de Transporte Inadequado",
+      "desc": "Mede a proporção de alunos transportados que utilizam veículos regularizados e adequados às normas de segurança (ônibus, micro-ônibus e vans), em detrimento de veículos precários ou proibidos.",
+      "high": "Excelente padrão de adequação, segurança veicular e proteção à vida dos estudantes.",
+      "low": "Persistência preocupante de veículos inadequados, improvisados ou fora dos padrões do CTB.",
+      "colors": "Escala cromática Verde. Áreas mais escuras indicam maior percentual de erradicação (situação positiva e desejada); áreas mais claras alertam para déficit de veículos adequados.",
+      "limits": "A meta ideal é 100%, correspondendo à eliminação total do transporte escolar inadequado."
+    },
+    "PRGM": {
+      "nome": "Percentual de Rotas Georreferenciadas",
+      "desc": "Mede o percentual de trajetos do transporte escolar cadastrados com coordenadas geográficas e rastreamento espacial completo no sistema SETE.",
+      "high": "Alto nível de governança digital, transparência e capacidade técnica de otimização de itinerários e custos.",
+      "low": "Fragilidade no planejamento territorial, rotas cegas e dificuldade na fiscalização da prestação dos serviços.",
+      "colors": "Escala cromática Azul. Áreas mais escuras representam elevada cobertura georreferenciada; áreas mais claras sinalizam lacunas de mapeamento.",
+      "limits": "Valores próximos de 100% significam mapeamento geoespacial integral da malha municipal; valores próximos de 0% apontam ausência de dados geográficos."
+    },
+    "PRRM": {
+      "nome": "Percentual de Rotas Rodoviárias",
+      "desc": "Mede a participação relativa dos itinerários realizados exclusivamente por vias terrestres (estradas de terra, rodovias pavimentadas e vias urbanas) em relação ao total de rotas.",
+      "high": "Predomínio quase exclusivo do modal terrestre na malha de atendimento aos estudantes.",
+      "low": "Presença expressiva de outros modais de transporte, especialmente o transporte aquaviário.",
+      "colors": "Escala cromática Azul. Áreas mais escuras indicam forte concentração em rodovias e estradas.",
+      "limits": "Valores próximos de 100% indicam que todo o transporte do território é realizado em vias terrestres."
+    },
+    "PRHM": {
+      "nome": "Percentual de Rotas Hidroviárias",
+      "desc": "Mede a proporção de itinerários escolares realizados por rios, lagos, igarapés e canais náuticos utilizando embarcações (barcos escolares, lanchas e canoas).",
+      "high": "Forte dependência e vocação do transporte fluvial, exigindo barcos seguros e atracadouros adequados.",
+      "low": "Território predominantemente terrestre, com pouca ou nenhuma utilização de vias aquáticas.",
+      "colors": "Escala cromática Azul. Áreas mais escuras evidenciam alta dependência hidroviária (ex.: Região Norte e Pantanal).",
+      "limits": "Valores próximos de 100% apontam dependência vital da navegação para o acesso à escola."
+    },
+    "PRMM": {
+      "nome": "Percentual de Rotas Multimodais",
+      "desc": "Mede a frequência de rotas que combinam obrigatoriamente mais de um modal no mesmo trajeto (ex.: trecho de barco seguido de trecho em ônibus escolar).",
+      "high": "Alta complexidade logística de transbordo, exigindo sincronização de horários e gerando tempos de viagem maiores.",
+      "low": "Operação logística direta em modal único, sem necessidade de troca de veículos.",
+      "colors": "Escala cromática Âmbar. Áreas mais escuras indicam maior incidência de rotas integradas complexas.",
+      "limits": "Valores próximos de 0% indicam ausência de transbordo multimodal no transporte escolar."
+    },
+    "PVP": {
+      "nome": "Percentual de Veículos Próprios",
+      "desc": "Mede a proporção da frota pertencente diretamente ao patrimônio da administração pública municipal ou estadual em relação à frota total.",
+      "high": "Maior autonomia patrimonial da gestão pública e menor dependência de processos licitatórios e contratos privados.",
+      "low": "Elevada dependência de locação, terceirização de serviços e contratação de operadores particulares.",
+      "colors": "Escala cromática Verde. Áreas mais escuras indicam maior peso da frota pública estatal.",
+      "limits": "100% significa operação integral com frota própria; 0% significa terceirização completa."
+    },
+    "PVT": {
+      "nome": "Percentual de Veículos Terceirizados",
+      "desc": "Mede a proporção de veículos contratados de empresas ou motoristas terceirizados para a execução do serviço de transporte escolar.",
+      "high": "Forte terceirização, exigindo regulação contratual rigorosa, fiscalização veicular constante e acompanhamento de custos.",
+      "low": "Baixa terceirização e predomínio de frota pública do ente federativo.",
+      "colors": "Escala cromática Coral/Vermelho. Áreas mais escuras alertam para maior volume de contratação externa.",
+      "limits": "100% indica que a totalidade dos veículos é operada por prestadores contratados."
+    },
+    "IUC": {
+      "nome": "Índice de Utilização da Capacidade",
+      "desc": "Mede a razão matemática entre o número de estudantes efetivamente transportados e a capacidade máxima autorizada de assentos da frota.",
+      "high": "Valores acima de 1.0 (ou 100%) denunciam superlotação veicular perigosa, violando normas de trânsito e colocando estudantes em risco.",
+      "low": "Valores muito abaixo de 0.5 indicam ociosidade substancial de assentos e subaproveitamento dos veículos públicos.",
+      "colors": "Escala cromática Âmbar. Áreas mais escuras indicam maior taxa de ocupação dos assentos.",
+      "limits": "O valor ideal de equilíbrio é próximo de 1.0 (capacidade plena sem exceder a lotação máxima permitida)."
+    },
+    "ATE": {
+      "nome": "Alunos Transportados por Escola",
+      "desc": "Mede a média aritmética do número de estudantes beneficiários do transporte escolar atendidos por estabelecimento de ensino.",
+      "high": "Grande concentração de demanda escolar em polos educacionais de grande porte.",
+      "low": "Rede fragmentada com atendimento de pequenos contingentes de alunos por unidade escolar.",
+      "colors": "Escala cromática Azul. Áreas mais escuras indicam maior escala média de atendimento por escola.",
+      "limits": "Valores expressos em número absoluto de alunos por escola."
+    },
+    "MEDATE": {
+      "nome": "Mediana de Alunos Transportados por Escola",
+      "desc": "Representa o valor central da distribuição de alunos transportados por escola, eliminando a distorção estatística de unidades atípicas muito grandes ou muito pequenas.",
+      "high": "A escola típica do território atende a um número expressivo de estudantes transportados.",
+      "low": "A escola típica atende a poucos alunos que necessitam de transporte.",
+      "colors": "Escala cromática Azul. Áreas mais escuras revelam mediana típica mais elevada.",
+      "limits": "Valor numérico expresso em alunos por escola típica."
+    },
+    "IPTE": {
+      "nome": "Índice de Proporcionalidade Municipal e Estadual",
+      "desc": "Expressa a repartição proporcional da carga de atendimento aos alunos entre a rede de ensino municipal e a rede estadual.",
+      "high": "Preponderância da responsabilidade municipal no atendimento dos alunos transportados.",
+      "low": "Equilíbrio ou maior participação direta da rede estadual no fornecimento do transporte.",
+      "colors": "Escala cromática Âmbar. Áreas mais escuras indicam maior peso relativo da gestão municipal.",
+      "limits": "Índice adimensional de proporção entre as esferas governamentais."
+    },
+    "PRIO": {
+      "nome": "Percentual de Rotas com Impedância Operacional",
+      "desc": "Mede a proporção de rotas escolares que enfrentam obstáculos severos de tráfego, como estradas intransitáveis, pontes precárias, lamaçais, porteiras ou alagamentos sazonais.",
+      "high": "Grave precariedade da infraestrutura viária, risco frequente de perda de dias letivos e desgaste excessivo dos veículos.",
+      "low": "Boas condições de trafegabilidade nas vias escolares e baixo risco de interrupção das aulas.",
+      "colors": "Escala cromática Coral/Vermelho. Áreas mais escuras alertam para maior gravidade e proporção de obstáculos críticos (situação desfavorável); áreas claras indicam boa fluidez viária.",
+      "limits": "A meta absoluta de segurança e regularidade é 0% de rotas com impedância."
+    },
+    "PMVE": {
+      "nome": "Percentual de Motoristas com Vínculo Empregatício",
+      "desc": "Mede a taxa de formalização contratual da equipe de condutores escolares, verificando contratação estatutária ou CLT formal.",
+      "high": "Alta estabilidade profissional, capacitação contínua e maior segurança jurídica na prestação do serviço.",
+      "low": "Vínculos informais, contratos precários e alta rotatividade de condutores escolares.",
+      "colors": "Escala cromática Verde. Áreas mais escuras indicam maior formalização da força de trabalho.",
+      "limits": "A meta ideal é 100% de condutores formalizados e habilitados."
+    },
+    "PMNVE": {
+      "nome": "Percentual de Monitores com Vínculo Empregatício",
+      "desc": "Mede a formalização e estabilidade dos monitores escolares embarcados que acompanham e protegem os estudantes nos trajetos.",
+      "high": "Apoio profissional estruturado para o embarque, desembarque e segurança dos estudantes.",
+      "low": "Ausência ou precariedade na contratação de profissionais de monitoria escolar.",
+      "colors": "Escala cromática Verde. Áreas mais escuras indicam equipe de monitores regularizada.",
+      "limits": "A meta ideal é 100% de monitores regularizados em rotas que exigem assistência."
+    }
+  },
+  "en": {
+    "TETI": {
+      "nome": "Rate of Inadequate Transportation Eradication",
+      "desc": "Measures the proportion of transported students utilizing authorized, safe vehicles (buses, microbuses, and vans) complying with official standards, over makeshift or unauthorized vehicles.",
+      "high": "Excellent vehicular adequacy, enhanced safety, and student welfare on transit.",
+      "low": "Worrying presence of precarious, uncertified, or non-compliant transport vehicles.",
+      "colors": "Green chromatic scale. Darker areas denote higher eradication rates (desirable outcome); lighter areas indicate a deficit in safe vehicles.",
+      "limits": "The target benchmark is 100%, representing complete eradication of inadequate transport."
+    },
+    "PRGM": {
+      "nome": "Percentage of Georeferenced Routes",
+      "desc": "Measures the proportion of school transportation routes mapped with comprehensive GIS coordinates within the SETE platform.",
+      "high": "Advanced digital governance, transit transparency, and route optimization capability.",
+      "low": "Weak territorial tracking, unmapped itineraries, and audit difficulties.",
+      "colors": "Blue chromatic scale. Darker areas represent high digital coverage; lighter areas highlight mapping gaps.",
+      "limits": "Values close to 100% denote fully georeferenced networks; values near 0% indicate lack of GIS mapping."
+    },
+    "PRRM": {
+      "nome": "Percentage of Road Routes",
+      "desc": "Measures the share of itineraries operated exclusively over land roads and streets relative to all transit routes.",
+      "high": "Absolute prevalence of terrestrial road transportation in the network.",
+      "low": "Significant presence of alternative modes, particularly waterway transit.",
+      "colors": "Blue chromatic scale. Darker shades indicate heavy concentration on roadways.",
+      "limits": "Values approaching 100% mean the entire regional network is land-based."
+    },
+    "PRHM": {
+      "nome": "Percentage of Waterway Routes",
+      "desc": "Measures the proportion of school itineraries navigated across rivers, lakes, and channels using authorized watercraft.",
+      "high": "Strong reliance on river transportation, characteristic of riparian and wetland regions.",
+      "low": "Primarily land-based territory with minimal or no water navigation.",
+      "colors": "Blue chromatic scale. Darker tones indicate high waterway dependency (e.g. Amazon Basin).",
+      "limits": "Values near 100% indicate vital navigation dependency to reach schools."
+    },
+    "PRMM": {
+      "nome": "Percentage of Multimodal Routes",
+      "desc": "Measures the prevalence of routes requiring transfers across multiple distinct transit modes within a single journey.",
+      "high": "Substantial logistical transfer complexity and longer student commute durations.",
+      "low": "Direct single-mode operation with no transfer points.",
+      "colors": "Amber chromatic scale. Darker shades indicate higher incidence of complex multimodal routes.",
+      "limits": "Values near 0% reflect an absence of multimodal transfers."
+    },
+    "PVP": {
+      "nome": "Percentage of Government-Owned Fleet",
+      "desc": "Measures the share of the fleet directly owned by the public administration compared to contracted private vehicles.",
+      "high": "Greater public asset autonomy and reduced dependence on private procurement contracts.",
+      "low": "High reliance on rental, outsourced contractors, and external providers.",
+      "colors": "Green chromatic scale. Darker areas highlight high public fleet ownership.",
+      "limits": "100% indicates full public operation; 0% represents total outsourcing."
+    },
+    "PVT": {
+      "nome": "Percentage of Outsourced Fleet",
+      "desc": "Measures the proportion of vehicles contracted from external operators to execute school transportation.",
+      "high": "Extensive outsourcing, demanding rigorous contract monitoring and vehicle inspections.",
+      "low": "Low outsourcing with predominantly public-owned vehicles.",
+      "colors": "Coral/Red chromatic scale. Darker shades highlight heavy external contracting.",
+      "limits": "100% indicates all school vehicles are externally contracted."
+    },
+    "IUC": {
+      "nome": "Capacity Utilization Index",
+      "desc": "Measures the mathematical ratio between the number of students transported and the certified seating capacity of the fleet.",
+      "high": "Values exceeding 1.0 (or 100%) indicate dangerous vehicle overcrowding, violating safety laws.",
+      "low": "Values substantially below 0.5 reflect significant seat vacancy and fleet cost inefficiency.",
+      "colors": "Amber chromatic scale. Darker tones indicate higher passenger occupancy.",
+      "limits": "Optimal operational equilibrium is around 1.0 (full seating without hazardous overloading)."
+    },
+    "ATE": {
+      "nome": "Students Transported per School",
+      "desc": "Calculates the average number of transported student beneficiaries per recipient educational facility.",
+      "high": "Dense concentration of transit demand in large centralized school hubs.",
+      "low": "Fragmented school network serving small passenger contingents per facility.",
+      "colors": "Blue chromatic scale. Darker areas denote a higher student-to-school average.",
+      "limits": "Expressed in absolute student headcount per school."
+    },
+    "MEDATE": {
+      "nome": "Median Students Transported per School",
+      "desc": "Identifies the median benchmark of transported students per school, filtering out outliers from very large or small facilities.",
+      "high": "The typical educational facility in the territory serves a substantial transported contingent.",
+      "low": "The typical facility accommodates few transported pupils.",
+      "colors": "Blue chromatic scale. Darker areas indicate a higher typical median.",
+      "limits": "Expressed as headcount per typical educational facility."
+    },
+    "IPTE": {
+      "nome": "Municipal and State Proportionality Index",
+      "desc": "Measures the proportional balance of school transit responsibilities between municipal and state public education systems.",
+      "high": "Predominance of municipal responsibility in transporting students.",
+      "low": "Parity or direct state education department leadership in transit provision.",
+      "colors": "Amber chromatic scale. Darker areas signify a higher municipal share.",
+      "limits": "Dimensionless ratio expressing intergovernmental balance."
+    },
+    "PRIO": {
+      "nome": "Percentage of Routes with Operational Impedance",
+      "desc": "Measures the proportion of school transit itineraries facing severe physical impediments such as impassable mud, damaged bridges, or seasonal floods.",
+      "high": "Critical roadway infrastructure deficiencies, frequent school cancellations, and accelerated vehicular wear.",
+      "low": "Reliable roadway conditions with low risk of transit interruption.",
+      "colors": "Coral/Red chromatic scale. Darker areas flag severe physical impediments (critical condition); lighter tones indicate smooth navigability.",
+      "limits": "The ultimate safety and reliability benchmark is 0% routes with impedance."
+    },
+    "PMVE": {
+      "nome": "Percentage of Formally Contracted Drivers",
+      "desc": "Assesses the formal legal employment status of school bus drivers under civil service or formal labor contracts.",
+      "high": "High workforce stability, ongoing professional training, and legal compliance.",
+      "low": "Informal arrangements, precarious contracts, and high driver turnover.",
+      "colors": "Green chromatic scale. Darker tones indicate a higher formalization rate.",
+      "limits": "The ideal target is 100% formal, certified drivers."
+    },
+    "PMNVE": {
+      "nome": "Percentage of Formally Contracted Monitors",
+      "desc": "Measures the formal contracting status of onboard transit monitors dedicated to protecting and assisting students.",
+      "high": "Structured professional care for safe student boarding, transit, and alighting.",
+      "low": "Scarcity or informality among student monitoring staff.",
+      "colors": "Green chromatic scale. Darker areas represent well-regularized monitor coverage.",
+      "limits": "Target benchmark is 100% formal monitor coverage on routes requiring assistance."
+    }
+  },
+  "es": {
+    "TETI": {
+      "nome": "Tasa de Erradicación de Transporte Inadecuado",
+      "desc": "Mide la proporción de estudiantes que utilizan vehículos autorizados y seguros (autobuses, microbuses y furgonetas) en lugar de vehículos precarios o no autorizados.",
+      "high": "Excelente nivel de seguridad vehicular y protección integral para los estudiantes.",
+      "low": "Preocupante persistencia de vehículos inadecuados o fuera de norma.",
+      "colors": "Escala cromática Verde. Las áreas más oscuras denotan mayor erradicación (situación favorable); las claras alertan sobre déficit vehicular.",
+      "limits": "La meta óptima es el 100%, representando la erradicación total del transporte inseguro."
+    },
+    "PRGM": {
+      "nome": "Porcentaje de Rutas Georreferenciadas",
+      "desc": "Mide el porcentaje de trayectos del transporte escolar mapeados con coordenadas espaciales completas en el sistema SETE.",
+      "high": "Alta gobernanza digital, transparencia y capacidad técnica de optimización de itinerarios.",
+      "low": "Débil seguimiento territorial, rutas no cartografiadas y dificultad de auditoría.",
+      "colors": "Escala cromática Azul. Las áreas más oscuras representan alta cobertura cartográfica.",
+      "limits": "Cercano al 100% indica mapeo integral de la red; cercano al 0% indica ausencia de datos SIG."
+    },
+    "PRRM": {
+      "nome": "Porcentaje de Rutas Terrestres",
+      "desc": "Mide la participación de los itinerarios operados exclusivamente por carreteras y caminos terrestres.",
+      "high": "Predominio absoluto del transporte terrestre en el territorio.",
+      "low": "Presencia significativa de otros modos, especialmente el fluvial.",
+      "colors": "Escala cromática Azul. Tonos oscuros indican alta concentración en carreteras.",
+      "limits": "Valores cercanos al 100% indican red 100% terrestre."
+    },
+    "PRHM": {
+      "nome": "Porcentaje de Rutas Fluviales",
+      "desc": "Mide la proporción de itinerarios escolares operados por ríos, lagos y canales en embarcaciones autorizadas.",
+      "high": "Fuerte vocación y dependencia fluvial, típica de regiones ribereñas.",
+      "low": "Territorio predominantemente terrestre sin navegación escolar.",
+      "colors": "Escala cromática Azul. Tonos oscuros indican alta dependencia acuática.",
+      "limits": "Cercano al 100% evidencia dependencia vital de la navegación fluvial."
+    },
+    "PRMM": {
+      "nome": "Porcentaje de Rutas Multimodales",
+      "desc": "Mide las rutas que combinan obligatoriamente más de un modo de transporte en el mismo viaje (ej.: lancha y autobús).",
+      "high": "Alta complejidad logística de transbordo y mayores tiempos de traslado.",
+      "low": "Operación directa en un solo modo sin trasbordos.",
+      "colors": "Escala cromática Ámbar. Tonos oscuros indican mayor complejidad multimodal.",
+      "limits": "Cercano al 0% indica ausencia de trasbordos multimodales."
+    },
+    "PVP": {
+      "nome": "Porcentaje de Vehículos Propios",
+      "desc": "Mide la proporción de la flota perteneciente directamente a la administración pública municipal o estatal.",
+      "high": "Mayor autonomía patrimonial pública y menor dependencia de licitaciones externas.",
+      "low": "Alta dependencia de contratación externa y operadores privados.",
+      "colors": "Escala cromática Verde. Tonos oscuros reflejan mayor patrimonio público vehicular.",
+      "limits": "100% indica flota 100% pública; 0% indica tercerización total."
+    },
+    "PVT": {
+      "nome": "Porcentaje de Vehículos Tercerizados",
+      "desc": "Mide la proporción de vehículos contratados a operadores externos para el transporte escolar.",
+      "high": "Fuerte tercerización, requiriendo estricta fiscalización contractual e inspección vehicular.",
+      "low": "Baja tercerización y predominio de flota propia municipal.",
+      "colors": "Escala cromática Coral/Rojo. Tonos oscuros alertan sobre mayor volumen tercerizado.",
+      "limits": "100% indica tercerización íntegra del servicio."
+    },
+    "IUC": {
+      "nome": "Índice de Utilización de la Capacidad",
+      "desc": "Mide la relación matemática entre los alumnos transportados y la capacidad oficial de asientos de los vehículos.",
+      "high": "Valores superiores a 1.0 indican sobrecupo peligroso e infracción a las normas de seguridad vial.",
+      "low": "Valores inferiores a 0.5 denotan asientos desocupados e ineficiencia en el gasto de transporte.",
+      "colors": "Escala cromática Ámbar. Tonos oscuros reflejan mayor ocupación de asientos.",
+      "limits": "El equilibrio ideal es cercano a 1.0 (ocupación total sin sobrecupo riesgoso)."
+    },
+    "ATE": {
+      "nome": "Alumnos Transportados por Escuela",
+      "desc": "Promedio de estudiantes beneficiarios del transporte por cada centro educativo receptor.",
+      "high": "Fuerte concentración de demanda en grandes centros escolares.",
+      "low": "Red escolar dispersa con pequeños contingentes transportados por escuela.",
+      "colors": "Escala cromática Azul. Tonos oscuros indican mayor escala promedio por centro.",
+      "limits": "Expresado en cantidad absoluta de alumnos por escuela."
+    },
+    "MEDATE": {
+      "nome": "Mediana de Alumnos por Escuela",
+      "desc": "Valor mediano de alumnos transportados por escuela, eliminando la distorsión de escuelas atípicas.",
+      "high": "La escuela típica del territorio acoge a un número considerable de alumnos transportados.",
+      "low": "La escuela típica recibe pocos alumnos que requieran transporte.",
+      "colors": "Escala cromática Azul. Tonos oscuros denotan mayor mediana típica.",
+      "limits": "Valor numérico expresado en alumnos por escuela típica."
+    },
+    "IPTE": {
+      "nome": "Índice de Proporcionalidad Municipal y Estatal",
+      "desc": "Proporción del servicio asumido entre la red educativa municipal y la red estatal.",
+      "high": "Mayor carga de atención asumida por el municipio.",
+      "low": "Mayor equilibrio o asunción directa por la red estatal.",
+      "colors": "Escala cromática Ámbar.",
+      "limits": "Índice adimensional de distribución de responsabilidades."
+    },
+    "PRIO": {
+      "nome": "Porcentaje de Rutas con Impedancia Operativa",
+      "desc": "Mide la proporción de rutas que enfrentan obstáculos severos como vías intransitables, puentes caídos o inundaciones.",
+      "high": "Grave precariedad vial, riesgo continuo de suspensión de clases y desgaste vehicular.",
+      "low": "Vías escolares en buen estado y bajo riesgo de interrupción.",
+      "colors": "Escala cromática Coral/Rojo. Tonos oscuros denotan mayor gravedad de obstáculos; tonos claros indican fluidez.",
+      "limits": "La meta de seguridad es 0% de rutas con impedancia."
+    },
+    "PMVE": {
+      "nome": "Porcentaje de Conductores Formalizados",
+      "desc": "Mide la regularización legal y laboral de los conductores escolares mediante contrato formal.",
+      "high": "Mayor estabilidad, formación continua y confiabilidad operativa.",
+      "low": "Contratos precarios y alta rotación de personal de conducción.",
+      "colors": "Escala cromática Verde. Tonos oscuros indican mayor formalización.",
+      "limits": "Meta ideal de 100% de conductores formalizados."
+    },
+    "PMNVE": {
+      "nome": "Porcentaje de Monitores Formalizados",
+      "desc": "Mide la contratación formal del personal de monitoría a bordo para el cuidado de los alumnos.",
+      "high": "Acompañamiento profesional y cuidado garantizado en el trayecto.",
+      "low": "Carencia de personal de monitoría en las rutas escolares.",
+      "colors": "Escala cromática Verde. Tonos oscuros indican personal regularizado.",
+      "limits": "Meta de 100% en trayectos que requieran asistencia."
+    }
+  },
+  "it": {
+    "TETI": {
+      "nome": "Tasso di Erradicazione del Trasporto Inadeguato",
+      "desc": "Misura la quota di studenti che utilizzano veicoli omologati e sicuri (scuolabus, minibus e van regolamentari) rispetto a mezzi precari o non a norma.",
+      "high": "Elevato standard di sicurezza e tutela dell'incolumità degli studenti in transito.",
+      "low": "Persistenza preoccupante di veicoli inadeguati o fuori dagli standard normativi.",
+      "colors": "Scala cromatica Verde. Le aree più scure indicano maggiore erradicazione (condizione ottimale); le aree chiare segnalano deficit di mezzi sicuri.",
+      "limits": "L'obiettivo ideale è il 100%, che sancisce l'eliminazione totale dei trasporti precari."
+    },
+    "PRGM": {
+      "nome": "Percentuale di Percorsi Georeferenziati",
+      "desc": "Misura la percentuale di itinerari dello scuolabus tracciati con coordinate GIS complete sulla piattaforma SETE.",
+      "high": "Avanzata governance digitale, trasparenza e capacità di ottimizzazione dei percorsi e costi.",
+      "low": "Scarsa visibilità cartografica e difficoltà nei controlli della rete stradale.",
+      "colors": "Scala cromatica Blu. Le aree più scure evidenziano un'elevata copertura GIS.",
+      "limits": "Valori prossimi al 100% riflettono una mappatura digitale integrale; prossimi allo 0% indicano assenza di dati GIS."
+    },
+    "PRRM": {
+      "nome": "Percentuale di Percorsi Stradali",
+      "desc": "Misura la quota di itinerari effettuati esclusivamente su rete viaria terrestre (strade e vie urbane).",
+      "high": "Prevalenza totale del trasporto su gomma nel territorio.",
+      "low": "Rilevante presenza di percorsi su vie d'acqua.",
+      "colors": "Scala cromatica Blu. Aree scure indicano forte concentrazione stradale.",
+      "limits": "Valori vicini al 100% indicano una rete interamente terrestre."
+    },
+    "PRHM": {
+      "nome": "Percentuale di Percorsi Fluviali",
+      "desc": "Misura la quota di tragitti scolastici effettuati lungo fiumi, canali e laghi con imbarcazioni.",
+      "high": "Forte dipendenza dalle vie d'acqua, tipica delle comunità riparie.",
+      "low": "Territorio quasi interamente terrestre con navigazione assente.",
+      "colors": "Scala cromatica Blu. Tonalità scure evidenziano alta dipendenza fluviale.",
+      "limits": "Prossimo al 100% indica dipendenza vitale dalla navigazione."
+    },
+    "PRMM": {
+      "nome": "Percentuale di Percorsi Multimodali",
+      "desc": "Misura i percorsi che richiedono il cambio obbligatorio tra diverse modalità di trasporto nel medesimo tragitto.",
+      "high": "Elevata complessità logistica di trasbordo e tempi di percorrenza maggiori.",
+      "low": "Operatività diretta a singolo vettore senza trasbordi.",
+      "colors": "Scala cromatica Ambra. Tonalità scure segnalano percorsi integrati complessi.",
+      "limits": "Prossimo allo 0% indica assenza di trasbordi multimodali."
+    },
+    "PVP": {
+      "nome": "Percentuale di Veicoli di Proprietà Pubblica",
+      "desc": "Misura la percentuale di veicoli di proprietà diretta del comune rispetto al parco mezzi totale.",
+      "high": "Maggiore autonomia gestionale pubblica e ridotta dipendenza da appalti esterni.",
+      "low": "Marcata dipendenza da noleggiatori e contratti con operatori privati.",
+      "colors": "Scala cromatica Verde. Aree scure indicano solido patrimonio pubblico di scuolabus.",
+      "limits": "100% indica gestione interamente diretta; 0% esternalizzazione totale."
+    },
+    "PVT": {
+      "nome": "Percentuale di Veicoli Esternalizzati",
+      "desc": "Misura la quota di veicoli appaltati a ditte esterne o privati per lo scuolabus.",
+      "high": "Elevato ricorso all'appalto esterno con necessità di stringente controllo contrattuale.",
+      "low": "Basso ricorso a fornitori privati con predominio di scuolabus comunali.",
+      "colors": "Scala cromatica Corallo/Rosso. Tonalità scure indicano alto tasso di terziarizzazione.",
+      "limits": "100% denota totale appalto del servizio."
+    },
+    "IUC": {
+      "nome": "Indice di Utilizzo della Capienza",
+      "desc": "Rapporto matematico tra il numero di alunni trasportati e il numero di posti a sedere omologati.",
+      "high": "Valori superiori a 1.0 indicano sovraffollamento rischioso e violazione delle norme stradali.",
+      "low": "Valori inferiori a 0.5 segnalano posti vuoti e inefficienza di costo per passeggero.",
+      "colors": "Scala cromatica Ambra. Colori scuri indicano elevato carico di riempimento.",
+      "limits": "Valore ottimale di equilibrio vicino a 1.0 (capienza piena senza sovraffollamento)."
+    },
+    "ATE": {
+      "nome": "Alunni Trasportati per Scuola",
+      "desc": "Media aritmetica di allievi trasportati per ciascun istituto scolastico.",
+      "high": "Forte polarizzazione della domanda in grandi poli scolastici.",
+      "low": "Rete frammentata con piccoli contingenti per singola scuola.",
+      "colors": "Scala cromatica Blu. Tonalità scure indicano maggiore media per istituto.",
+      "limits": "Espresso in numero assoluto di allievi per scuola."
+    },
+    "MEDATE": {
+      "nome": "Mediana di Alunni Trasportati per Scuola",
+      "desc": "Valore mediano della distribuzione degli allievi trasportati per plesso, al netto di anomalie.",
+      "high": "La scuola tipica del territorio gestisce un numero elevato di studenti trasportati.",
+      "low": "La scuola tipica accoglie pochi studenti bisognosi di navetta.",
+      "colors": "Scala cromatica Blu. Tonalità scure denotano mediana più alta.",
+      "limits": "Numero di alunni per scuola tipica."
+    },
+    "IPTE": {
+      "nome": "Indice di Proporzionalità Comunale e Statale",
+      "desc": "Ripartizione delle competenze tra la rete educativa comunale e la rete regionale/statale.",
+      "high": "Maggiore carico sostenuto direttamente dal comune.",
+      "low": "Maggiore compartecipazione o leadership della rete statale.",
+      "colors": "Scala cromatica Ambra.",
+      "limits": "Indice adimensionale di bilanciamento istituzionale."
+    },
+    "PRIO": {
+      "nome": "Percentuale di Percorsi con Criticità Stradali",
+      "desc": "Quota di percorsi con gravi impedimenti fisici: fango impercorribile, guadi non protetti o ponti dissestati.",
+      "high": "Criticità viaria, rischio continuo di interruzione dell'anno scolastico e usura dei mezzi.",
+      "low": "Buona viabilità e basso rischio di sospensione dei servizi.",
+      "colors": "Scala cromatica Corallo/Rosso. Colori scuri indicano maggiore gravità; colori chiari denotano buona viabilità.",
+      "limits": "L'obiettivo di sicurezza è 0% di percorsi con criticità."
+    },
+    "PMVE": {
+      "nome": "Percentuale di Autisti Contrattualizzati",
+      "desc": "Livello di regolarizzazione contrattuale e stabilità formale dei conducenti dello scuolabus.",
+      "high": "Stabilità professionale, continuità formativa e affidabilità del personale.",
+      "low": "Contratti precari e forte ricambio degli autisti.",
+      "colors": "Scala cromatica Verde. Aree scure indicano alta formalizzazione.",
+      "limits": "Obiettivo ideale del 100% di personale regolarizzato."
+    },
+    "PMNVE": {
+      "nome": "Percentuale di Accompagnatori Contrattualizzati",
+      "desc": "Regolarizzazione formale degli assistenti di bordo per la custodia e l'assistenza degli studenti.",
+      "high": "Supporto professionale qualificato per salita, discesa e sicurezza in tragitto.",
+      "low": "Scarsità o assenza di accompagnatori qualificati.",
+      "colors": "Scala cromatica Verde. Tonalità scure indicano copertura solida.",
+      "limits": "Obiettivo del 100% per linee che richiedono assistenza a bordo."
+    }
+  },
+  "ru": {
+    "TETI": {
+      "nome": "Коэффициент ликвидации ненадлежащего транспорта",
+      "desc": "Измеряет долю учащихся, перевозимых на сертифицированных и безопасных транспортных средствах (автобусы, микроавтобусы и фургоны), в сравнении с опасным транспортом.",
+      "high": "Высокий уровень безопасности, комфорта и технической надежности перевозок школьников.",
+      "low": "Тревожное присутствие непригодных, устаревших или несертифицированных транспортных средств.",
+      "colors": "Зеленая шкала. Темные оттенки означают высокий уровень безопасности (желаемый результат); светлые сигнализируют о дефиците надлежащих машин.",
+      "limits": "Идеальный ориентир — 100%, означающий полное искоренение небезопасного транспорта."
+    },
+    "PRGM": {
+      "nome": "Доля геопривязанных маршрутов",
+      "desc": "Определяет процент маршрутов школьного транспорта, полностью оцифрованных с координатными треками в системе SETE.",
+      "high": "Высокий уровень цифрового контроля, открытости и возможность оптимизации логистики.",
+      "low": "Слабый пространственный учет, отсутствие карт и сложность государственного аудита.",
+      "colors": "Синяя шкала. Темные области отражают высокий процент оцифровки; светлые указывают на пробелы в картографии.",
+      "limits": "Около 100% означает полную геоинформационную оцифровку; около 0% — отсутствие геоданных."
+    },
+    "PRRM": {
+      "nome": "Доля автомобильных маршрутов",
+      "desc": "Отражает долю маршрутов, проходящих исключительно по сухопутным дорогам и улицам.",
+      "high": "Абсолютное преобладание колесного наземного транспорта в маршрутной сети.",
+      "low": "Заметное присутствие других видов движения, прежде всего водного транспорта.",
+      "colors": "Синяя шкала. Темные тона указывают на высокую концентрацию автодорожных трасс.",
+      "limits": "Значения близкие к 100% означают полностью сухопутную сеть."
+    },
+    "PRHM": {
+      "nome": "Доля водных маршрутов",
+      "desc": "Определяет долю маршрутов, проходящих по рекам, озерам и водным каналам на катерах и лодках.",
+      "high": "Высокая зависимость от речной навигации, характерная для прибрежных районов Амазонии.",
+      "low": "Сухопутная территория с минимальным или нулевым использованием водных путей.",
+      "colors": "Синяя шкала. Темные оттенки подчеркивают критическую зависимость от водного сообщения.",
+      "limits": "Близко к 100% означает жизненно важную роль речного транспорта для посещения школ."
+    },
+    "PRMM": {
+      "nome": "Доля мультимодальных маршрутов",
+      "desc": "Измеряет частоту маршрутов, требующих обязательной пересадки между разными видами транспорта в одной поездке.",
+      "high": "Высокая логистическая сложность пересадок и увеличение времени нахождения детей в пути.",
+      "low": "Прямая перевозка одним видом транспорта без пересадочных пунктов.",
+      "colors": "Янтарная шкала. Темные тона отражают высокую долю сложных пересадочных маршрутов.",
+      "limits": "Около 0% свидетельствует об отсутствии пересадок между разными видами транспорта."
+    },
+    "PVP": {
+      "nome": "Доля муниципального автопарка",
+      "desc": "Определяет долю школьных автобусов, находящихся в непосредственной собственности муниципалитета.",
+      "high": "Автономия муниципального управления и снижение зависимости от частных подрядчиков.",
+      "low": "Высокая зависимость от коммерческой аренды и внешних транспортных компаний.",
+      "colors": "Зеленая шкала. Темные зоны отражают доминирование муниципального парка.",
+      "limits": "100% означает полное владение автопарком; 0% — полный аутсорсинг."
+    },
+    "PVT": {
+      "nome": "Доля коммерческого арендованного транспорта",
+      "desc": "Показывает долю автобусов, привлекаемых по договорам аутсорсинга у частных перевозчиков.",
+      "high": "Широкий аутсорсинг, требующий жесткого контроля контрактов и технического состояния.",
+      "low": "Минимальный аутсорсинг при опоре на муниципальные школьные автобусы.",
+      "colors": "Кораллово-красная шкала. Темные оттенки указывают на высокий объем привлечения подрядчиков.",
+      "limits": "100% означает стопроцентный аутсорсинг перевозок."
+    },
+    "IUC": {
+      "nome": "Индекс использования вместимости",
+      "desc": "Отношение фактического числа перевозимых школьников к паспортизированной вместимости автобусов.",
+      "high": "Значения выше 1.0 сигнализируют об опасной перегрузке и нарушении правил безопасности.",
+      "low": "Значения ниже 0.5 отражают избыточный простой свободных мест и финансовую неэффективность.",
+      "colors": "Янтарная шкала. Темные тона соответствуют более высокой загрузке мест.",
+      "limits": "Оптимальный баланс — около 1.0 (полная посадка без превышения норматива безопасности)."
+    },
+    "ATE": {
+      "nome": "Перевезено учащихся на школу",
+      "desc": "Среднее количество учеников, пользующихся школьным транспортом, в расчете на одно учебное заведение.",
+      "high": "Концентрация пассажиропотока в крупных опорных школьных центрах.",
+      "low": "Рассредоточенная сеть с малым числом перевозимых детей на каждую школу.",
+      "colors": "Синяя шкала. Темные оттенки показывают высокую среднюю нагрузку на школу.",
+      "limits": "Абсолютное количество перевезенных детей на школу."
+    },
+    "MEDATE": {
+      "nome": "Медиана перевезенных учащихся на школу",
+      "desc": "Медианный показатель числа перевозимых детей на школу, исключающий искажения от аномально крупных или мелких школ.",
+      "high": "Типичная школа территории обслуживает значительное число подвозимых учеников.",
+      "low": "Типичная школа обслуживает небольшое число детей, нуждающихся в транспорте.",
+      "colors": "Синяя шкала. Темные оттенки отражают более высокую медиану.",
+      "limits": "Число учеников в расчете на типичную школу."
+    },
+    "IPTE": {
+      "nome": "Индекс муниципально-региональной пропорциональности",
+      "desc": "Соотношение объемов перевозки учащихся между муниципальной и региональной сетями образования.",
+      "high": "Преобладание ответственности муниципальной власти за перевозку детей.",
+      "low": "Паритет или преобладающее участие региональных органов образования.",
+      "colors": "Янтарная шкала.",
+      "limits": "Безразмерный коэффициент распределения обязанностей."
+    },
+    "PRIO": {
+      "nome": "Доля маршрутов с дорожными препятствиями",
+      "desc": "Определяет процент маршрутов с тяжелыми условиями движения: размытые грунтовые дороги, аварийные мосты, броды или сезонные паводки.",
+      "high": "Критическое состояние дорожной сети, частые срывы уроков и ускоренный износ техники.",
+      "low": "Удовлетворительное состояние дорог и бесперебойная доставка детей на занятия.",
+      "colors": "Кораллово-красная шкала. Темные оттенки предупреждают о критическом масштабе препятствий (неблагоприятная ситуация); светлые указывают на надежные дороги.",
+      "limits": "Целевой норматив безопасности — 0% маршрутов с препятствиями."
+    },
+    "PMVE": {
+      "nome": "Доля официально трудоустроенных водителей",
+      "desc": "Показывает уровень официального трудового оформления водителей школьных автобусов.",
+      "high": "Стабильность кадров, регулярный медицинский допуск и дисциплина перевозок.",
+      "low": "Неформальная занятость, временные договоры и высокая текучесть водителей.",
+      "colors": "Зеленая шкала. Темные оттенки свидетельствуют о высокой степени официальной занятости.",
+      "limits": "Целевой ориентир — 100% штатных квалифицированных водителей."
+    },
+    "PMNVE": {
+      "nome": "Доля официально трудоустроенных сопровождающих",
+      "desc": "Отражает уровень официального оформления сопровождающих специалистов, обеспечивающих безопасность детей в поездке.",
+      "high": "Профессиональный присмотр за детьми при посадке, высадке и во время движения.",
+      "low": "Недостаток или отсутствие обученного сопровождающего персонала.",
+      "colors": "Зеленая шкала. Темные зоны отражают высокий охват сопровождающими.",
+      "limits": "Целевой норматив — 100% на маршрутах, требующих сопровождения."
+    }
+  }
+};
 
 const I18N = {
   "pt": {
@@ -4604,7 +5477,13 @@ const I18N = {
     "front_capacitacao": "Indicadores da Capacitação",
     "front_gestao": "Indicadores da Gestão",
     "config": "Configurações",
-    "theme_toggle": "Alternar Tema",
+    "theme_toggle": "Alternar Modo de Cor",
+    "theme_light": "Modo Claro",
+    "theme_dim": "Modo Pouco Escuro",
+    "theme_dark": "Modo Escuro",
+    "theme_light_desc": "Fundo claro, branco e cinzas discretos",
+    "theme_dim_desc": "Azul escuro suave estilo Twitter/X",
+    "theme_dark_desc": "Preto profundo com alto contraste",
     "em_desenvolvimento": "Em Desenvolvimento",
     "placeholder_cap_title": "Estamos preparando tudo por aqui",
     "placeholder_cap_desc": "A frente de Indicadores da Capacitação está em fase de estruturação e em breve trará métricas consolidadas sobre a formação e qualificação de motoristas, monitores e técnicos da gestão escolar em todo o Brasil.",
@@ -4614,113 +5493,261 @@ const I18N = {
     "frente_01": "Frente Analítica 01",
     "transporte_title": "Indicadores do Transporte Escolar",
     "transporte_lead": "Plataforma Nacional de Inteligência com diagnóstico estrutural do transporte escolar brasileiro. Reúne métricas de cobertura, regularidade, frota, segurança viária e acesso dos estudantes, apoiando a formulação de políticas públicas e a gestão técnica eficiente.",
-    "meta_base_title": "Base Metodológica",
+    "meta_base_title": "BASE METODOLÓGICA",
     "meta_base_desc": "Relatórios Técnicos CECATE/UFG & FNDE",
-    "meta_fontes_title": "Fontes Integradas",
+    "meta_fontes_title": "FONTES INTEGRADAS",
     "meta_fontes_desc": "SETE, Censo Escolar (INEP) & IBGE",
-    "meta_obj_title": "Objetivo Analítico",
+    "meta_obj_title": "OBJETIVO ANALÍTICO",
     "meta_obj_desc": "Avaliar eficiência, segurança, custos e acessibilidade do transporte escolar",
-    "mostrar_mais": "Mostrar mais",
-    "mostrar_menos": "Mostrar menos",
     "sec1_badge": "01",
     "sec1_title": "Metodologia, Indicadores e Memória de Cálculo",
     "sec1_sub": "31 indicadores estruturados em Descritivos, Desempenho e Finalísticos com fórmulas, parâmetros e calculadora integrada.",
-    "subtab_ind": "A. Indicadores (31)",
-    "subtab_mem": "B. Memória de Cálculo",
-    "subtab_calc": "C. Calculadora de Indicadores",
-    "cat_todos": "Todos (31)",
-    "cat_desc": "Descritivos (14)",
-    "cat_desemp": "Desempenho (12)",
-    "cat_final": "Finalísticos (5)",
-    "search_ind_ph": "Buscar indicador por sigla, nome ou fórmula...",
-    "th_sigla": "Sigla",
-    "th_nome": "Nome do Indicador",
-    "th_tipo": "Tipo",
-    "th_formula": "Fórmula",
-    "th_fonte": "Fonte",
-    "th_valor": "Valor Atual",
-    "th_status": "Status",
-    "calc_sel_lbl": "Selecione o indicador para simulação:",
-    "calc_btn": "Calcular Indicador",
-    "calc_reset": "Limpar Parâmetros",
-    "calc_res_lbl": "Resultado do Cálculo",
-    "calc_formula_used": "Fórmula aplicada",
     "sec2_badge": "02",
     "sec2_title": "Dados SETE — Microdados Operacionais",
     "sec2_sub": "Microdados utilizados na construção dos indicadores e agregações operacionais por UF e município.",
-    "sete_toggle_reg": "Registros Operacionais",
-    "sete_toggle_ind": "Indicadores Calculados",
-    "search_sete_ph": "Buscar município por nome ou código IBGE...",
-    "filter_uf_all": "Todas as UFs",
     "sec3_badge": "03",
     "sec3_title": "Selecione o território",
     "sec3_sub": "Defina o escopo espacial para toda a análise e visualizações abaixo.",
+    "sec4_badge": "04",
+    "sec4_title": "Indicadores Finalísticos — Impacto, Segurança & Acesso Escolar",
+    "sec4_sub": "Foco prioritário na garantia do acesso educacional, erradicação de veículos inadequados e proteção dos alunos.",
+    "sec5_badge": "05",
+    "sec5_title": "Panorama Operacional SETE",
+    "sec5_sub": "Visão consolidada de frota, cobertura territorial e regularidade das operações.",
+    "sec6_badge": "06",
+    "sec6_title": "Distribuição Modal",
+    "sec6_sub": "Divisão da malha de transporte escolar entre os modais rodoviário, hidroviário e multimodal.",
+    "sec7_badge": "07",
+    "sec7_title": "Análise de Rotas",
+    "sec7_sub": "Diagnóstico de extensão, georreferenciamento e tempos médios de percurso por território.",
+    "sec8_badge": "08",
+    "sec8_title": "Mapa de Indicadores",
+    "sec8_sub": "Visualização geográfica com escala cromática adaptativa e sensível à natureza do indicador.",
+    "mostrar_mais": "Mostrar mais",
+    "mostrar_menos": "Mostrar menos",
     "territory_nacional": "Nacional",
     "territory_regiao": "Região",
     "territory_estado": "Estado",
     "territory_municipio": "Município",
-    "territory_active_lbl": "Território Ativo:",
-    "sel_regiao_lbl": "Selecione a Região:",
-    "sel_estado_lbl": "Selecione a UF / Estado:",
-    "sel_mun_uf_lbl": "1. Selecione a UF do Município:",
-    "sel_mun_lbl": "2. Selecione o Município:",
-    "search_mun_ph": "Digite o nome da cidade...",
     "scope_nac_desc": "Escopo Nacional — Brasil (Todos os municípios e estados integrados)",
-    "sec4_badge": "04",
-    "sec4_title": "Indicadores Finalísticos — Impacto, Segurança & Acesso Escolar",
-    "sec4_sub": "Dimensões estratégicas que mensuram o impacto direto do transporte sobre a permanência e proteção dos estudantes.",
-    "dmc_lbl": "Distância Média de Caminhada",
-    "dmc_sub": "Raio médio percorrido pelo aluno até o ponto de embarque da rota",
-    "sec5_badge": "05",
-    "sec5_title": "Panorama Operacional SETE",
-    "sec5_sub": "Volume de atendimento, extensão de rede e cobertura do transporte escolar.",
-    "kpi_alunos": "Alunos Atendidos",
-    "kpi_rotas": "Rotas Cadastradas",
-    "kpi_veiculos": "Veículos em Operação",
-    "kpi_extensao": "Extensão Total da Rede",
-    "sec6_badge": "06",
-    "sec6_title": "Distribuição Modal",
-    "sec6_sub": "Composição dos modos de transporte utilizados no deslocamento dos estudantes.",
-    "modal_rodoviario": "Rodoviário",
-    "modal_hidroviario": "Hidroviário",
-    "modal_multimodal": "Multimodal",
-    "modal_propria": "Frota Própria",
-    "modal_terceirizada": "Frota Terceirizada",
-    "sec7_badge": "07",
-    "sec7_title": "Análise de Rotas",
-    "sec7_sub": "Diagnóstico de extensão, georreferenciamento e tempos médios de percurso por território.",
-    "rotas_prgm_nac": "PRGM Nacional",
-    "rotas_georref": "Rotas Georreferenciadas",
-    "rotas_totais": "Total de Rotas",
-    "rotas_extensao_media": "Extensão Média por Rota",
-    "rotas_comp_title": "Comparativo Estadual de Georreferenciamento (PRGM)",
-    "sec8_badge": "08",
-    "sec8_title": "Mapa de Indicadores",
-    "sec8_sub": "Visualização geográfica com escala cromática adaptativa e sensível à natureza do indicador.",
-    "mapa_sel_ind": "Indicador no Mapa:",
-    "mapa_sel_geo": "Nível Geográfico:",
-    "mapa_geo_uf": "Estados (UFs)",
-    "mapa_geo_reg": "Grandes Regiões",
-    "mapa_no_data": "Sem dados",
-    "mapa_hint": "Passe o cursor sobre o mapa para ver os valores e clique em um território para fixar os detalhes.",
-    "mapa_val_nac": "Valor Nacional:",
-    "mapa_detalhes": "Detalhes do Território",
-    "mapa_ranking": "Ranking Territorial",
-    "settings_modal_title": "Configurações da Plataforma",
-    "settings_lang_title": "Idioma da Plataforma",
-    "settings_lang_desc": "Selecione o idioma desejado para a interface completa da PNITE.",
-    "settings_theme_title": "Aparência e Tema",
-    "settings_theme_desc": "Alterne entre o modo claro profissional e o modo escuro de alto contraste.",
-    "settings_info_title": "Informações da Versão",
-    "settings_version": "Versão:",
-    "settings_updated": "Última Atualização:",
-    "settings_author": "Responsável Técnico:",
-    "btn_close": "Fechar",
+    "sel_regiao_lbl": "Selecione a Região:",
+    "sel_estado_lbl": "Selecione o Estado:",
+    "sel_mun_uf_lbl": "UF do Município:",
+    "sel_mun_city_lbl": "Município:",
+    "regiao_centro_oeste": "Centro-Oeste",
     "regiao_norte": "Norte",
     "regiao_nordeste": "Nordeste",
     "regiao_sudeste": "Sudeste",
     "regiao_sul": "Sul",
-    "regiao_centro_oeste": "Centro-Oeste"
+    "card_dmc_title": "Distância Média de Caminhada",
+    "card_dmc_sub": "Extensão percorrida pelo estudante a pé até o ponto de embarque (Referência CECATE).",
+    "card_dmc_ref": "Limite recomendado de caminhada segura: até 1.000m.",
+    "op_pvp_title": "Frota Própria Municipal (PVP)",
+    "op_pvp_sub": "Veículos próprios pertencentes diretamente à gestão pública.",
+    "op_prgm_title": "Cobertura Georreferenciada (PRGM)",
+    "op_prgm_sub": "Rotas cadastradas com traçado e coordenadas no SETE.",
+    "op_prrm_title": "Rotas Regulares (PRRM)",
+    "op_prrm_sub": "Itinerários regulares ativos no ano letivo.",
+    "modal_rodoviario": "Rodoviário",
+    "modal_hidroviario": "Hidroviário",
+    "modal_multimodal": "Multimodal",
+    "modal_frota_propria": "Frota Própria",
+    "modal_rodoviario_sub": "Vias terrestres e estradas",
+    "modal_hidroviario_sub": "Rios, lagos e igarapés",
+    "modal_multimodal_sub": "Integração entre modais",
+    "modal_propria_sub": "Veículos públicos próprios",
+    "rotas_prgm_nac": "PRGM Nacional",
+    "rotas_georref": "Rotas Georreferenciadas",
+    "rotas_totais": "Total de Rotas",
+    "rotas_extensao_media": "Extensão Média por Rota",
+    "rotas_comp_title": "Comparativo Estadual de Georreferenciamento (PRGM %)",
+    "mapa_sel_ind": "Indicador no Mapa:",
+    "mapa_sel_geo": "Nível Geográfico:",
+    "mapa_geo_uf": "Estados (UFs)",
+    "mapa_geo_reg": "Grandes Regiões",
+    "map_info_btn": "Como Interpretar",
+    "map_info_title": "Como interpretar este indicador no mapa?",
+    "map_info_close": "Fechar",
+    "map_info_desc_lbl": "O que o indicador mede:",
+    "map_info_high_lbl": "Valores mais altos:",
+    "map_info_low_lbl": "Valores mais baixos:",
+    "map_info_colors_lbl": "Interpretação das cores no mapa:",
+    "map_info_limits_lbl": "Limites e referências críticas:",
+    "mapa_ranking_title": "Ranking Territorial",
+    "mapa_sem_dados": "sem dados",
+    "settings_modal_title": "Configurações da Plataforma",
+    "settings_lang_title": "Idioma da Plataforma",
+    "settings_lang_desc": "Selecione o idioma desejado para a interface completa da PNITE.",
+    "settings_theme_title": "Modo de Aparência",
+    "settings_theme_desc": "Escolha entre as três opções de modo de cor para toda a plataforma.",
+    "settings_info_title": "Informações da Versão",
+    "settings_version": "Versão:",
+    "settings_updated": "Última Atualização:",
+    "settings_author": "Responsável Técnico:",
+    "sem_dados_nivel": "Sem dados calculados para este indicador neste nível territorial.",
+    "tab_indicadores": "Indicadores",
+    "tab_memorial": "Memorial de Cálculo",
+    "tab_calculadora": "Calculadora",
+    "tabela_sigla": "Sigla",
+    "tabela_nome": "Nome do Indicador",
+    "tabela_tipo": "Tipo",
+    "tabela_formula": "Fórmula",
+    "tabela_fonte": "Fonte",
+    "tabela_valor": "Valor Nacional",
+    "tabela_status": "Status",
+    "status_ok": "Calculado",
+    "status_pendente": "Pendente",
+    "badge_novo": "Novo",
+    "badge_revisado": "Revisado",
+    "tipo_descritivo": "Descritivo",
+    "tipo_desempenho": "Desempenho",
+    "tipo_finalistico": "Finalístico",
+    "sete_registros": "Registros",
+    "sete_indicadores": "Indicadores",
+    "sete_busca_ph": "Buscar município por nome ou código IBGE...",
+    "calc_sel_ind": "Selecione o indicador:",
+    "calc_btn": "Calcular Indicador",
+    "calc_resultado": "Resultado Calculado:"
+  },
+  "en": {
+    "app_title": "PNITE — National Intelligence Platform for School Transportation",
+    "brand_name": "PNITE",
+    "brand_sub": "National Intelligence Platform for School Transportation",
+    "front_transporte": "School Transportation Indicators",
+    "front_capacitacao": "Training Indicators",
+    "front_gestao": "Management Indicators",
+    "config": "Settings",
+    "theme_toggle": "Toggle Color Mode",
+    "theme_light": "Light Mode",
+    "theme_dim": "Dim Mode",
+    "theme_dark": "Dark Mode",
+    "theme_light_desc": "Clean white and light gray background",
+    "theme_dim_desc": "Soft deep blue Twitter/X style",
+    "theme_dark_desc": "Deep black with high contrast",
+    "em_desenvolvimento": "Under Development",
+    "placeholder_cap_title": "We are preparing everything here",
+    "placeholder_cap_desc": "The Training Indicators section is currently under development and will soon deliver consolidated metrics regarding the training and qualification of drivers, onboard monitors, and municipal transit staff across Brazil.",
+    "placeholder_ges_title": "We are working to deliver the best for you",
+    "placeholder_ges_desc": "The Management Indicators section will bring together analyses on unit costs, contractual compliance, procurement processes, public accountability, and institutional governance of school transport.",
+    "voltar_transporte": "Back to School Transportation Indicators",
+    "frente_01": "Analytical Track 01",
+    "transporte_title": "School Transportation Indicators",
+    "transporte_lead": "National Intelligence Platform with structural diagnostics of Brazilian school transit. Consolidates metrics on coverage, regularity, fleet ownership, road safety, and student access, supporting evidence-based public policies and efficient public administration.",
+    "meta_base_title": "METHODOLOGICAL FOUNDATION",
+    "meta_base_desc": "CECATE/UFG & FNDE Technical Reports",
+    "meta_fontes_title": "INTEGRATED DATASETS",
+    "meta_fontes_desc": "SETE, School Census (INEP) & IBGE",
+    "meta_obj_title": "ANALYTICAL OBJECTIVE",
+    "meta_obj_desc": "Evaluate efficiency, safety, expenditure, and accessibility in school transit",
+    "sec1_badge": "01",
+    "sec1_title": "Methodology, Indicators and Calculation Rationale",
+    "sec1_sub": "31 indicators categorized into Descriptive, Performance, and Finalistic with formulas, parameters, and integrated calculator.",
+    "sec2_badge": "02",
+    "sec2_title": "SETE Microdata — Operational Records",
+    "sec2_sub": "Microdata utilized to compute indicators and operational aggregations by state and municipality.",
+    "sec3_badge": "03",
+    "sec3_title": "Select Territory",
+    "sec3_sub": "Define spatial boundary for all analytical charts and indicators below.",
+    "sec4_badge": "04",
+    "sec4_title": "Finalistic Indicators — Impact, Safety & School Access",
+    "sec4_sub": "Strategic priority on guaranteed educational access, eradication of inadequate transit vehicles, and student protection.",
+    "sec5_badge": "05",
+    "sec5_title": "SETE Operational Overview",
+    "sec5_sub": "Consolidated panorama of fleet ownership, territorial coverage, and route regularity.",
+    "sec6_badge": "06",
+    "sec6_title": "Modal Distribution",
+    "sec6_sub": "Distribution of school transportation network across road, waterway, and multimodal journeys.",
+    "sec7_badge": "07",
+    "sec7_title": "Route Analysis",
+    "sec7_sub": "Diagnostic assessment of transit extension, GIS georeferencing, and average travel times by territory.",
+    "sec8_badge": "08",
+    "sec8_title": "Indicators Map",
+    "sec8_sub": "Geographic visualization featuring dynamic chromatic scaling sensitive to each indicator's nature.",
+    "mostrar_mais": "Show more",
+    "mostrar_menos": "Show less",
+    "territory_nacional": "National",
+    "territory_regiao": "Region",
+    "territory_estado": "State",
+    "territory_municipio": "Municipality",
+    "scope_nac_desc": "National Scope — Brazil (All municipalities and federative units aggregated)",
+    "sel_regiao_lbl": "Select Region:",
+    "sel_estado_lbl": "Select State:",
+    "sel_mun_uf_lbl": "Municipality State:",
+    "sel_mun_city_lbl": "Municipality:",
+    "regiao_centro_oeste": "Central-West",
+    "regiao_norte": "North",
+    "regiao_nordeste": "Northeast",
+    "regiao_sudeste": "Southeast",
+    "regiao_sul": "South",
+    "card_dmc_title": "Average Walking Distance",
+    "card_dmc_sub": "Distance walked by students on foot to reach the nearest school bus boarding stop (CECATE Reference).",
+    "card_dmc_ref": "Recommended safe walking threshold: up to 1,000m.",
+    "op_pvp_title": "Public Fleet Share (PVP)",
+    "op_pvp_sub": "Vehicles directly owned by the local public administration.",
+    "op_prgm_title": "Georeferenced Routes (PRGM)",
+    "op_prgm_sub": "Routes mapped with GIS spatial coordinates in SETE.",
+    "op_prrm_title": "Regular Routes (PRRM)",
+    "op_prrm_sub": "Active regular school itineraries during academic year.",
+    "modal_rodoviario": "Road",
+    "modal_hidroviario": "Waterway",
+    "modal_multimodal": "Multimodal",
+    "modal_frota_propria": "Public Fleet",
+    "modal_rodoviario_sub": "Land roads and avenues",
+    "modal_hidroviario_sub": "Rivers, lakes and channels",
+    "modal_multimodal_sub": "Intermodal transfer journeys",
+    "modal_propria_sub": "Government-owned vehicles",
+    "rotas_prgm_nac": "National PRGM",
+    "rotas_georref": "Georeferenced Routes",
+    "rotas_totais": "Total Routes",
+    "rotas_extensao_media": "Average Route Length",
+    "rotas_comp_title": "State Georeferencing Benchmark (PRGM %)",
+    "mapa_sel_ind": "Map Indicator:",
+    "mapa_sel_geo": "Geographic Scope:",
+    "mapa_geo_uf": "States (UFs)",
+    "mapa_geo_reg": "Major Regions",
+    "map_info_btn": "How to Interpret",
+    "map_info_title": "How to interpret this indicator on the map?",
+    "map_info_close": "Close",
+    "map_info_desc_lbl": "What the indicator measures:",
+    "map_info_high_lbl": "Higher values signify:",
+    "map_info_low_lbl": "Lower values signify:",
+    "map_info_colors_lbl": "Map color interpretation:",
+    "map_info_limits_lbl": "Thresholds and critical limits:",
+    "mapa_ranking_title": "Territorial Ranking",
+    "mapa_sem_dados": "no data",
+    "settings_modal_title": "Platform Settings",
+    "settings_lang_title": "Platform Language",
+    "settings_lang_desc": "Select the desired language for the complete PNITE user interface.",
+    "settings_theme_title": "Appearance Mode",
+    "settings_theme_desc": "Choose between the three color theme modes across the entire platform.",
+    "settings_info_title": "Version Metadata",
+    "settings_version": "Version:",
+    "settings_updated": "Last Update:",
+    "settings_author": "Technical Lead:",
+    "sem_dados_nivel": "No data calculated for this indicator at this territorial level.",
+    "tab_indicadores": "Indicators",
+    "tab_memorial": "Calculation Memorial",
+    "tab_calculadora": "Calculator",
+    "tabela_sigla": "Code",
+    "tabela_nome": "Indicator Name",
+    "tabela_tipo": "Type",
+    "tabela_formula": "Formula",
+    "tabela_fonte": "Source",
+    "tabela_valor": "National Value",
+    "tabela_status": "Status",
+    "status_ok": "Calculated",
+    "status_pendente": "Pending",
+    "badge_novo": "New",
+    "badge_revisado": "Revised",
+    "tipo_descritivo": "Descriptive",
+    "tipo_desempenho": "Performance",
+    "tipo_finalistico": "Finalistic",
+    "sete_registros": "Records",
+    "sete_indicadores": "Indicators",
+    "sete_busca_ph": "Search municipality by name or IBGE code...",
+    "calc_sel_ind": "Select indicator:",
+    "calc_btn": "Calculate Indicator",
+    "calc_resultado": "Simulation Result:"
   },
   "es": {
     "app_title": "PNITE — Plataforma Nacional de Inteligencia en Transporte Escolar",
@@ -4730,249 +5757,137 @@ const I18N = {
     "front_capacitacao": "Indicadores de Capacitación",
     "front_gestao": "Indicadores de Gestión",
     "config": "Configuración",
-    "theme_toggle": "Cambiar Tema",
+    "theme_toggle": "Cambiar Modo de Color",
+    "theme_light": "Modo Claro",
+    "theme_dim": "Modo Poco Oscuro",
+    "theme_dark": "Modo Oscuro",
+    "theme_light_desc": "Fondo claro, blanco y grises suaves",
+    "theme_dim_desc": "Azul oscuro suave estilo Twitter/X",
+    "theme_dark_desc": "Negro profundo con alto contraste",
     "em_desenvolvimento": "En Desarrollo",
     "placeholder_cap_title": "Estamos preparando todo por aquí",
-    "placeholder_cap_desc": "El área de Indicadores de Capacitación está en estructuración y pronto presentará métricas consolidadas sobre la capacitación de conductores, monitores y gestores del transporte escolar en todo Brasil.",
-    "placeholder_ges_title": "Estamos trabajando para entregar lo mejor para usted",
-    "placeholder_ges_desc": "El área de Indicadores de Gestión reunirá análisis sobre costos unitarios, regulación contractual, licitaciones, rendición de cuentas y gobernanza institucional del transporte escolar.",
+    "placeholder_cap_desc": "El área de Indicadores de Capacitación está en fase de estructuración y pronto ofrecerá métricas consolidadas sobre formación y cualificación de conductores, monitores y técnicos escolares en todo Brasil.",
+    "placeholder_ges_title": "Estamos trabajando para entregarle lo mejor",
+    "placeholder_ges_desc": "El área de Indicadores de Gestión reunirá análisis sobre costes unitarios, regulación contractual, licitaciones, rendición de cuentas y gobernanza institucional del transporte escolar.",
     "voltar_transporte": "Volver a Indicadores del Transporte Escolar",
     "frente_01": "Frente Analítico 01",
     "transporte_title": "Indicadores del Transporte Escolar",
-    "transporte_lead": "Plataforma Nacional de Inteligencia con diagnóstico estructural del transporte escolar brasileño. Reúne métricas de cobertura, regularidad, flota, seguridad vial y acceso estudiantil, respaldando políticas públicas y una gestión técnica eficiente.",
-    "meta_base_title": "Base Metodológica",
+    "transporte_lead": "Plataforma Nacional de Inteligencia con diagnóstico estructural del transporte escolar brasileño. Integra métricas de cobertura, regularidad, flota, seguridad vial y acceso estudiantil, apoyando la formulación de políticas públicas eficientes.",
+    "meta_base_title": "BASE METODOLÓGICA",
     "meta_base_desc": "Informes Técnicos CECATE/UFG & FNDE",
-    "meta_fontes_title": "Fuentes Integradas",
+    "meta_fontes_title": "FUENTES INTEGRADAS",
     "meta_fontes_desc": "SETE, Censo Escolar (INEP) & IBGE",
-    "meta_obj_title": "Objetivo Analítico",
-    "meta_obj_desc": "Evaluar eficiencia, seguridad, costos y accesibilidad del transporte escolar",
-    "mostrar_mais": "Mostrar más",
-    "mostrar_menos": "Mostrar menos",
+    "meta_obj_title": "OBJETIVO ANALÍTICO",
+    "meta_obj_desc": "Evaluar eficiencia, seguridad, costes y accesibilidad del transporte escolar",
     "sec1_badge": "01",
     "sec1_title": "Metodología, Indicadores y Memoria de Cálculo",
     "sec1_sub": "31 indicadores estructurados en Descriptivos, Desempeño y Finalísticos con fórmulas, parámetros y calculadora integrada.",
-    "subtab_ind": "A. Indicadores (31)",
-    "subtab_mem": "B. Memoria de Cálculo",
-    "subtab_calc": "C. Calculadora de Indicadores",
-    "cat_todos": "Todos (31)",
-    "cat_desc": "Descriptivos (14)",
-    "cat_desemp": "Desempeño (12)",
-    "cat_final": "Finalísticos (5)",
-    "search_ind_ph": "Buscar indicador por sigla, nombre o fórmula...",
-    "th_sigla": "Sigla",
-    "th_nome": "Nombre del Indicador",
-    "th_tipo": "Tipo",
-    "th_formula": "Fórmula",
-    "th_fonte": "Fuente",
-    "th_valor": "Valor Actual",
-    "th_status": "Estado",
-    "calc_sel_lbl": "Seleccione el indicador para la simulación:",
-    "calc_btn": "Calcular Indicador",
-    "calc_reset": "Limpiar Parámetros",
-    "calc_res_lbl": "Resultado del Cálculo",
-    "calc_formula_used": "Fórmula aplicada",
     "sec2_badge": "02",
     "sec2_title": "Datos SETE — Microdatos Operativos",
     "sec2_sub": "Microdatos utilizados en la construcción de indicadores y agregaciones operativas por estado y municipio.",
-    "sete_toggle_reg": "Registros Operativos",
-    "sete_toggle_ind": "Indicadores Calculados",
-    "search_sete_ph": "Buscar municipio por nombre o código IBGE...",
-    "filter_uf_all": "Todos los Estados",
     "sec3_badge": "03",
     "sec3_title": "Seleccione el territorio",
-    "sec3_sub": "Defina el alcance espacial para todos los análisis y visualizaciones a continuación.",
+    "sec3_sub": "Defina el alcance espacial para todo el análisis y visualizaciones inferiores.",
+    "sec4_badge": "04",
+    "sec4_title": "Indicadores Finalísticos — Impacto, Seguridad y Acceso Escolar",
+    "sec4_sub": "Enfoque prioritario en garantizar el acceso escolar, erradicar vehículos inseguros y proteger a los estudiantes.",
+    "sec5_badge": "05",
+    "sec5_title": "Panorama Operativo SETE",
+    "sec5_sub": "Visión consolidada de flota, cobertura territorial y regularidad de las operaciones.",
+    "sec6_badge": "06",
+    "sec6_title": "Distribución Modal",
+    "sec6_sub": "Distribución de la red de transporte escolar entre los modos terrestre, fluvial y multimodal.",
+    "sec7_badge": "07",
+    "sec7_title": "Análisis de Rutas",
+    "sec7_sub": "Diagnóstico de extensión, georreferenciación y tiempos medios de viaje por territorio.",
+    "sec8_badge": "08",
+    "sec8_title": "Mapa de Indicadores",
+    "sec8_sub": "Visualización geográfica con escala cromática adaptativa y sensible a la naturaleza del indicador.",
+    "mostrar_mais": "Mostrar más",
+    "mostrar_menos": "Mostrar menos",
     "territory_nacional": "Nacional",
     "territory_regiao": "Región",
     "territory_estado": "Estado",
     "territory_municipio": "Municipio",
-    "territory_active_lbl": "Territorio Activo:",
+    "scope_nac_desc": "Alcance Nacional — Brasil (Todos los municipios y estados integrados)",
     "sel_regiao_lbl": "Seleccione la Región:",
-    "sel_estado_lbl": "Seleccione el Estado / UF:",
-    "sel_mun_uf_lbl": "1. Seleccione el Estado del Municipio:",
-    "sel_mun_lbl": "2. Seleccione el Municipio:",
-    "search_mun_ph": "Escriba el nombre de la ciudad...",
-    "scope_nac_desc": "Ámbito Nacional — Brasil (Todos los municipios y estados integrados)",
-    "sec4_badge": "04",
-    "sec4_title": "Indicadores Finalísticos — Impacto, Seguridad & Acceso Escolar",
-    "sec4_sub": "Dimensiones estratégicas que miden el impacto directo del transporte en la permanencia y protección estudiantil.",
-    "dmc_lbl": "Distancia Media de Caminata",
-    "dmc_sub": "Radio promedio recorrido por el estudiante hasta el punto de embarque",
-    "sec5_badge": "05",
-    "sec5_title": "Panorama Operativo SETE",
-    "sec5_sub": "Volumen de atención, extensión de red y cobertura del transporte escolar.",
-    "kpi_alunos": "Estudiantes Atendidos",
-    "kpi_rotas": "Rutas Registradas",
-    "kpi_veiculos": "Vehículos en Operación",
-    "kpi_extensao": "Extensión Total de la Red",
-    "sec6_badge": "06",
-    "sec6_title": "Distribución Modal",
-    "sec6_sub": "Composición de modos de transporte utilizados en el traslado de estudiantes.",
-    "modal_rodoviario": "Terrestre / Vial",
-    "modal_hidroviario": "Fluvial / Acuático",
-    "modal_multimodal": "Multimodal",
-    "modal_propria": "Flota Propia",
-    "modal_terceirizada": "Flota Tercerizada",
-    "sec7_badge": "07",
-    "sec7_title": "Análisis de Rutas",
-    "sec7_sub": "Diagnóstico de extensión, georreferenciación y tiempos promedio de viaje por territorio.",
-    "rotas_prgm_nac": "PRGM Nacional",
-    "rotas_georref": "Rutas Georreferenciadas",
-    "rotas_totais": "Total de Rutas",
-    "rotas_extensao_media": "Extensión Media por Ruta",
-    "rotas_comp_title": "Comparativa Estatal de Georreferenciación (PRGM)",
-    "sec8_badge": "08",
-    "sec8_title": "Mapa de Indicadores",
-    "sec8_sub": "Visualización geográfica con escala cromática adaptativa según la naturaleza del indicador.",
-    "mapa_sel_ind": "Indicador en el Mapa:",
-    "mapa_sel_geo": "Nivel Geográfico:",
-    "mapa_geo_uf": "Estados (UFs)",
-    "mapa_geo_reg": "Grandes Regiones",
-    "mapa_no_data": "Sin datos",
-    "mapa_hint": "Pase el cursor sobre el mapa para ver los valores y haga clic en un territorio para fijar los detalles.",
-    "mapa_val_nac": "Valor Nacional:",
-    "mapa_detalhes": "Detalles del Territorio",
-    "mapa_ranking": "Clasificación Territorial",
-    "settings_modal_title": "Configuración de la Plataforma",
-    "settings_lang_title": "Idioma de la Plataforma",
-    "settings_lang_desc": "Seleccione el idioma deseado para la interfaz completa de PNITE.",
-    "settings_theme_title": "Apariencia y Tema",
-    "settings_theme_desc": "Alterne entre el modo claro profesional y el modo oscuro de alto contraste.",
-    "settings_info_title": "Información de la Versión",
-    "settings_version": "Versión:",
-    "settings_updated": "Última Actualización:",
-    "settings_author": "Responsable Técnico:",
-    "btn_close": "Cerrar",
+    "sel_estado_lbl": "Seleccione el Estado:",
+    "sel_mun_uf_lbl": "Estado del Municipio:",
+    "sel_mun_city_lbl": "Municipio:",
+    "regiao_centro_oeste": "Centro-Oeste",
     "regiao_norte": "Norte",
     "regiao_nordeste": "Nordeste",
     "regiao_sudeste": "Sureste",
     "regiao_sul": "Sur",
-    "regiao_centro_oeste": "Centro-Oeste"
-  },
-  "en": {
-    "app_title": "PNITE — National Intelligence Platform for School Transportation",
-    "brand_name": "PNITE",
-    "brand_sub": "National School Transportation Intelligence Platform",
-    "front_transporte": "School Transportation Indicators",
-    "front_capacitacao": "Training Indicators",
-    "front_gestao": "Management Indicators",
-    "config": "Settings",
-    "theme_toggle": "Toggle Theme",
-    "em_desenvolvimento": "In Development",
-    "placeholder_cap_title": "We are getting everything ready here",
-    "placeholder_cap_desc": "The Training Indicators section is currently under development and will soon provide comprehensive metrics on qualifications for drivers, monitors, and school transport coordinators nationwide.",
-    "placeholder_ges_title": "We are working to deliver the best experience for you",
-    "placeholder_ges_desc": "The Management Indicators section will bring in-depth analyses on operational unit costs, contract regulations, procurement processes, accountability, and institutional governance.",
-    "voltar_transporte": "Back to School Transportation Indicators",
-    "frente_01": "Analytical Front 01",
-    "transporte_title": "School Transportation Indicators",
-    "transporte_lead": "National Intelligence Platform providing structural diagnosis of Brazilian school transportation. Combines metrics on coverage, regularity, fleet, road safety, and student access to empower evidence-based public policies and technical management.",
-    "meta_base_title": "Methodological Framework",
-    "meta_base_desc": "CECATE/UFG & FNDE Technical Reports",
-    "meta_fontes_title": "Integrated Sources",
-    "meta_fontes_desc": "SETE, School Census (INEP) & IBGE",
-    "meta_obj_title": "Analytical Goal",
-    "meta_obj_desc": "Evaluate efficiency, safety, cost structure, and accessibility in school transport",
-    "mostrar_mais": "Show more",
-    "mostrar_menos": "Show less",
-    "sec1_badge": "01",
-    "sec1_title": "Methodology, Indicators & Calculation Memory",
-    "sec1_sub": "31 indicators structured into Descriptive, Performance, and Outcome metrics with verified formulas, real parameters, and interactive simulator.",
-    "subtab_ind": "A. Indicators (31)",
-    "subtab_mem": "B. Calculation Memory",
-    "subtab_calc": "C. Indicator Calculator",
-    "cat_todos": "All (31)",
-    "cat_desc": "Descriptive (14)",
-    "cat_desemp": "Performance (12)",
-    "cat_final": "Outcome (5)",
-    "search_ind_ph": "Search indicator by acronym, name, or formula...",
-    "th_sigla": "Code",
-    "th_nome": "Indicator Name",
-    "th_tipo": "Type",
-    "th_formula": "Formula",
-    "th_fonte": "Source",
-    "th_valor": "Current Value",
-    "th_status": "Status",
-    "calc_sel_lbl": "Select indicator to simulate:",
-    "calc_btn": "Calculate Indicator",
-    "calc_reset": "Clear Inputs",
-    "calc_res_lbl": "Calculation Result",
-    "calc_formula_used": "Applied Formula",
-    "sec2_badge": "02",
-    "sec2_title": "SETE Data — Operational Microdata",
-    "sec2_sub": "Microdata used in indicator formulation and operational aggregations across states and municipalities.",
-    "sete_toggle_reg": "Operational Records",
-    "sete_toggle_ind": "Calculated Indicators",
-    "search_sete_ph": "Search municipality by name or IBGE code...",
-    "filter_uf_all": "All States",
-    "sec3_badge": "03",
-    "sec3_title": "Select Territory",
-    "sec3_sub": "Define spatial scope for all analytical dashboards and maps below.",
-    "territory_nacional": "National",
-    "territory_regiao": "Region",
-    "territory_estado": "State",
-    "territory_municipio": "Municipality",
-    "territory_active_lbl": "Active Scope:",
-    "sel_regiao_lbl": "Select Region:",
-    "sel_estado_lbl": "Select State / UF:",
-    "sel_mun_uf_lbl": "1. Select State of Municipality:",
-    "sel_mun_lbl": "2. Select Municipality:",
-    "search_mun_ph": "Type municipality name...",
-    "scope_nac_desc": "National Scope — Brazil (All integrated municipalities and states)",
-    "sec4_badge": "04",
-    "sec4_title": "Outcome Indicators — Impact, Safety & School Access",
-    "sec4_sub": "Strategic dimensions directly measuring transport quality, student retention, and passenger safety.",
-    "dmc_lbl": "Average Walking Distance",
-    "dmc_sub": "Average radius walked by students to route pick-up location",
-    "sec5_badge": "05",
-    "sec5_title": "SETE Operational Overview",
-    "sec5_sub": "Service volume, route network extension, and student coverage.",
-    "kpi_alunos": "Served Students",
-    "kpi_rotas": "Registered Routes",
-    "kpi_veiculos": "Operating Vehicles",
-    "kpi_extensao": "Total Network Distance",
-    "sec6_badge": "06",
-    "sec6_title": "Modal Distribution",
-    "sec6_sub": "Breakdown of transportation modes utilized for student transit.",
-    "modal_rodoviario": "Road / Terrestrial",
-    "modal_hidroviario": "Waterway / Fluvial",
+    "card_dmc_title": "Distancia Media de Caminata",
+    "card_dmc_sub": "Distancia recorrida a pie por el estudiante hasta el punto de embarque (Referencia CECATE).",
+    "card_dmc_ref": "Límite recomendado de caminata segura: hasta 1.000m.",
+    "op_pvp_title": "Flota Pública Propia (PVP)",
+    "op_pvp_sub": "Vehículos pertenecientes directamente a la administración pública.",
+    "op_prgm_title": "Cobertura Georreferenciada (PRGM)",
+    "op_prgm_sub": "Rutas registradas con trazo y coordenadas en SETE.",
+    "op_prrm_title": "Rutas Regulares (PRRM)",
+    "op_prrm_sub": "Itinerarios regulares activos en el año lectivo.",
+    "modal_rodoviario": "Terrestre",
+    "modal_hidroviario": "Fluvial",
     "modal_multimodal": "Multimodal",
-    "modal_propria": "Municipally-Owned Fleet",
-    "modal_terceirizada": "Contracted / Third-Party Fleet",
-    "sec7_badge": "07",
-    "sec7_title": "Route Analysis",
-    "sec7_sub": "Diagnosis of route distances, georeferencing coverage, and average travel times.",
-    "rotas_prgm_nac": "National PRGM",
-    "rotas_georref": "Georeferenced Routes",
-    "rotas_totais": "Total Routes",
-    "rotas_extensao_media": "Average Route Length",
-    "rotas_comp_title": "State Georeferencing Benchmark (PRGM)",
-    "sec8_badge": "08",
-    "sec8_title": "Indicators Map",
-    "sec8_sub": "Geographic visualization with dynamic chromatic scaling tailored to each indicator's nature.",
-    "mapa_sel_ind": "Indicator on Map:",
-    "mapa_sel_geo": "Geographic Level:",
-    "mapa_geo_uf": "States (UFs)",
-    "mapa_geo_reg": "Macro-Regions",
-    "mapa_no_data": "No data",
-    "mapa_hint": "Hover over map to view values and click on any territory to lock details.",
-    "mapa_val_nac": "National Value:",
-    "mapa_detalhes": "Territory Details",
-    "mapa_ranking": "Territorial Ranking",
-    "settings_modal_title": "Platform Settings",
-    "settings_lang_title": "Platform Language",
-    "settings_lang_desc": "Select preferred language for the complete PNITE interface.",
-    "settings_theme_title": "Appearance & Theme",
-    "settings_theme_desc": "Switch between professional Light Mode and high-contrast Dark Mode.",
-    "settings_info_title": "Version Information",
-    "settings_version": "Version:",
-    "settings_updated": "Last Update:",
-    "settings_author": "Technical Lead:",
-    "btn_close": "Close",
-    "regiao_norte": "North",
-    "regiao_nordeste": "Northeast",
-    "regiao_sudeste": "Southeast",
-    "regiao_sul": "South",
-    "regiao_centro_oeste": "Central-West"
+    "modal_frota_propria": "Flota Propia",
+    "modal_rodoviario_sub": "Carreteras y caminos terrestres",
+    "modal_hidroviario_sub": "Ríos, lagos y canales",
+    "modal_multimodal_sub": "Integración entre modos",
+    "modal_propria_sub": "Vehículos públicos propios",
+    "rotas_prgm_nac": "PRGM Nacional",
+    "rotas_georref": "Rutas Georreferenciadas",
+    "rotas_totais": "Total de Rutas",
+    "rotas_extensao_media": "Extensión Media por Ruta",
+    "rotas_comp_title": "Comparativa Estatal de Georreferenciación (PRGM %)",
+    "mapa_sel_ind": "Indicador en el Mapa:",
+    "mapa_sel_geo": "Nivel Geográfico:",
+    "mapa_geo_uf": "Estados (UFs)",
+    "mapa_geo_reg": "Grandes Regiones",
+    "map_info_btn": "Cómo Interpretar",
+    "map_info_title": "¿Cómo interpretar este indicador en el mapa?",
+    "map_info_close": "Cerrar",
+    "map_info_desc_lbl": "Qué mide este indicador:",
+    "map_info_high_lbl": "Valores más altos significan:",
+    "map_info_low_lbl": "Valores más bajos significan:",
+    "map_info_colors_lbl": "Interpretación de los colores en el mapa:",
+    "map_info_limits_lbl": "Límites y referencias críticas:",
+    "mapa_ranking_title": "Clasificación Territorial",
+    "mapa_sem_dados": "sin datos",
+    "settings_modal_title": "Configuración de la Plataforma",
+    "settings_lang_title": "Idioma de la Plataforma",
+    "settings_lang_desc": "Seleccione el idioma deseado para toda la interfaz de PNITE.",
+    "settings_theme_title": "Modo de Apariencia",
+    "settings_theme_desc": "Elija entre las tres opciones de color para toda la plataforma.",
+    "settings_info_title": "Información de la Versión",
+    "settings_version": "Versión:",
+    "settings_updated": "Última Actualización:",
+    "settings_author": "Responsable Técnico:",
+    "sem_dados_nivel": "Sin datos calculados para este indicador en este nivel territorial.",
+    "tab_indicadores": "Indicadores",
+    "tab_memorial": "Memoria de Cálculo",
+    "tab_calculadora": "Calculadora",
+    "tabela_sigla": "Código",
+    "tabela_nome": "Nombre del Indicador",
+    "tabela_tipo": "Tipo",
+    "tabela_formula": "Fórmula",
+    "tabela_fonte": "Fuente",
+    "tabela_valor": "Valor Nacional",
+    "tabela_status": "Estado",
+    "status_ok": "Calculado",
+    "status_pendente": "Pendiente",
+    "badge_novo": "Nuevo",
+    "badge_revisado": "Revisado",
+    "tipo_descritivo": "Descriptivo",
+    "tipo_desempenho": "Desempeño",
+    "tipo_finalistico": "Finalístico",
+    "sete_registros": "Registros",
+    "sete_indicadores": "Indicadores",
+    "sete_busca_ph": "Buscar municipio por nombre o código IBGE...",
+    "calc_sel_ind": "Seleccione el indicador:",
+    "calc_btn": "Calcular Indicador",
+    "calc_resultado": "Resultado Calculado:"
   },
   "it": {
     "app_title": "PNITE — Piattaforma Nazionale di Intelligence sul Trasporto Scolastico",
@@ -4982,249 +5897,277 @@ const I18N = {
     "front_capacitacao": "Indicatori di Formazione",
     "front_gestao": "Indicatori di Gestione",
     "config": "Impostazioni",
-    "theme_toggle": "Cambia Tema",
+    "theme_toggle": "Cambia Modalità Colore",
+    "theme_light": "Modalità Chiara",
+    "theme_dim": "Modalità Poco Scura",
+    "theme_dark": "Modalità Scura",
+    "theme_light_desc": "Sfondo chiaro, bianco e grigi discreti",
+    "theme_dim_desc": "Blu scuro morbido in stile Twitter/X",
+    "theme_dark_desc": "Nero profondo ad alto contrasto",
     "em_desenvolvimento": "In Sviluppo",
     "placeholder_cap_title": "Stiamo preparando tutto qui",
-    "placeholder_cap_desc": "L'area degli Indicatori di Formazione è in fase di sviluppo e presto offrirà metriche consolidate sulla formazione e qualificazione di autisti, assistenti e coordinatori in tutto il Brasile.",
+    "placeholder_cap_desc": "L'area Indicatori di Formazione è in fase di strutturazione e presto offrirà metriche consolidate sulla qualificazione di autisti, accompagnatori e tecnici in tutto il Brasile.",
     "placeholder_ges_title": "Stiamo lavorando per offrirvi il meglio",
-    "placeholder_ges_desc": "L'area degli Indicatori di Gestione raccoglierà analisi su costi operativi unitari, regolamentazione contrattuale, appalti, rendicontazione e governance istituzionale.",
+    "placeholder_ges_desc": "L'area Indicatori di Gestione raccoglierà analisi su costi unitari, contratti, gare d'appalto, rendicontazione e governance del trasporto scolastico.",
     "voltar_transporte": "Torna agli Indicatori del Trasporto Scolastico",
-    "frente_01": "Fronte Analitico 01",
+    "frente_01": "Direttrice Analitica 01",
     "transporte_title": "Indicatori del Trasporto Scolastico",
-    "transporte_lead": "Piattaforma Nazionale di Intelligence per la diagnosi strutturale del trasporto scolastico brasiliano. Riunisce metriche su copertura, regolarità, flotta, sicurezza stradale e accesso degli studenti per supportare politiche pubbliche informate.",
-    "meta_base_title": "Quadro Metodologico",
+    "transporte_lead": "Piattaforma Nazionale di Intelligence per la diagnosi strutturale del trasporto scolastico brasiliano. Raccoglie dati su copertura, regolarità, parco mezzi, sicurezza e diritto allo studio.",
+    "meta_base_title": "BASE METODOLOGICA",
     "meta_base_desc": "Rapporti Tecnici CECATE/UFG & FNDE",
-    "meta_fontes_title": "Fonti Integrate",
+    "meta_fontes_title": "FONTI INTEGRATE",
     "meta_fontes_desc": "SETE, Censimento Scolastico (INEP) & IBGE",
-    "meta_obj_title": "Obiettivo Analitico",
+    "meta_obj_title": "OBIETTIVO ANALITICO",
     "meta_obj_desc": "Valutare efficienza, sicurezza, costi e accessibilità del trasporto scolastico",
-    "mostrar_mais": "Mostra altro",
-    "mostrar_menos": "Mostra meno",
     "sec1_badge": "01",
     "sec1_title": "Metodologia, Indicatori e Memoria di Calcolo",
-    "sec1_sub": "31 indicatori strutturati in Descrittivi, Prestazionali e Conclusivi con formule, parametri e calcolatore integrato.",
-    "subtab_ind": "A. Indicatori (31)",
-    "subtab_mem": "B. Memoria di Calcolo",
-    "subtab_calc": "C. Calcolatore di Indicatori",
-    "cat_todos": "Tutti (31)",
-    "cat_desc": "Descrittivi (14)",
-    "cat_desemp": "Prestazionali (12)",
-    "cat_final": "Conclusivi (5)",
-    "search_ind_ph": "Cerca indicatore per sigla, nome o formula...",
-    "th_sigla": "Sigla",
-    "th_nome": "Nome dell'Indicatore",
-    "th_tipo": "Tipo",
-    "th_formula": "Formula",
-    "th_fonte": "Fonte",
-    "th_valor": "Valore Attuale",
-    "th_status": "Stato",
-    "calc_sel_lbl": "Seleziona l'indicatore da simulare:",
-    "calc_btn": "Calcola Indicatore",
-    "calc_reset": "Cancella Parametri",
-    "calc_res_lbl": "Risultato del Calcolo",
-    "calc_formula_used": "Formula applicata",
+    "sec1_sub": "31 indicatori strutturati in Descrittivi, Prestazionali e Finalistici con formule, parametri e simulatore integrato.",
     "sec2_badge": "02",
     "sec2_title": "Dati SETE — Microdati Operativi",
-    "sec2_sub": "Microdati utilizzati nella costruzione degli indicatori e aggregazioni operative per stato e comune.",
-    "sete_toggle_reg": "Registrazioni Operative",
-    "sete_toggle_ind": "Indicatori Calcolati",
-    "search_sete_ph": "Cerca comune per nome o codice IBGE...",
-    "filter_uf_all": "Tutti gli Stati",
+    "sec2_sub": "Microdati impiegati per calcolare indicatori e aggregazioni operative per stato e comune.",
     "sec3_badge": "03",
     "sec3_title": "Seleziona il territorio",
-    "sec3_sub": "Definisci l'ambito spaziale per tutte le analisi e visualizzazioni sottostanti.",
+    "sec3_sub": "Definisci l'ambito geografico per tutte le analisi e visualizzazioni sottostanti.",
+    "sec4_badge": "04",
+    "sec4_title": "Indicatori Finalistici — Impatto, Sicurezza e Accesso Scolastico",
+    "sec4_sub": "Priorità strategica su diritto allo studio, eliminazione dei mezzi precari e incolumità degli studenti.",
+    "sec5_badge": "05",
+    "sec5_title": "Panoramica Operativa SETE",
+    "sec5_sub": "Quadro consolidato su proprietà dei mezzi, copertura della rete e regolarità dei percorsi.",
+    "sec6_badge": "06",
+    "sec6_title": "Ripartizione Modale",
+    "sec6_sub": "Distribuzione della rete di scuolabus tra percorsi stradali, fluviali e multimodali.",
+    "sec7_badge": "07",
+    "sec7_title": "Analisi dei Percorsi",
+    "sec7_sub": "Diagnosi di estensione, georeferenziazione e tempi medi di percorrenza per territorio.",
+    "sec8_badge": "08",
+    "sec8_title": "Mappa degli Indicatori",
+    "sec8_sub": "Visualizzazione geografica con scala cromatica adattiva sensibile alla natura dell'indicatore.",
+    "mostrar_mais": "Mostra di più",
+    "mostrar_menos": "Mostra di meno",
     "territory_nacional": "Nazionale",
     "territory_regiao": "Regione",
     "territory_estado": "Stato",
     "territory_municipio": "Comune",
-    "territory_active_lbl": "Ambito Attivo:",
+    "scope_nac_desc": "Ambito Nazionale — Brasile (Tutti i comuni e gli stati federati)",
     "sel_regiao_lbl": "Seleziona la Regione:",
-    "sel_estado_lbl": "Seleziona lo Stato / UF:",
-    "sel_mun_uf_lbl": "1. Seleziona lo Stato del Comune:",
-    "sel_mun_lbl": "2. Seleziona il Comune:",
-    "search_mun_ph": "Digita il nome del comune...",
-    "scope_nac_desc": "Ambito Nazionale — Brasile (Tutti i comuni e stati integrati)",
-    "sec4_badge": "04",
-    "sec4_title": "Indicatori Conclusivi — Impatto, Sicurezza & Accesso Scolastico",
-    "sec4_sub": "Dimensioni strategiche che misurano l'impatto diretto del trasporto su permanenza e protezione degli studenti.",
-    "dmc_lbl": "Distanza Media a Piedi",
-    "dmc_sub": "Raggio medio percorso dallo studente fino al punto di imbarco",
-    "sec5_badge": "05",
-    "sec5_title": "Panoramica Operativa SETE",
-    "sec5_sub": "Volume di servizio, estensione della rete e copertura del trasporto scolastico.",
-    "kpi_alunos": "Studenti Assistiti",
-    "kpi_rotas": "Percorsi Registrati",
-    "kpi_veiculos": "Veicoli Operativi",
-    "kpi_extensao": "Estensione Totale della Rete",
-    "sec6_badge": "06",
-    "sec6_title": "Distribuzione Modale",
-    "sec6_sub": "Composizione delle modalità di trasporto utilizzate nello spostamento degli studenti.",
-    "modal_rodoviario": "Stradale / Terrestre",
-    "modal_hidroviario": "Fluviale / Idroviario",
-    "modal_multimodal": "Multimodale",
-    "modal_propria": "Flotta Propria",
-    "modal_terceirizada": "Flotta Esterna / Appaltata",
-    "sec7_badge": "07",
-    "sec7_title": "Analisi dei Percorsi",
-    "sec7_sub": "Diagnosi di estensione, georeferenziazione e tempi medi di percorrenza per territorio.",
-    "rotas_prgm_nac": "PRGM Nazionale",
-    "rotas_georref": "Percorsi Georeferenziati",
-    "rotas_totais": "Totale Percorsi",
-    "rotas_extensao_media": "Lunghezza Media per Percorso",
-    "rotas_comp_title": "Confronto Statale di Georeferenziazione (PRGM)",
-    "sec8_badge": "08",
-    "sec8_title": "Mappa degli Indicatori",
-    "sec8_sub": "Visualizzazione geografica con scala cromatica adattativa basata sulla natura dell'indicatore.",
-    "mapa_sel_ind": "Indicatore sulla Mappa:",
-    "mapa_sel_geo": "Livello Geografico:",
-    "mapa_geo_uf": "Stati (UFs)",
-    "mapa_geo_reg": "Grandi Regioni",
-    "mapa_no_data": "Nessun dato",
-    "mapa_hint": "Passa il mouse sulla mappa per vedere i valori e fai clic su un territorio per fissare i dettagli.",
-    "mapa_val_nac": "Valore Nazionale:",
-    "mapa_detalhes": "Dettagli del Territorio",
-    "mapa_ranking": "Classifica Territoriale",
-    "settings_modal_title": "Impostazioni della Piattaforma",
-    "settings_lang_title": "Lingua della Piattaforma",
-    "settings_lang_desc": "Seleziona la lingua desiderata per l'intera interfaccia PNITE.",
-    "settings_theme_title": "Aspetto e Tema",
-    "settings_theme_desc": "Passa dalla modalità chiara professionale alla modalità scura ad alto contrasto.",
-    "settings_info_title": "Informazioni sulla Versione",
-    "settings_version": "Versione:",
-    "settings_updated": "Ultimo Aggiornamento:",
-    "settings_author": "Responsabile Tecnico:",
-    "btn_close": "Chiudi",
+    "sel_estado_lbl": "Seleziona lo Stato:",
+    "sel_mun_uf_lbl": "Stato del Comune:",
+    "sel_mun_city_lbl": "Comune:",
+    "regiao_centro_oeste": "Centro-Ovest",
     "regiao_norte": "Nord",
     "regiao_nordeste": "Nord-Est",
     "regiao_sudeste": "Sud-Est",
     "regiao_sul": "Sud",
-    "regiao_centro_oeste": "Centro-Ovest"
+    "card_dmc_title": "Distanza Media a Piedi",
+    "card_dmc_sub": "Tratto percorso a piedi dallo studente fino al punto di salita dello scuolabus (Rif. CECATE).",
+    "card_dmc_ref": "Limite consigliato per tragitti a piedi sicuri: entro 1.000m.",
+    "op_pvp_title": "Scuolabus Comunali Propri (PVP)",
+    "op_pvp_sub": "Veicoli di proprietà diretta della pubblica amministrazione.",
+    "op_prgm_title": "Percorsi Georeferenziati (PRGM)",
+    "op_prgm_sub": "Percorsi tracciati con coordinate spaziali su SETE.",
+    "op_prrm_title": "Percorsi Regolari (PRRM)",
+    "op_prrm_sub": "Linee scolastiche regolari attive nell'anno scolastico.",
+    "modal_rodoviario": "Stradale",
+    "modal_hidroviario": "Fluviale",
+    "modal_multimodal": "Multimodale",
+    "modal_frota_propria": "Flotta Propria",
+    "modal_rodoviario_sub": "Strade e vie terrestri",
+    "modal_hidroviario_sub": "Fiumi, canali e laghi",
+    "modal_multimodal_sub": "Integrazione tra modalità",
+    "modal_propria_sub": "Veicoli pubblici propri",
+    "rotas_prgm_nac": "PRGM Nazionale",
+    "rotas_georref": "Percorsi Georeferenziati",
+    "rotas_totais": "Totale Percorsi",
+    "rotas_extensao_media": "Lunghezza Media per Percorso",
+    "rotas_comp_title": "Confronto Statale di Georeferenziazione (PRGM %)",
+    "mapa_sel_ind": "Indicatore sulla Mappa:",
+    "mapa_sel_geo": "Ambito Geografico:",
+    "mapa_geo_uf": "Stati (UFs)",
+    "mapa_geo_reg": "Grandi Regioni",
+    "map_info_btn": "Come Interpretare",
+    "map_info_title": "Come interpretare questo indicatore sulla mappa?",
+    "map_info_close": "Chiudi",
+    "map_info_desc_lbl": "Cosa misura questo indicatore:",
+    "map_info_high_lbl": "Valori più alti indicano:",
+    "map_info_low_lbl": "Valori più bassi indicano:",
+    "map_info_colors_lbl": "Interpretazione dei colori sulla mappa:",
+    "map_info_limits_lbl": "Soglie e limiti critici:",
+    "mapa_ranking_title": "Classifica Territoriale",
+    "mapa_sem_dados": "senza dati",
+    "settings_modal_title": "Impostazioni della Piattaforma",
+    "settings_lang_title": "Lingua della Piattaforma",
+    "settings_lang_desc": "Seleziona la lingua desiderata per l'intera interfaccia PNITE.",
+    "settings_theme_title": "Modalità di Aspetto",
+    "settings_theme_desc": "Scegli tra le tre modalità di colore per l'intera piattaforma.",
+    "settings_info_title": "Informazioni sulla Versione",
+    "settings_version": "Versione:",
+    "settings_updated": "Ultimo Aggiornamento:",
+    "settings_author": "Responsabile Tecnico:",
+    "sem_dados_nivel": "Nessun dato calcolato per questo indicatore in questo ambito territoriale.",
+    "tab_indicadores": "Indicatori",
+    "tab_memorial": "Memoria di Calcolo",
+    "tab_calculadora": "Calcolatore",
+    "tabela_sigla": "Codice",
+    "tabela_nome": "Nome dell'Indicatore",
+    "tabela_tipo": "Tipo",
+    "tabela_formula": "Formula",
+    "tabela_fonte": "Fonte",
+    "tabela_valor": "Valore Nazionale",
+    "tabela_status": "Stato",
+    "status_ok": "Calcolato",
+    "status_pendente": "In attesa",
+    "badge_novo": "Nuovo",
+    "badge_revisado": "Revisionato",
+    "tipo_descritivo": "Descrittivo",
+    "tipo_desempenho": "Prestazione",
+    "tipo_finalistico": "Finalistico",
+    "sete_registros": "Registrazioni",
+    "sete_indicadores": "Indicatori",
+    "sete_busca_ph": "Cerca comune per nome o codice IBGE...",
+    "calc_sel_ind": "Seleziona indicatore:",
+    "calc_btn": "Calcola Indicatore",
+    "calc_resultado": "Risultato Simulato:"
   },
   "ru": {
     "app_title": "PNITE — Национальная платформа аналитики школьного транспорта",
     "brand_name": "PNITE",
     "brand_sub": "Национальная платформа аналитики школьного транспорта",
     "front_transporte": "Показатели школьного транспорта",
-    "front_capacitacao": "Показатели квалификации и обучения",
+    "front_capacitacao": "Показатели квалификации",
     "front_gestao": "Показатели управления",
     "config": "Настройки",
-    "theme_toggle": "Сменить тему",
+    "theme_toggle": "Сменить цветовую тему",
+    "theme_light": "Светлая тема",
+    "theme_dim": "Умеренно темная",
+    "theme_dark": "Темная тема",
+    "theme_light_desc": "Светлый фон, белый и мягкие серые тона",
+    "theme_dim_desc": "Мягкий темно-синий стиль Twitter/X",
+    "theme_dark_desc": "Глубокий черный с высоким контрастом",
     "em_desenvolvimento": "В разработке",
-    "placeholder_cap_title": "Мы готовим этот раздел для вас",
-    "placeholder_cap_desc": "Раздел показателей квалификации находится в стадии разработки и скоро предоставит сводные метрики подготовки водителей, сопровождающих и специалистов управления по всей Бразилии.",
-    "placeholder_ges_title": "Мы работаем, чтобы предоставить лучшее решение",
-    "placeholder_ges_desc": "Раздел показателей управления объединит анализ удельных затрат, контрактного регулирования, закупок, отчетности и институционального управления школьным транспортом.",
-    "voltar_transporte": "Вернуться к показателям школьного транспорта",
-    "frente_01": "Аналитический фронт 01",
+    "placeholder_cap_title": "Мы готовим этот раздел",
+    "placeholder_cap_desc": "Направление показателей квалификации находится в стадии формирования и вскоре представит сводные данные по подготовке водителей, сопровождающих и специалистов управления по всей Бразилии.",
+    "placeholder_ges_title": "Мы работаем над лучшим решением для вас",
+    "placeholder_ges_desc": "Направление показателей управления объединит анализ удельных затрат, контрактного регулирования, госзакупок, финансовой отчетности и институционального управления.",
+    "voltar_transporte": "Назад к показателям школьного транспорта",
+    "frente_01": "Аналитическое направление 01",
     "transporte_title": "Показатели школьного транспорта",
-    "transporte_lead": "Национальная платформа аналитики со структурной диагностикой школьного транспорта Бразилии. Объединяет показатели охвата, регулярности, автопарка, безопасности дорожного движения и доступа учащихся.",
-    "meta_base_title": "Методологическая база",
+    "transporte_lead": "Национальная платформа комплексной диагностики школьных перевозок в Бразилии. Объединяет метрики охвата, регулярности, автопарка, безопасности и доступности школ для учащихся.",
+    "meta_base_title": "МЕТОДОЛОГИЧЕСКАЯ БАЗА",
     "meta_base_desc": "Технические отчеты CECATE/UFG и FNDE",
-    "meta_fontes_title": "Интегрированные источники",
+    "meta_fontes_title": "ИНТЕГРИРОВАННЫЕ ДАННЫЕ",
     "meta_fontes_desc": "SETE, Школьная перепись (INEP) и IBGE",
-    "meta_obj_title": "Цель анализа",
-    "meta_obj_desc": "Оценка эффективности, безопасности, затрат и доступности школьного транспорта",
-    "mostrar_mais": "Показать больше",
-    "mostrar_menos": "Свернуть",
+    "meta_obj_title": "АНАЛИТИЧЕСКАЯ ЦЕЛЬ",
+    "meta_obj_desc": "Оценка эффективности, безопасности, расходов и доступности перевозок",
     "sec1_badge": "01",
     "sec1_title": "Методология, показатели и расчетная база",
-    "sec1_sub": "31 показатель, разделенный на описательные, результативные и итоговые с формулами, параметрами и встроенным калькулятором.",
-    "subtab_ind": "А. Показатели (31)",
-    "subtab_mem": "Б. Расчетная база",
-    "subtab_calc": "В. Калькулятор показателей",
-    "cat_todos": "Все (31)",
-    "cat_desc": "Описательные (14)",
-    "cat_desemp": "Результативность (12)",
-    "cat_final": "Итоговые (5)",
-    "search_ind_ph": "Поиск показателя по коду, названию или формуле...",
-    "th_sigla": "Код",
-    "th_nome": "Название показателя",
-    "th_tipo": "Тип",
-    "th_formula": "Формула",
-    "th_fonte": "Источник",
-    "th_valor": "Текущее значение",
-    "th_status": "Статус",
-    "calc_sel_lbl": "Выберите показатель для симуляции:",
-    "calc_btn": "Рассчитать показатель",
-    "calc_reset": "Очистить параметры",
-    "calc_res_lbl": "Результат расчета",
-    "calc_formula_used": "Примененная формула",
+    "sec1_sub": "31 показатель, разделенный на описательные, качественные и целевые с формулами и встроенным калькулятором.",
     "sec2_badge": "02",
     "sec2_title": "Данные SETE — Операционные микроданные",
-    "sec2_sub": "Микроданные, используемые при построении показателей и операционных агрегаций по штатам и муниципалитетам.",
-    "sete_toggle_reg": "Операционные записи",
-    "sete_toggle_ind": "Рассчитанные показатели",
-    "search_sete_ph": "Поиск муниципалитета по названию или коду IBGE...",
-    "filter_uf_all": "Все штаты",
+    "sec2_sub": "Микроданные, используемые для построения показателей и операционной сводки по штатам и муниципалитетам.",
     "sec3_badge": "03",
     "sec3_title": "Выберите территорию",
-    "sec3_sub": "Определите пространственный охват для всех панелей и визуализаций ниже.",
+    "sec3_sub": "Определите географический охват для всех графиков и показателей ниже.",
+    "sec4_badge": "04",
+    "sec4_title": "Целевые показатели — Результат, безопасность и доступ к школе",
+    "sec4_sub": "Приоритетное внимание обеспечению права на образование, ликвидации непригодного транспорта и защите детей.",
+    "sec5_badge": "05",
+    "sec5_title": "Операционный обзор SETE",
+    "sec5_sub": "Сводная картина автопарка, географического охвата и регулярности школьных маршрутов.",
+    "sec6_badge": "06",
+    "sec6_title": "Модальное распределение",
+    "sec6_sub": "Распределение маршрутов школьного транспорта между автомобильным, водным и мультимодальным сообщением.",
+    "sec7_badge": "07",
+    "sec7_title": "Анализ маршрутов",
+    "sec7_sub": "Анализ протяженности, геопривязки и среднего времени нахождения в пути по территориям.",
+    "sec8_badge": "08",
+    "sec8_title": "Карта показателей",
+    "sec8_sub": "Географическая визуализация с адаптивной цветовой шкалой в зависимости от характера показателя.",
+    "mostrar_mais": "Показать больше",
+    "mostrar_menos": "Показать меньше",
     "territory_nacional": "Национальный",
     "territory_regiao": "Регион",
     "territory_estado": "Штат",
     "territory_municipio": "Муниципалитет",
-    "territory_active_lbl": "Активная территория:",
+    "scope_nac_desc": "Национальный уровень — Бразилия (Все муниципалитеты и штаты объединены)",
     "sel_regiao_lbl": "Выберите регион:",
-    "sel_estado_lbl": "Выберите штат / UF:",
-    "sel_mun_uf_lbl": "1. Выберите штат муниципалитета:",
-    "sel_mun_lbl": "2. Выберите муниципалитет:",
-    "search_mun_ph": "Введите название города...",
-    "scope_nac_desc": "Национальный уровень — Бразилия (Все муниципалитеты и штаты)",
-    "sec4_badge": "04",
-    "sec4_title": "Итоговые показатели — Воздействие, безопасность и доступ",
-    "sec4_sub": "Стратегические аспекты, измеряющие прямое влияние транспорта на сохранение контингента и защиту учащихся.",
-    "dmc_lbl": "Средняя пешая дистанция",
-    "dmc_sub": "Среднее расстояние, преодолеваемое учеником до пункта посадки",
-    "sec5_badge": "05",
-    "sec5_title": "Операционный обзор SETE",
-    "sec5_sub": "Объем обслуживания, протяженность маршрутной сети и охват школьного транспорта.",
-    "kpi_alunos": "Обслужено учащихся",
-    "kpi_rotas": "Зарегистрировано маршрутов",
-    "kpi_veiculos": "Транспортных средств на линии",
-    "kpi_extensao": "Общая протяженность сети",
-    "sec6_badge": "06",
-    "sec6_title": "Модальное распределение",
-    "sec6_sub": "Структура видов транспорта, используемых для перевозки учащихся.",
-    "modal_rodoviario": "Автомобильный / Дорожный",
-    "modal_hidroviario": "Водный / Речной",
-    "modal_multimodal": "Мультимодальный",
-    "modal_propria": "Собственный автопарк",
-    "modal_terceirizada": "Арендованный автопарк",
-    "sec7_badge": "07",
-    "sec7_title": "Анализ маршрутов",
-    "sec7_sub": "Диагностика протяженности, геопривязки и среднего времени в пути по территориям.",
-    "rotas_prgm_nac": "Национальный PRGM",
-    "rotas_georref": "Геопривязанные маршруты",
-    "rotas_totais": "Всего маршрутов",
-    "rotas_extensao_media": "Средняя протяженность маршрута",
-    "rotas_comp_title": "Сравнение штатов по геопривязке маршрутов (PRGM)",
-    "sec8_badge": "08",
-    "sec8_title": "Карта показателей",
-    "sec8_sub": "Географическая визуализация с адаптивной цветовой шкалой в зависимости от природы показателя.",
-    "mapa_sel_ind": "Показатель на карте:",
-    "mapa_sel_geo": "Географический уровень:",
-    "mapa_geo_uf": "Штаты (UF)",
-    "mapa_geo_reg": "Макрорегионы",
-    "mapa_no_data": "Нет данных",
-    "mapa_hint": "Наведите курсор на карту, чтобы увидеть значения, и нажмите на территорию, чтобы зафиксировать детали.",
-    "mapa_val_nac": "Национальное значение:",
-    "mapa_detalhes": "Детали территории",
-    "mapa_ranking": "Рейтинг территорий",
-    "settings_modal_title": "Настройки платформы",
-    "settings_lang_title": "Язык платформы",
-    "settings_lang_desc": "Выберите желаемый язык для всего интерфейса PNITE.",
-    "settings_theme_title": "Внешний вид и тема",
-    "settings_theme_desc": "Переключение между светлой темой и контрастной темной темой.",
-    "settings_info_title": "Информация о версии",
-    "settings_version": "Версия:",
-    "settings_updated": "Последнее обновление:",
-    "settings_author": "Технический руководитель:",
-    "btn_close": "Закрыть",
+    "sel_estado_lbl": "Выберите штат:",
+    "sel_mun_uf_lbl": "Штат муниципалитета:",
+    "sel_mun_city_lbl": "Муниципалитет:",
+    "regiao_centro_oeste": "Центрально-Западный",
     "regiao_norte": "Северный",
     "regiao_nordeste": "Северо-Восточный",
     "regiao_sudeste": "Юго-Восточный",
     "regiao_sul": "Южный",
-    "regiao_centro_oeste": "Центрально-Западный"
+    "card_dmc_title": "Среднее расстояние пешком",
+    "card_dmc_sub": "Расстояние, проходимое учеником пешком до ближайшей точки посадки на школьный автобус (Стандарт CECATE).",
+    "card_dmc_ref": "Рекомендуемый безопасный предел пешего перехода: до 1000 метров.",
+    "op_pvp_title": "Собственный муниципальный автопарк (PVP)",
+    "op_pvp_sub": "Транспортные средства в прямой собственности муниципалитета.",
+    "op_prgm_title": "Геопривязанные маршруты (PRGM)",
+    "op_prgm_sub": "Маршруты, оцифрованные с координатными треками в системе SETE.",
+    "op_prrm_title": "Регулярные маршруты (PRRM)",
+    "op_prrm_sub": "Действующие регулярные школьные рейсы в учебном году.",
+    "modal_rodoviario": "Автомобильный",
+    "modal_hidroviario": "Водный",
+    "modal_multimodal": "Мультимодальный",
+    "modal_frota_propria": "Собственный автопарк",
+    "modal_rodoviario_sub": "Сухопутные дороги и улицы",
+    "modal_hidroviario_sub": "Реки, озера и водные каналы",
+    "modal_multimodal_sub": "Пересадки между видами транспорта",
+    "modal_propria_sub": "Собственные школьные автобусы",
+    "rotas_prgm_nac": "PRGM по стране",
+    "rotas_georref": "Оцифрованные маршруты",
+    "rotas_totais": "Всего маршрутов",
+    "rotas_extensao_media": "Средняя протяженность рейса",
+    "rotas_comp_title": "Сравнение штатов по геопривязке (PRGM %)",
+    "mapa_sel_ind": "Показатель на карте:",
+    "mapa_sel_geo": "Уровень детализации:",
+    "mapa_geo_uf": "Штаты (UFs)",
+    "mapa_geo_reg": "Крупные регионы",
+    "map_info_btn": "Как интерпретировать",
+    "map_info_title": "Как интерпретировать этот показатель на карте?",
+    "map_info_close": "Закрыть",
+    "map_info_desc_lbl": "Что измеряет показатель:",
+    "map_info_high_lbl": "Высокие значения означают:",
+    "map_info_low_lbl": "Низкие значения означают:",
+    "map_info_colors_lbl": "Значение цветов на карте:",
+    "map_info_limits_lbl": "Пороговые ориентиры и нормы:",
+    "mapa_ranking_title": "Территориальный рейтинг",
+    "mapa_sem_dados": "нет данных",
+    "settings_modal_title": "Настройки платформы",
+    "settings_lang_title": "Язык интерфейса",
+    "settings_lang_desc": "Выберите желаемый язык для всей платформы PNITE.",
+    "settings_theme_title": "Режим оформления",
+    "settings_theme_desc": "Выберите одну из трех цветовых тем для всей платформы.",
+    "settings_info_title": "Информация о версии",
+    "settings_version": "Версия:",
+    "settings_updated": "Обновлено:",
+    "settings_author": "Технический руководитель:",
+    "sem_dados_nivel": "Нет расчетных данных для этого показателя на данном территориальном уровне.",
+    "tab_indicadores": "Показатели",
+    "tab_memorial": "Расчетная база",
+    "tab_calculadora": "Калькулятор",
+    "tabela_sigla": "Код",
+    "tabela_nome": "Наименование показателя",
+    "tabela_tipo": "Тип",
+    "tabela_formula": "Формула",
+    "tabela_fonte": "Источник",
+    "tabela_valor": "Показатель по стране",
+    "tabela_status": "Статус",
+    "status_ok": "Рассчитан",
+    "status_pendente": "В ожидании",
+    "badge_novo": "Новый",
+    "badge_revisado": "Обновлен",
+    "tipo_descritivo": "Описательный",
+    "tipo_desempenho": "Качественный",
+    "tipo_finalistico": "Целевой",
+    "sete_registros": "Записи",
+    "sete_indicadores": "Показатели",
+    "sete_busca_ph": "Поиск муниципалитета по названию или коду IBGE...",
+    "calc_sel_ind": "Выберите показатель:",
+    "calc_btn": "Рассчитать показатель",
+    "calc_resultado": "Результат расчета:"
   }
 };
 window.I18N = I18N;
@@ -5515,6 +6458,165 @@ function setLanguage(lang) {
 // --------------------------------------------------------------------------
 // 7. MODAL DE CONFIGURAÇÕES
 // --------------------------------------------------------------------------
+
+// ==========================================================================
+
+function t(key, fallback) {
+  const i18nObj = (typeof I18N !== 'undefined') ? I18N : (window.I18N || null);
+  const lang = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'pt';
+  if (i18nObj && i18nObj[lang] && i18nObj[lang][key]) {
+    return i18nObj[lang][key];
+  }
+  return fallback || key;
+}
+
+// PNITE v.2.1.0 — SISTEMA DE 3 MODOS DE COR (LIGHT, DIM, DARK)
+// ==========================================================================
+let currentTheme = 'light';
+
+function setTheme(theme) {
+  if (!['light', 'dim', 'dark'].includes(theme)) theme = 'light';
+  currentTheme = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  try { localStorage.setItem('pnite_theme', theme); } catch(e) {}
+
+  updateThemeUI();
+  renderAllViews();
+}
+
+function cycleTheme() {
+  const modes = ['light', 'dim', 'dark'];
+  const nextIdx = (modes.indexOf(currentTheme) + 1) % modes.length;
+  setTheme(modes[nextIdx]);
+}
+
+function toggleTheme() {
+  cycleTheme();
+}
+
+function updateThemeUI() {
+  const icon = document.getElementById('themeIcon');
+  const btn = document.getElementById('headerThemeBtn');
+  if (icon) {
+    if (currentTheme === 'light') {
+      icon.className = 'ti ti-sun';
+      if (btn) btn.title = t('theme_light', 'Modo Claro');
+    } else if (currentTheme === 'dim') {
+      icon.className = 'ti ti-sunset';
+      if (btn) btn.title = t('theme_dim', 'Modo Pouco Escuro');
+    } else {
+      icon.className = 'ti ti-moon';
+      if (btn) btn.title = t('theme_dark', 'Modo Escuro');
+    }
+  }
+
+  // Atualiza botões no modal de configurações
+  ['light', 'dim', 'dark'].forEach(m => {
+    const b = document.getElementById('themeBtn_' + m);
+    if (b) {
+      if (m === currentTheme) b.classList.add('active');
+      else b.classList.remove('active');
+    }
+  });
+}
+
+function getChartColors() {
+  if (currentTheme === 'dim') {
+    return {
+      blue: '#4DA3FF',
+      slate: '#8B98A5',
+      rose: '#F48A98',
+      mint: '#53E2A1',
+      yellow: '#FFD966',
+      accent: '#4DA3FF',
+      gridColor: 'rgba(255, 255, 255, 0.08)',
+      tickColor: '#8B98A5',
+      cardBg: '#1E2732',
+      textColor: '#F7F9F9'
+    };
+  } else if (currentTheme === 'dark') {
+    return {
+      blue: '#60A5FA',
+      slate: '#94A3B8',
+      rose: '#FB7185',
+      mint: '#4ADE80',
+      yellow: '#FBBF24',
+      accent: '#60A5FA',
+      gridColor: 'rgba(255, 255, 255, 0.08)',
+      tickColor: '#A6B0BF',
+      cardBg: '#151921',
+      textColor: '#FFFFFF'
+    };
+  }
+  return {
+    blue: '#2589F4',
+    slate: '#595959',
+    rose: '#DF6D7C',
+    mint: '#3FC688',
+    yellow: '#FFCD42',
+    accent: '#2589F4',
+    gridColor: 'rgba(0, 0, 0, 0.06)',
+    tickColor: '#595959',
+    cardBg: '#FFFFFF',
+    textColor: '#1A1D24'
+  };
+}
+
+// ==========================================================================
+// BOTÃO 'i' E PAINEL DE INTERPRETAÇÃO DO MAPA
+// ==========================================================================
+function openMapInfoModal() {
+  updateMapInfoContent();
+  const modal = document.getElementById('mapInfoModalOverlay');
+  if (modal) modal.classList.add('open');
+}
+
+function closeMapInfoModal() {
+  const modal = document.getElementById('mapInfoModalOverlay');
+  if (modal) modal.classList.remove('open');
+}
+
+function updateMapInfoContent() {
+  const sel = document.getElementById('mapaIndSelect');
+  const sigla = (sel ? sel.value : 'PRGM') || 'PRGM';
+  const lang = currentLang || 'pt';
+
+  const dict = (MAPA_INFO_DICT[lang] && MAPA_INFO_DICT[lang][sigla]) 
+    ? MAPA_INFO_DICT[lang][sigla] 
+    : ((MAPA_INFO_DICT['pt'] && MAPA_INFO_DICT['pt'][sigla]) || null);
+
+  const siglaEl = document.getElementById('mibIndSigla');
+  const nomeEl = document.getElementById('mibIndNome');
+  const descEl = document.getElementById('mibDesc');
+  const highEl = document.getElementById('mibHigh');
+  const lowEl = document.getElementById('mibLow');
+  const colorsEl = document.getElementById('mibColors');
+  const limitsEl = document.getElementById('mibLimits');
+
+  if (dict) {
+    if (siglaEl) siglaEl.textContent = sigla;
+    if (nomeEl) nomeEl.textContent = dict.nome || sigla;
+    if (descEl) descEl.textContent = dict.desc;
+    if (highEl) highEl.textContent = dict.high;
+    if (lowEl) lowEl.textContent = dict.low;
+    if (colorsEl) colorsEl.textContent = dict.colors;
+    if (limitsEl) limitsEl.textContent = dict.limits;
+  } else {
+    if (siglaEl) siglaEl.textContent = sigla;
+    if (nomeEl) nomeEl.textContent = sigla;
+    if (descEl) descEl.textContent = 'Indicador operacional do transporte escolar.';
+    if (highEl) highEl.textContent = 'Valores mais elevados no território.';
+    if (lowEl) lowEl.textContent = 'Valores mais reduzidos no território.';
+    if (colorsEl) colorsEl.textContent = 'Gradiente de cores baseado no intervalo dos valores calculados.';
+    if (limitsEl) limitsEl.textContent = 'Valores de referência calculados a partir da base SETE.';
+  }
+}
+
+function onMapaIndSelectChange() {
+  renderMapa();
+  updateMapInfoContent();
+}
+
 function openSettingsModal() {
   const modal = document.getElementById('settingsModalOverlay');
   if (modal) modal.classList.add('open');
@@ -5547,12 +6649,22 @@ syncVersionInfo();
 initTerritorySelectors();
 initMapa();
 try {
+  const savedTheme = localStorage.getItem('pnite_theme') || 'light';
+  setTheme(savedTheme);
+} catch(e) {
+  setTheme('light');
+}
+
+try {
   const savedLang = localStorage.getItem('pnite_lang') || 'pt';
   setLanguage(savedLang);
 } catch(e) {
   setLanguage('pt');
 }
+
 renderAllViews();
+updateMapInfoContent();
+
 </script>
 
 <!-- WIDGET FLUTUANTE DE INFORMAÇÃO DA VERSÃO (CANTO INFERIOR DIREITO) -->
@@ -5582,6 +6694,53 @@ renderAllViews();
   </button>
 </div>
 
+
+
+<!-- MODAL DE INTERPRETAÇÃO DINÂMICA DO INDICADOR NO MAPA (BOTÃO 'i') -->
+<div class="map-info-modal-overlay" id="mapInfoModalOverlay" onclick="if(event.target===this)closeMapInfoModal()">
+  <div class="map-info-box">
+    <div class="mib-header">
+      <div class="mib-title-wrap">
+        <div class="mib-icon"><i class="ti ti-info-circle"></i></div>
+        <div>
+          <div class="mib-ind-sigla" id="mibIndSigla">TETI</div>
+          <div class="mib-ind-nome" id="mibIndNome">Taxa de Erradicação de Transporte Inadequado</div>
+        </div>
+      </div>
+      <button class="mib-close" onclick="closeMapInfoModal()" title="Fechar"><i class="ti ti-x"></i></button>
+    </div>
+
+    <!-- 1. O QUE O INDICADOR MEDE -->
+    <div class="mib-item">
+      <div class="mib-item-lbl"><i class="ti ti-ruler-measure"></i> <span data-i18n="map_info_desc_lbl">O que o indicador mede:</span></div>
+      <div class="mib-item-val" id="mibDesc"></div>
+    </div>
+
+    <!-- 2. VALORES MAIS ALTOS -->
+    <div class="mib-item">
+      <div class="mib-item-lbl"><i class="ti ti-trending-up"></i> <span data-i18n="map_info_high_lbl">Valores mais altos:</span></div>
+      <div class="mib-item-val" id="mibHigh"></div>
+    </div>
+
+    <!-- 3. VALORES MAIS BAIXOS -->
+    <div class="mib-item">
+      <div class="mib-item-lbl"><i class="ti ti-trending-down"></i> <span data-i18n="map_info_low_lbl">Valores mais baixos:</span></div>
+      <div class="mib-item-val" id="mibLow"></div>
+    </div>
+
+    <!-- 4. INTERPRETAÇÃO DAS CORES -->
+    <div class="mib-item">
+      <div class="mib-item-lbl"><i class="ti ti-palette"></i> <span data-i18n="map_info_colors_lbl">Interpretação das cores no mapa:</span></div>
+      <div class="mib-item-val" id="mibColors"></div>
+    </div>
+
+    <!-- 5. LIMITES E BENCHMARKS -->
+    <div class="mib-item">
+      <div class="mib-item-lbl"><i class="ti ti-target"></i> <span data-i18n="map_info_limits_lbl">Limites e referências críticas:</span></div>
+      <div class="mib-item-val" id="mibLimits"></div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
