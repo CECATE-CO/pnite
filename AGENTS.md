@@ -67,9 +67,15 @@ Não interrompa o fluxo de desenvolvimento para perguntas que possam ser resolvi
 
 ## 3. ARQUIVO PRINCIPAL DO PROJETO
 O arquivo principal atual da aplicação é:
-`PNITE [V.2.2.0].html`
+`PNITE [V.2.3.0].html`
 
 Esse arquivo contém a estrutura HTML, CSS e JavaScript da aplicação.
+
+### 3.1. REGRA MANDATÓRIA DE ARQUIVAMENTO NA PASTA `old/`
+- Sempre que uma nova versão for criada ou for solicitada qualquer alteração na aplicação, a versão atual anterior **DEVE ser obrigatoriamente movida para a pasta `old/`** (ex.: `old/PNITE [V.2.2.0].html`).
+- Apenas o arquivo da versão mais recente permanece na raiz do repositório (ex.: `PNITE [V.2.3.0].html`).
+- A pasta `old/` mantém o repositório histórico integral de todas as versões anteriores (`v.1.0.0`, `v.1.1.0`, `v.1.2.0`, `v.1.3.0`, ..., até a versão imediatamente anterior à atual).
+- Nunca sobrescrever ou descartar uma versão anterior na raiz; sempre movê-la para `old/`.
 
 **Antes de realizar qualquer alteração:**
 1. Leia o arquivo atual;
