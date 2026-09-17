@@ -274,13 +274,40 @@ Inspeção rigorosa de alinhamentos, espaçamentos, hierarquia, contraste, ausê
 
 ---
 
-## 25. VERSIONAMENTO SEMVER
-A PNITE utiliza versionamento estrito: `v.X.Y.Z`
-- `X`: Alteração estrutural ou incompatível
-- `Y`: Nova funcionalidade
-- `Z`: Correção de bug, melhoria ou ajuste
+## 25. SISTEMA DE VERSIONAMENTO
+### 25.1. Formato Obrigatório
+A versão deverá seguir obrigatoriamente o formato:
+`v.X.Y.Z`
 
-Versão inicial oficial: **`v.1.0.0`**
+Exemplo:
+`v.1.0.0`
+
+A versão deverá estar visível no rodapé da aplicação e na constante central `const PNITE_VERSION = "v.X.Y.Z";`.
+
+### 25.2. Regra de Incremento
+A ordem de crescimento será:
+**Z → Y → X**
+
+- **Incremento de Z:**
+  Enquanto Z for menor que 9, incrementar apenas Z.
+  Exemplo: `v.1.0.0` → `v.1.0.1` até `v.1.0.9`.
+
+- **Incremento de Y:**
+  Quando Z estiver em 9 e uma nova alteração exigir incremento:
+  `v.1.0.9` → `v.1.1.0`
+  (Z retorna para 0 e Y aumenta em 1).
+
+- **Incremento de X:**
+  Quando Y e Z estiverem em 9:
+  `v.1.9.9` → `v.2.0.0`
+  (Y e Z retornam para 0 e X aumenta em 1).
+
+### 25.3. Limites
+- Z nunca poderá ser maior que 9.
+- Y nunca poderá ser maior que 9.
+- X não possui limite superior.
+- Nunca utilizar `v.1.0.10`.
+- Nunca utilizar `v.1.10.0`.
 
 ---
 
@@ -293,11 +320,13 @@ TODA alteração no projeto deve gerar uma nova versão sem exceções.
 ---
 
 ## 27. REGRA DE INCREMENTO DA VERSÃO
-1. Identificar versão atual
-2. Classificar alteração (Patch Z, Minor Y, Major X)
-3. Calcular próxima versão
-4. Executar alteração e atualizar a versão central e exibida
-5. Testar e commitar
+1. Identificar versão atual (`v.X.Y.Z`).
+2. Aplicar a regra sequencial $Z \rightarrow Y \rightarrow X$:
+   - Se $Z < 9$: incrementar apenas $Z$ (ex: `v.2.4.0` → `v.2.4.1`).
+   - Se $Z = 9$ e $Y < 9$: $Z$ retorna para 0 e $Y$ aumenta em 1 (ex: `v.2.4.9` → `v.2.5.0`).
+   - Se $Y = 9$ e $Z = 9$: $Y$ e $Z$ retornam para 0 e $X$ aumenta em 1 (ex: `v.2.9.9` → `v.3.0.0`).
+3. Executar alteração e atualizar a versão central e exibida.
+4. Testar e commitar.
 
 ---
 
@@ -378,7 +407,7 @@ Uma tarefa só está concluída com todos os itens satisfeitos:
 - [ ] Testes realizados;
 - [ ] Interface e responsividade validadas;
 - [ ] Dark mode verificado;
-- [ ] Versão SemVer incrementada e visível;
+- [ ] Versão incrementada e visível (regra Z → Y → X);
 - [ ] `git diff` verificado;
 - [ ] Commit no padrão oficial realizado;
 - [ ] Push concluído com sucesso.
