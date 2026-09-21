@@ -67,7 +67,7 @@ Não interrompa o fluxo de desenvolvimento para perguntas que possam ser resolvi
 
 ## 3. ARQUIVO PRINCIPAL DO PROJETO
 O arquivo principal atual da aplicação é:
-`PNITE [V.2.4.7].html`
+`PNITE [V.2.4.8].html`
 
 Esse arquivo contém a estrutura HTML, CSS e JavaScript da aplicação.
 
