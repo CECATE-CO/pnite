@@ -129,12 +129,70 @@ def extrair_metricas_por_uf(tabelas):
 
     return detalhes_scripts
 
+
+def processar_alunos_pcd(data_dir='data'):
+    """
+    Processa script_01_alunos_consolidado.csv para calcular o indicador PAD:
+    Alunos com Defici?ncia Atendidos pelo Transporte Escolar.
+    Crit?rio: def_caminhar, def_ouvir, def_enxergar, def_mental == 'S'
+    Contagem ?nica por aluno (se tiver m?ltiplas defici?ncias, conta apenas uma vez).
+    Gera estat?sticas por Cidade, Estado, Regi?o e Brasil.
+    """
+    csv_path = os.path.join(data_dir, 'script_01_alunos_consolidado.csv')
+    if not os.path.exists(csv_path):
+        print(f"  [AVISO] Arquivo '{csv_path}' n?o encontrado para c?lculo de PCD.")
+        return None
+        
+    print(f"  [INFO] Processando alunos com defici?ncia em '{csv_path}'...")
+    cols = ['codigo_cidade', 'uf', 'def_caminhar', 'def_ouvir', 'def_enxergar', 'def_mental']
+    
+    total_br = 0
+    pcd_br = 0
+    est_tot = {}
+    est_pcd = {}
+    mun_tot = {}
+    mun_pcd = {}
+    
+    chunksize = 500000
+    for chunk in pd.read_csv(csv_path, usecols=cols, chunksize=chunksize, dtype=str):
+        has_def = (chunk['def_caminhar'].str.upper() == 'S') | \
+                  (chunk['def_ouvir'].str.upper() == 'S') | \
+                  (chunk['def_enxergar'].str.upper() == 'S') | \
+                  (chunk['def_mental'].str.upper() == 'S')
+        
+        total_br += len(chunk)
+        pcd_br += int(has_def.sum())
+        
+        for uf, g in chunk.groupby('uf'):
+            s = str(uf).lower().strip()
+            est_tot[s] = est_tot.get(s, 0) + len(g)
+            est_pcd[s] = est_pcd.get(s, 0) + int(has_def.loc[g.index].sum())
+            
+        for cod, g in chunk.groupby('codigo_cidade'):
+            c = str(cod).strip()
+            mun_tot[c] = mun_tot.get(c, 0) + len(g)
+            mun_pcd[c] = mun_pcd.get(c, 0) + int(has_def.loc[g.index].sum())
+            
+    pct_br = round((pcd_br / total_br) * 100, 2) if total_br > 0 else 0.0
+    print(f"  [OK] PCD Nacional: {pcd_br:,} de {total_br:,} alunos ({pct_br}%).")
+    
+    return {
+        'total_br': total_br,
+        'pcd_br': pcd_br,
+        'pad_br': pct_br,
+        'est_tot': est_tot,
+        'est_pcd': est_pcd,
+        'mun_tot': mun_tot,
+        'mun_pcd': mun_pcd
+    }
+
 def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
     """
     Executa a extração completa dos Excels e compõe a base RAW_DATA e DATA.
     Se html_ref for fornecido, complementa com os campos de censo e recalcula os indicadores.
     """
     tabelas = carregar_planilhas(data_dir)
+    dados_pcd = processar_alunos_pcd(data_dir)
     detalhes_por_uf = extrair_metricas_por_uf(tabelas)
 
     # Obter dados de base de referência (para indicadores do Censo/Metodológicos já consolidados)
@@ -321,6 +379,29 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
         if uf != 'nacional':
             data_calculada['estado'][uf] = calcular_indicadores(raw_data_unificada.get(uf, {}), lbl)
 
+
+    # Injetar dados calculados de PCD (script_01_alunos_consolidado.csv)
+    if dados_pcd:
+        raw_data_unificada['nacional']['al_pcd'] = dados_pcd['pcd_br']
+        for s, pcd_val in dados_pcd['est_pcd'].items():
+            if s in raw_data_unificada:
+                raw_data_unificada[s]['al_pcd'] = pcd_val
+                
+        # Atualizar PAD nos estados e nacional
+        data_calculada['nacional']['PAD'] = dados_pcd['pad_br']
+        for s, pcd_val in dados_pcd['est_pcd'].items():
+            tot_s = dados_pcd['est_tot'].get(s, 0)
+            if s in data_calculada['estado']:
+                data_calculada['estado'][s]['PAD'] = round((pcd_val / tot_s) * 100, 2) if tot_s > 0 else 0.0
+                
+        # Atualizar PAD nas macrorregi?es
+        for reg, ufs in REGIOES.items():
+            reg_pcd = sum(dados_pcd['est_pcd'].get(u, 0) for u in ufs)
+            reg_tot = sum(dados_pcd['est_tot'].get(u, 0) for u in ufs)
+            raw_data_unificada[reg]['al_pcd'] = reg_pcd
+            if reg in data_calculada['regiao']:
+                data_calculada['regiao'][reg]['PAD'] = round((reg_pcd / reg_tot) * 100, 2) if reg_tot > 0 else 0.0
+
     # Monta a estrutura final do pacote consolidado
     pacote_consolidado = {
         'metadados': {
@@ -331,7 +412,8 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
         },
         'RAW_DATA': raw_data_unificada,
         'DATA': data_calculada,
-        'detalhes_scripts': detalhes_por_uf
+        'detalhes_scripts': detalhes_por_uf,
+        'municipios_pcd': {c: {'pcd': dados_pcd['mun_pcd'].get(c, 0), 'total': dados_pcd['mun_tot'].get(c, 0), 'PAD': round(dados_pcd['mun_pcd'].get(c, 0) / dados_pcd['mun_tot'].get(c, 0) * 100, 2) if dados_pcd['mun_tot'].get(c, 0) > 0 else None} for c in dados_pcd['mun_pcd']} if dados_pcd else {}
     }
 
     # Salva em formato JSON
