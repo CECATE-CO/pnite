@@ -565,6 +565,94 @@ def processar_veiculos_origem(data_dir='data'):
         'municipios_veic': mun_formatado
     }
 
+def processar_profissionais(data_dir='data'):
+    """
+    Processa script_06_motoristas_consolidado.csv e script_05_monitores_consolidado.csv
+    para calcular os indicadores PMVE e PMNVE (Revisados 2026):
+      PMVE  = [1 − (Motoristas sem vínculo ÷ Total de motoristas)] × 100
+      PMNVE = [1 − (Monitores sem vínculo ÷ Total de monitores)] × 100
+      Onde vínculo == 4 representa a opção "Outro" (sem vínculo formal).
+      Vínculos 1 (Efetivo), 2 (Comissionado) e 3 (Terceirizado) representam vínculo formal.
+    """
+    mot_path = os.path.join(data_dir, 'script_06_motoristas_consolidado.csv')
+    mon_path = os.path.join(data_dir, 'script_05_monitores_consolidado.csv')
+
+    res_mot = {'tot_br': 0, 'outro_br': 0, 'cv_br': 0, 'uf': {}, 'mun': {}}
+    if os.path.exists(mot_path):
+        print(f"  [INFO] Processando motoristas e vínculos em '{mot_path}'...")
+        chunksize = 50000
+        for chunk in pd.read_csv(mot_path, usecols=['codigo_cidade', 'uf', 'vinculo'], chunksize=chunksize, dtype=str):
+            v_clean = chunk['vinculo'].astype(str).str.replace(r'\.0$', '', regex=True).str.strip()
+            is_valid = v_clean.isin(['1', '2', '3', '4'])
+            is_outro = (v_clean == '4')
+            is_cv = v_clean.isin(['1', '2', '3'])
+
+            res_mot['tot_br'] += int(is_valid.sum())
+            res_mot['outro_br'] += int(is_outro.sum())
+            res_mot['cv_br'] += int(is_cv.sum())
+
+            for uf, g in chunk.groupby('uf'):
+                s = str(uf).lower().strip()
+                if s not in res_mot['uf']:
+                    res_mot['uf'][s] = {'tot': 0, 'outro': 0, 'cv': 0}
+                idx = g.index
+                res_mot['uf'][s]['tot'] += int(is_valid.loc[idx].sum())
+                res_mot['uf'][s]['outro'] += int(is_outro.loc[idx].sum())
+                res_mot['uf'][s]['cv'] += int(is_cv.loc[idx].sum())
+
+            for cod, g in chunk.groupby('codigo_cidade'):
+                cd = str(cod).strip()
+                if cd not in res_mot['mun']:
+                    res_mot['mun'][cd] = {'tot': 0, 'outro': 0, 'cv': 0}
+                idx = g.index
+                res_mot['mun'][cd]['tot'] += int(is_valid.loc[idx].sum())
+                res_mot['mun'][cd]['outro'] += int(is_outro.loc[idx].sum())
+                res_mot['mun'][cd]['cv'] += int(is_cv.loc[idx].sum())
+
+    res_mon = {'tot_br': 0, 'outro_br': 0, 'cv_br': 0, 'uf': {}, 'mun': {}}
+    if os.path.exists(mon_path):
+        print(f"  [INFO] Processando monitores e vínculos em '{mon_path}'...")
+        chunksize = 50000
+        for chunk in pd.read_csv(mon_path, usecols=['codigo_cidade', 'uf', 'vinculo'], chunksize=chunksize, dtype=str):
+            v_clean = chunk['vinculo'].astype(str).str.replace(r'\.0$', '', regex=True).str.strip()
+            is_valid = v_clean.isin(['1', '2', '3', '4'])
+            is_outro = (v_clean == '4')
+            is_cv = v_clean.isin(['1', '2', '3'])
+
+            res_mon['tot_br'] += int(is_valid.sum())
+            res_mon['outro_br'] += int(is_outro.sum())
+            res_mon['cv_br'] += int(is_cv.sum())
+
+            for uf, g in chunk.groupby('uf'):
+                s = str(uf).lower().strip()
+                if s not in res_mon['uf']:
+                    res_mon['uf'][s] = {'tot': 0, 'outro': 0, 'cv': 0}
+                idx = g.index
+                res_mon['uf'][s]['tot'] += int(is_valid.loc[idx].sum())
+                res_mon['uf'][s]['outro'] += int(is_outro.loc[idx].sum())
+                res_mon['uf'][s]['cv'] += int(is_cv.loc[idx].sum())
+
+            for cod, g in chunk.groupby('codigo_cidade'):
+                cd = str(cod).strip()
+                if cd not in res_mon['mun']:
+                    res_mon['mun'][cd] = {'tot': 0, 'outro': 0, 'cv': 0}
+                idx = g.index
+                res_mon['mun'][cd]['tot'] += int(is_valid.loc[idx].sum())
+                res_mon['mun'][cd]['outro'] += int(is_outro.loc[idx].sum())
+                res_mon['mun'][cd]['cv'] += int(is_cv.loc[idx].sum())
+
+    pmve_br = round((1 - (res_mot['outro_br'] / res_mot['tot_br'])) * 100, 2) if res_mot['tot_br'] > 0 else 0.0
+    pmnve_br = round((1 - (res_mon['outro_br'] / res_mon['tot_br'])) * 100, 2) if res_mon['tot_br'] > 0 else 0.0
+    print(f"  [OK] PMVE Nacional (Motoristas c/ vínculo): {res_mot['cv_br']:,} de {res_mot['tot_br']:,} ({pmve_br}% | sem vínculo: {res_mot['outro_br']:,}).")
+    print(f"  [OK] PMNVE Nacional (Monitores c/ vínculo): {res_mon['cv_br']:,} de {res_mon['tot_br']:,} ({pmnve_br}% | sem vínculo: {res_mon['outro_br']:,}).")
+
+    return {
+        'motoristas': res_mot,
+        'monitores': res_mon,
+        'pmve_br': pmve_br,
+        'pmnve_br': pmnve_br
+    }
+
 def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
     """
     Executa a extração completa dos Excels e compõe a base RAW_DATA e DATA.
@@ -574,6 +662,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
     dados_alunos = processar_alunos(data_dir)
     dados_rotas = processar_rotas_prgm(data_dir)
     dados_veiculos = processar_veiculos_origem(data_dir)
+    dados_profissionais = processar_profissionais(data_dir)
     dados_cobertura = processar_censo_e_cobertura(data_dir)
 
     # Obter dados de base de referência (para indicadores metodológicos de Censo, etc.)
@@ -749,6 +838,35 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             raw_data_unificada[reg]['demanda_censo'] = reg_censo
             raw_data_unificada[reg]['al_transp'] = reg_sete
 
+    # Injetar dados de Profissionais e Vínculos (PMVE e PMNVE Revisados)
+    if dados_profissionais:
+        dmot = dados_profissionais['motoristas']
+        dmon = dados_profissionais['monitores']
+
+        raw_data_unificada['nacional']['tot_mot_info'] = dmot['tot_br']
+        raw_data_unificada['nacional']['mot_sem_vinculo'] = dmot['outro_br']
+        raw_data_unificada['nacional']['mot_cv'] = dmot['cv_br']
+        raw_data_unificada['nacional']['tot_mon'] = dmon['tot_br']
+        raw_data_unificada['nacional']['mon_sem_vinculo'] = dmon['outro_br']
+        raw_data_unificada['nacional']['mon_cv'] = dmon['cv_br']
+
+        for s in UF_LABELS.keys():
+            if s != 'nacional' and s in raw_data_unificada:
+                raw_data_unificada[s]['tot_mot_info'] = dmot['uf'].get(s, {}).get('tot', 0)
+                raw_data_unificada[s]['mot_sem_vinculo'] = dmot['uf'].get(s, {}).get('outro', 0)
+                raw_data_unificada[s]['mot_cv'] = dmot['uf'].get(s, {}).get('cv', 0)
+                raw_data_unificada[s]['tot_mon'] = dmon['uf'].get(s, {}).get('tot', 0)
+                raw_data_unificada[s]['mon_sem_vinculo'] = dmon['uf'].get(s, {}).get('outro', 0)
+                raw_data_unificada[s]['mon_cv'] = dmon['uf'].get(s, {}).get('cv', 0)
+
+        for reg, ufs in REGIOES.items():
+            raw_data_unificada[reg]['tot_mot_info'] = sum(dmot['uf'].get(u, {}).get('tot', 0) for u in ufs)
+            raw_data_unificada[reg]['mot_sem_vinculo'] = sum(dmot['uf'].get(u, {}).get('outro', 0) for u in ufs)
+            raw_data_unificada[reg]['mot_cv'] = sum(dmot['uf'].get(u, {}).get('cv', 0) for u in ufs)
+            raw_data_unificada[reg]['tot_mon'] = sum(dmon['uf'].get(u, {}).get('tot', 0) for u in ufs)
+            raw_data_unificada[reg]['mon_sem_vinculo'] = sum(dmon['uf'].get(u, {}).get('outro', 0) for u in ufs)
+            raw_data_unificada[reg]['mon_cv'] = sum(dmon['uf'].get(u, {}).get('cv', 0) for u in ufs)
+
     # Recalcular DATA
     def calcular_indicadores(r, label):
         def pct(a, b):
@@ -773,6 +891,12 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
         ate = round(at / ea, 2) if (at and ea and ea > 0) else None
         prio_val = pct(dif_val, tr)
 
+        mot_sem = r.get('mot_sem_vinculo', 0)
+        pmve_val = round((1 - (mot_sem / tmi)) * 100, 2) if tmi and tmi > 0 else pct(r.get('mot_cv'), tmi)
+
+        mon_sem = r.get('mon_sem_vinculo', 0)
+        pmnve_val = round((1 - (mon_sem / tm)) * 100, 2) if tm and tm > 0 else pct(r.get('mon_cv'), tm)
+
         return {
             'label': label,
             'PRGM': pct(r.get('georref'), tr),
@@ -786,8 +910,10 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             'PVPCE': pct(r.get('ce_veic'), tv),
             'PECS': pct(r.get('sete_esc'), r.get('cs_esc_transp')),
             'IUC': iuc,
-            'MON_CVE': pct(r.get('mon_cv'), tm),
-            'MOT_CVE': pct(r.get('mot_cv'), tmi),
+            'PMVE': pmve_val,
+            'PMNVE': pmnve_val,
+            'MON_CVE': pmnve_val,
+            'MOT_CVE': pmve_val,
             'PRPM': None,
             'ATE': ate,
             'TETI': None,
@@ -839,6 +965,8 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
         'municipios_rotas': dados_rotas['municipios_rotas'] if dados_rotas else {},
         'municipios_alunos': dados_alunos['municipios'] if dados_alunos else {},
         'municipios_cobertura': dados_cobertura['municipios'] if dados_cobertura else {},
+        'municipios_motoristas': dados_profissionais['motoristas']['mun'] if dados_profissionais else {},
+        'municipios_monitores': dados_profissionais['monitores']['mun'] if dados_profissionais else {},
         'municipios_pcd': {c: {'pcd': d['pcd'], 'total': d['total'], 'PAD': d['PAD']} for c, d in dados_alunos['municipios'].items()} if dados_alunos else {}
     }
 
