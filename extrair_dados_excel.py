@@ -322,11 +322,14 @@ def processar_rotas_prgm(data_dir='data'):
         return None
 
     print(f"  [INFO] Processando rotas, georreferenciamento, impedâncias e tempos em '{csv_path}'...")
-    cols = ['codigo_cidade', 'uf', 'km', 'shape', 'da_porteira', 'da_mataburro', 'da_colchete', 'da_atoleiro', 'da_ponterustica', 'tempo']
+    cols = ['codigo_cidade', 'uf', 'km', 'shape', 'da_porteira', 'da_mataburro', 'da_colchete', 'da_atoleiro', 'da_ponterustica', 'tempo', 'tipo']
     
     tot_br = 0
     geo_br = 0
     imped_br = 0
+    t1_br = 0
+    t2_br = 0
+    t3_br = 0
     km_tot_br = 0.0
     km_geo_br = 0.0
     tempos_br = []
@@ -350,20 +353,31 @@ def processar_rotas_prgm(data_dir='data'):
         t_valid = t_num[(t_num >= 1) & (t_num <= 360)]
         tempos_br.extend(t_valid.tolist()[:500])
         
+        tipo_clean = chunk['tipo'].fillna('').str.strip()
+        is_t1 = (tipo_clean == '1')
+        is_t2 = (tipo_clean == '2')
+        is_t3 = (tipo_clean == '3')
+
         tot_br += len(chunk)
         geo_br += int(has_shape.sum())
         imped_br += int(has_imped.sum())
+        t1_br += int(is_t1.sum())
+        t2_br += int(is_t2.sum())
+        t3_br += int(is_t3.sum())
         km_tot_br += float(km_vals.sum())
         km_geo_br += float(km_vals[has_shape].sum())
         
         for uf, g in chunk.groupby('uf'):
             s = str(uf).lower().strip()
             if s not in uf_rotas:
-                uf_rotas[s] = {'rotas': 0, 'geo': 0, 'imped': 0, 'km': 0.0, 'km_geo': 0.0, 'tempos': []}
+                uf_rotas[s] = {'rotas': 0, 'geo': 0, 'imped': 0, 't1': 0, 't2': 0, 't3': 0, 'km': 0.0, 'km_geo': 0.0, 'tempos': []}
             u = uf_rotas[s]
             u['rotas'] += len(g)
             u['geo'] += int(has_shape.loc[g.index].sum())
             u['imped'] += int(has_imped.loc[g.index].sum())
+            u['t1'] += int(is_t1.loc[g.index].sum())
+            u['t2'] += int(is_t2.loc[g.index].sum())
+            u['t3'] += int(is_t3.loc[g.index].sum())
             u['km'] += float(km_vals.loc[g.index].sum())
             u['km_geo'] += float(km_vals.loc[g.index[has_shape.loc[g.index]]].sum())
             t_uf_valid = t_num.loc[g.index][(t_num.loc[g.index] >= 1) & (t_num.loc[g.index] <= 360)]
@@ -373,11 +387,14 @@ def processar_rotas_prgm(data_dir='data'):
         for cod, g in chunk.groupby('codigo_cidade'):
             cd = str(cod).strip()
             if cd not in mun_rotas:
-                mun_rotas[cd] = {'rotas': 0, 'geo': 0, 'imped': 0, 'porteira': 0, 'mataburro': 0, 'colchete': 0, 'atoleiro': 0, 'ponte': 0, 'km': 0.0, 'km_geo': 0.0, 'tempos': []}
+                mun_rotas[cd] = {'rotas': 0, 'geo': 0, 'imped': 0, 't1': 0, 't2': 0, 't3': 0, 'porteira': 0, 'mataburro': 0, 'colchete': 0, 'atoleiro': 0, 'ponte': 0, 'km': 0.0, 'km_geo': 0.0, 'tempos': []}
             mr = mun_rotas[cd]
             mr['rotas'] += len(g)
             mr['geo'] += int(has_shape.loc[g.index].sum())
             mr['imped'] += int(has_imped.loc[g.index].sum())
+            mr['t1'] += int(is_t1.loc[g.index].sum())
+            mr['t2'] += int(is_t2.loc[g.index].sum())
+            mr['t3'] += int(is_t3.loc[g.index].sum())
             mr['porteira'] += int(p.loc[g.index].sum())
             mr['mataburro'] += int(m.loc[g.index].sum())
             mr['colchete'] += int(c.loc[g.index].sum())
@@ -436,11 +453,87 @@ def processar_rotas_prgm(data_dir='data'):
         'prgm_br': prgm_br,
         'imped_br': imped_br,
         'prio_br': prio_br,
+        't1_br': t1_br,
+        't2_br': t2_br,
+        't3_br': t3_br,
         'km_tot_br': round(km_tot_br, 1),
         'km_geo_br': round(km_geo_br, 1),
         'tempo_med_br': med_tempo_br,
         'uf_rotas': uf_rotas,
         'municipios_rotas': mun_formatado
+    }
+
+def processar_veiculos_origem(data_dir='data'):
+    """
+    Processa script_04_veiculos_consolidado.csv para calcular:
+      1) PVP: Percentual de Veículos da Frota Própria (origem == 1)
+      2) PVT: Percentual de Veículos da Frota Terceirizada (origem == 2)
+    Computa por Cidade, Estado, Região e Brasil.
+    """
+    csv_path = os.path.join(data_dir, 'script_04_veiculos_consolidado.csv')
+    if not os.path.exists(csv_path):
+        print(f"  [AVISO] Arquivo '{csv_path}' não encontrado para cálculo de veículos.")
+        return None
+
+    print(f"  [INFO] Processando veículos e frota própria/terceirizada em '{csv_path}'...")
+    cols = ['codigo_cidade', 'uf', 'origem']
+    tot_br = 0
+    vp_br = 0
+    vt_br = 0
+    uf_veic = {}
+    mun_veic = {}
+
+    chunksize = 50000
+    for chunk in pd.read_csv(csv_path, usecols=cols, chunksize=chunksize, dtype=str):
+        origem_clean = chunk['origem'].fillna('').str.strip()
+        is_p = (origem_clean == '1')
+        is_t = (origem_clean == '2')
+
+        tot_br += len(chunk)
+        vp_br += int(is_p.sum())
+        vt_br += int(is_t.sum())
+
+        for uf, g in chunk.groupby('uf'):
+            s = str(uf).lower().strip()
+            if s not in uf_veic:
+                uf_veic[s] = {'veiculos': 0, 'vp': 0, 'vt': 0}
+            uf_veic[s]['veiculos'] += len(g)
+            uf_veic[s]['vp'] += int(is_p.loc[g.index].sum())
+            uf_veic[s]['vt'] += int(is_t.loc[g.index].sum())
+
+        for cod, g in chunk.groupby('codigo_cidade'):
+            cd = str(cod).strip()
+            if cd not in mun_veic:
+                mun_veic[cd] = {'veiculos': 0, 'vp': 0, 'vt': 0}
+            mun_veic[cd]['veiculos'] += len(g)
+            mun_veic[cd]['vp'] += int(is_p.loc[g.index].sum())
+            mun_veic[cd]['vt'] += int(is_t.loc[g.index].sum())
+
+    pvp_br = round((vp_br / tot_br) * 100, 2) if tot_br > 0 else 0.0
+    pvt_br = round((vt_br / tot_br) * 100, 2) if tot_br > 0 else 0.0
+    print(f"  [OK] Veículos Nacional: {tot_br:,} total | Frota Própria (PVP): {vp_br:,} ({pvp_br}%) | Terceirizada (PVT): {vt_br:,} ({pvt_br}%).")
+
+    mun_formatado = {}
+    for c, d in mun_veic.items():
+        v = d['veiculos']
+        vp = d['vp']
+        vt = d['vt']
+        mun_formatado[c] = {
+            'veiculos': v,
+            'vp': vp,
+            'vt': vt,
+            'PVP': round((vp / v) * 100, 2) if v > 0 else 0.0,
+            'PVT': round((vt / v) * 100, 2) if v > 0 else 0.0
+        }
+
+    return {
+        'tot_br': tot_br,
+        'vp_br': vp_br,
+        'vt_br': vt_br,
+        'pvp_br': pvp_br,
+        'pvt_br': pvt_br,
+        'uf_veic': uf_veic,
+        'municipios_veic': mun_formatado
     }
 
 def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
@@ -451,6 +544,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
     detalhes_por_uf = extrair_metricas_por_uf(tabelas)
     dados_alunos = processar_alunos(data_dir)
     dados_rotas = processar_rotas_prgm(data_dir)
+    dados_veiculos = processar_veiculos_origem(data_dir)
     dados_cobertura = processar_censo_e_cobertura(data_dir)
 
     # Obter dados de base de referência (para indicadores metodológicos de Censo, etc.)
@@ -533,6 +627,9 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
         raw_data_unificada['nacional']['tot_rotas'] = dados_rotas['tot_br']
         raw_data_unificada['nacional']['georref'] = dados_rotas['geo_br']
         raw_data_unificada['nacional']['dif'] = dados_rotas['imped_br']
+        raw_data_unificada['nacional']['t1'] = dados_rotas.get('t1_br', 0)
+        raw_data_unificada['nacional']['t2'] = dados_rotas.get('t2_br', 0)
+        raw_data_unificada['nacional']['t3'] = dados_rotas.get('t3_br', 0)
         raw_data_unificada['nacional']['km_total'] = dados_rotas['km_tot_br']
         raw_data_unificada['nacional']['tempo_mediano'] = dados_rotas['tempo_med_br']
         
@@ -541,6 +638,9 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
                 raw_data_unificada[s]['tot_rotas'] = d_rot['rotas']
                 raw_data_unificada[s]['georref'] = d_rot['geo']
                 raw_data_unificada[s]['dif'] = d_rot['imped']
+                raw_data_unificada[s]['t1'] = d_rot.get('t1', 0)
+                raw_data_unificada[s]['t2'] = d_rot.get('t2', 0)
+                raw_data_unificada[s]['t3'] = d_rot.get('t3', 0)
                 raw_data_unificada[s]['km_total'] = round(d_rot['km'], 1)
                 
         for reg, ufs in REGIOES.items():
@@ -551,7 +651,26 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             raw_data_unificada[reg]['tot_rotas'] = reg_rot
             raw_data_unificada[reg]['georref'] = reg_geo
             raw_data_unificada[reg]['dif'] = reg_imp
+            raw_data_unificada[reg]['t1'] = sum(dados_rotas['uf_rotas'].get(u, {}).get('t1', 0) for u in ufs)
+            raw_data_unificada[reg]['t2'] = sum(dados_rotas['uf_rotas'].get(u, {}).get('t2', 0) for u in ufs)
+            raw_data_unificada[reg]['t3'] = sum(dados_rotas['uf_rotas'].get(u, {}).get('t3', 0) for u in ufs)
             raw_data_unificada[reg]['km_total'] = round(reg_km, 1)
+
+
+    # Injetar dados de veículos (tot_veic, vp, vt)
+    if dados_veiculos:
+        raw_data_unificada['nacional']['tot_veic'] = dados_veiculos['tot_br']
+        raw_data_unificada['nacional']['vp'] = dados_veiculos['vp_br']
+        raw_data_unificada['nacional']['vt'] = dados_veiculos['vt_br']
+        for s, d_v in dados_veiculos['uf_veic'].items():
+            if s in raw_data_unificada:
+                raw_data_unificada[s]['tot_veic'] = d_v['veiculos']
+                raw_data_unificada[s]['vp'] = d_v['vp']
+                raw_data_unificada[s]['vt'] = d_v['vt']
+        for reg, ufs in REGIOES.items():
+            raw_data_unificada[reg]['tot_veic'] = sum(dados_veiculos['uf_veic'].get(u, {}).get('veiculos', 0) for u in ufs)
+            raw_data_unificada[reg]['vp'] = sum(dados_veiculos['uf_veic'].get(u, {}).get('vp', 0) for u in ufs)
+            raw_data_unificada[reg]['vt'] = sum(dados_veiculos['uf_veic'].get(u, {}).get('vt', 0) for u in ufs)
 
     # Injetar dados de PCD (PAD) e Alunos em Impedâncias (PARI)
     if dados_alunos:
