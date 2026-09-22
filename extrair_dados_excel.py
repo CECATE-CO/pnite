@@ -246,6 +246,68 @@ def processar_alunos(data_dir='data'):
         'municipios': mun_formatado
     }
 
+def processar_censo_e_cobertura(data_dir='data'):
+    """
+    Processa o cruzamento entre SETE e Censo Escolar 2025 para calcular o indicador PCSC:
+    Percentual de Cobertura entre SETE e Censo Escolar.
+    Fontes:
+      1) data/script_13_rota_atende_aluno_consolidado.csv -> Alunos atendidos por rotas no SETE
+      2) data/Micro_Dados_Censo_Tabela_Matricula_2025_V2.csv (coluna QT_TRANSP_PUBLICO) -> Demanda declarada no Censo Escolar
+    Calcula por Município, Estado, Região e Brasil.
+    """
+    censo_path = os.path.join(data_dir, 'Micro_Dados_Censo_Tabela_Matricula_2025_V2.csv')
+    s13_path = os.path.join(data_dir, 'script_13_rota_atende_aluno_consolidado.csv')
+    
+    if not os.path.exists(censo_path) or not os.path.exists(s13_path):
+        print(f"  [AVISO] Arquivos necessários para PCSC não encontrados ({censo_path} ou {s13_path}).")
+        return None
+        
+    print(f"  [INFO] Processando demanda Censo 2025 ('{censo_path}') e atendimento SETE ('{s13_path}')...")
+    
+    # 1. Demanda Censo Escolar 2025
+    censo_cols = ['CO_MUNICIPIO', 'SG_UF', 'QT_TRANSP_PUBLICO']
+    df_censo = pd.read_csv(censo_path, usecols=censo_cols, sep=';', encoding='latin1')
+    df_censo['uf_clean'] = df_censo['SG_UF'].astype(str).str.lower().str.strip()
+    df_censo['cod_mun'] = df_censo['CO_MUNICIPIO'].astype(str).str.strip()
+    
+    censo_mun = df_censo.groupby('cod_mun')['QT_TRANSP_PUBLICO'].sum().to_dict()
+    censo_uf = df_censo.groupby('uf_clean')['QT_TRANSP_PUBLICO'].sum().to_dict()
+    censo_br = int(df_censo['QT_TRANSP_PUBLICO'].sum())
+    
+    # 2. Atendimento SETE (script 13)
+    df13 = pd.read_csv(s13_path, usecols=['id_aluno', 'codigo_cidade', 'uf'], dtype=str)
+    df13['uf_clean'] = df13['uf'].str.lower().str.strip()
+    df13['cod_mun'] = df13['codigo_cidade'].str.strip()
+    
+    sete_mun = df13.groupby('cod_mun')['id_aluno'].nunique().to_dict()
+    sete_uf = df13.groupby('uf_clean')['id_aluno'].nunique().to_dict()
+    sete_br = int(df13['id_aluno'].nunique())
+    
+    pcsc_br = round((sete_br / censo_br) * 100, 2) if censo_br > 0 else 0.0
+    print(f"  [OK] Cobertura Nacional (PCSC): {sete_br:,} (SETE) de {censo_br:,} (Censo) = {pcsc_br}%.")
+    
+    # Formatação municipal
+    todos_muns = set(censo_mun.keys()).union(set(sete_mun.keys()))
+    mun_formatado = {}
+    for cod in todos_muns:
+        dem = int(censo_mun.get(cod, 0))
+        atend = int(sete_mun.get(cod, 0))
+        pcsc_val = round((atend / dem) * 100, 2) if dem > 0 else (100.0 if atend > 0 else 0.0)
+        mun_formatado[cod] = {
+            'demanda_censo': dem,
+            'atendidos_sete': atend,
+            'PCSC': pcsc_val
+        }
+        
+    return {
+        'censo_br': censo_br,
+        'sete_br': sete_br,
+        'pcsc_br': pcsc_br,
+        'censo_uf': censo_uf,
+        'sete_uf': sete_uf,
+        'municipios': mun_formatado
+    }
+
 def processar_rotas_prgm(data_dir='data'):
     """
     Processa script_03_rotas_consolidado.csv para calcular:
@@ -389,6 +451,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
     detalhes_por_uf = extrair_metricas_por_uf(tabelas)
     dados_alunos = processar_alunos(data_dir)
     dados_rotas = processar_rotas_prgm(data_dir)
+    dados_cobertura = processar_censo_e_cobertura(data_dir)
 
     # Obter dados de base de referência (para indicadores metodológicos de Censo, etc.)
     ref_raw = {}
@@ -508,6 +571,20 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             raw_data_unificada[reg]['al_dif'] = reg_pari
             raw_data_unificada[reg]['al_cad'] = reg_cad
 
+    # Injetar dados de Cobertura Censo 2025 x SETE (PCSC)
+    if dados_cobertura:
+        raw_data_unificada['nacional']['al_transp_sete'] = dados_cobertura['sete_br']
+        raw_data_unificada['nacional']['demanda_censo'] = dados_cobertura['censo_br']
+        for s in UF_LABELS.keys():
+            if s != 'nacional' and s in raw_data_unificada:
+                raw_data_unificada[s]['al_transp_sete'] = dados_cobertura['sete_uf'].get(s, 0)
+                raw_data_unificada[s]['demanda_censo'] = dados_cobertura['censo_uf'].get(s, 0)
+        for reg, ufs in REGIOES.items():
+            reg_sete = sum(dados_cobertura['sete_uf'].get(u, 0) for u in ufs)
+            reg_censo = sum(dados_cobertura['censo_uf'].get(u, 0) for u in ufs)
+            raw_data_unificada[reg]['al_transp_sete'] = reg_sete
+            raw_data_unificada[reg]['demanda_censo'] = reg_censo
+
     # Recalcular DATA
     def calcular_indicadores(r, label):
         def pct(a, b):
@@ -563,6 +640,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             'PAFI': pct(r.get('veic_adeq_idade'), r.get('tot_veic_ano')) or r.get('pafi'),
             'PAD': pct(r.get('al_pcd'), al_cad_val),
             'PARI': pct(r.get('al_dif'), al_cad_val or at),
+            'PCSC': pct(r.get('al_transp_sete'), r.get('demanda_censo')),
             'PAIH': pct(r.get('al_hidro_dif'), r.get('al_hidro')),
             'TVA': tva_val
         }
@@ -593,6 +671,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
         'detalhes_scripts': detalhes_por_uf,
         'municipios_rotas': dados_rotas['municipios_rotas'] if dados_rotas else {},
         'municipios_alunos': dados_alunos['municipios'] if dados_alunos else {},
+        'municipios_cobertura': dados_cobertura['municipios'] if dados_cobertura else {},
         'municipios_pcd': {c: {'pcd': d['pcd'], 'total': d['total'], 'PAD': d['PAD']} for c, d in dados_alunos['municipios'].items()} if dados_alunos else {}
     }
 
