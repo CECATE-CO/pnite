@@ -468,6 +468,7 @@ def processar_veiculos_origem(data_dir='data'):
     Processa script_04_veiculos_consolidado.csv para calcular:
       1) PVP: Percentual de Veículos da Frota Própria (origem == 1)
       2) PVT: Percentual de Veículos da Frota Terceirizada (origem == 2)
+      3) Capacidade média e veículos válidos para o IUC
     Computa por Cidade, Estado, Região e Brasil.
     """
     csv_path = os.path.join(data_dir, 'script_04_veiculos_consolidado.csv')
@@ -475,11 +476,13 @@ def processar_veiculos_origem(data_dir='data'):
         print(f"  [AVISO] Arquivo '{csv_path}' não encontrado para cálculo de veículos.")
         return None
 
-    print(f"  [INFO] Processando veículos e frota própria/terceirizada em '{csv_path}'...")
-    cols = ['codigo_cidade', 'uf', 'origem']
+    print(f"  [INFO] Processando veículos, frota própria/terceirizada e capacidade em '{csv_path}'...")
+    cols = ['codigo_cidade', 'uf', 'origem', 'capacidade']
     tot_br = 0
     vp_br = 0
     vt_br = 0
+    n_validos_br = 0
+    cap_sum_br = 0.0
     uf_veic = {}
     mun_veic = {}
 
@@ -489,41 +492,64 @@ def processar_veiculos_origem(data_dir='data'):
         is_p = (origem_clean == '1')
         is_t = (origem_clean == '2')
 
+        cap_num = pd.to_numeric(chunk['capacidade'], errors='coerce')
+        is_cap_valida = (cap_num > 0) & (cap_num <= 150)
+        cap_valid_vals = cap_num[is_cap_valida]
+
         tot_br += len(chunk)
         vp_br += int(is_p.sum())
         vt_br += int(is_t.sum())
+        n_validos_br += int(is_cap_valida.sum())
+        cap_sum_br += float(cap_valid_vals.sum())
 
         for uf, g in chunk.groupby('uf'):
             s = str(uf).lower().strip()
             if s not in uf_veic:
-                uf_veic[s] = {'veiculos': 0, 'vp': 0, 'vt': 0}
+                uf_veic[s] = {'veiculos': 0, 'vp': 0, 'vt': 0, 'n_validos': 0, 'cap_sum': 0.0}
+            g_cap = cap_num.loc[g.index]
+            g_cap_val = (g_cap > 0) & (g_cap <= 150)
             uf_veic[s]['veiculos'] += len(g)
             uf_veic[s]['vp'] += int(is_p.loc[g.index].sum())
             uf_veic[s]['vt'] += int(is_t.loc[g.index].sum())
+            uf_veic[s]['n_validos'] += int(g_cap_val.sum())
+            uf_veic[s]['cap_sum'] += float(g_cap[g_cap_val].sum())
 
         for cod, g in chunk.groupby('codigo_cidade'):
             cd = str(cod).strip()
             if cd not in mun_veic:
-                mun_veic[cd] = {'veiculos': 0, 'vp': 0, 'vt': 0}
+                mun_veic[cd] = {'veiculos': 0, 'vp': 0, 'vt': 0, 'n_validos': 0, 'cap_sum': 0.0}
+            g_cap = cap_num.loc[g.index]
+            g_cap_val = (g_cap > 0) & (g_cap <= 150)
             mun_veic[cd]['veiculos'] += len(g)
             mun_veic[cd]['vp'] += int(is_p.loc[g.index].sum())
             mun_veic[cd]['vt'] += int(is_t.loc[g.index].sum())
+            mun_veic[cd]['n_validos'] += int(g_cap_val.sum())
+            mun_veic[cd]['cap_sum'] += float(g_cap[g_cap_val].sum())
 
     pvp_br = round((vp_br / tot_br) * 100, 2) if tot_br > 0 else 0.0
     pvt_br = round((vt_br / tot_br) * 100, 2) if tot_br > 0 else 0.0
-    print(f"  [OK] Veículos Nacional: {tot_br:,} total | Frota Própria (PVP): {vp_br:,} ({pvp_br}%) | Terceirizada (PVT): {vt_br:,} ({pvt_br}%).")
+    cap_media_br = round(cap_sum_br / n_validos_br, 2) if n_validos_br > 0 else 0.0
+    print(f"  [OK] Veículos Nacional: {tot_br:,} total | Própria: {vp_br:,} ({pvp_br}%) | Terceirizada: {vt_br:,} ({pvt_br}%) | Cap. Válida: {n_validos_br:,} (Média {cap_media_br} lug/veíc).")
+
+    for s, d in uf_veic.items():
+        d['cap_media'] = round(d['cap_sum'] / d['n_validos'], 2) if d['n_validos'] > 0 else 0.0
 
     mun_formatado = {}
     for c, d in mun_veic.items():
         v = d['veiculos']
         vp = d['vp']
         vt = d['vt']
+        nv = d['n_validos']
+        cm = round(d['cap_sum'] / nv, 2) if nv > 0 else 0.0
         mun_formatado[c] = {
             'veiculos': v,
             'vp': vp,
             'vt': vt,
             'PVP': round((vp / v) * 100, 2) if v > 0 else 0.0,
-            'PVT': round((vt / v) * 100, 2) if v > 0 else 0.0
+            'PVT': round((vt / v) * 100, 2) if v > 0 else 0.0,
+            'n_validos': nv,
+            'cap_sum': round(d['cap_sum'], 1),
+            'cap_media': cm
         }
 
     return {
@@ -532,6 +558,9 @@ def processar_veiculos_origem(data_dir='data'):
         'vt_br': vt_br,
         'pvp_br': pvp_br,
         'pvt_br': pvt_br,
+        'n_validos_br': n_validos_br,
+        'cap_sum_br': cap_sum_br,
+        'cap_media_br': cap_media_br,
         'uf_veic': uf_veic,
         'municipios_veic': mun_formatado
     }
@@ -657,20 +686,33 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             raw_data_unificada[reg]['km_total'] = round(reg_km, 1)
 
 
-    # Injetar dados de veículos (tot_veic, vp, vt)
+    # Injetar dados de veículos (tot_veic, vp, vt, n_veic_validos, cap_media, cap_sum)
     if dados_veiculos:
         raw_data_unificada['nacional']['tot_veic'] = dados_veiculos['tot_br']
         raw_data_unificada['nacional']['vp'] = dados_veiculos['vp_br']
         raw_data_unificada['nacional']['vt'] = dados_veiculos['vt_br']
+        raw_data_unificada['nacional']['n_veic_validos'] = dados_veiculos['n_validos_br']
+        raw_data_unificada['nacional']['cap_sum'] = dados_veiculos['cap_sum_br']
+        raw_data_unificada['nacional']['cap_media'] = dados_veiculos['cap_media_br']
+
         for s, d_v in dados_veiculos['uf_veic'].items():
             if s in raw_data_unificada:
                 raw_data_unificada[s]['tot_veic'] = d_v['veiculos']
                 raw_data_unificada[s]['vp'] = d_v['vp']
                 raw_data_unificada[s]['vt'] = d_v['vt']
+                raw_data_unificada[s]['n_veic_validos'] = d_v['n_validos']
+                raw_data_unificada[s]['cap_sum'] = d_v['cap_sum']
+                raw_data_unificada[s]['cap_media'] = d_v['cap_media']
+
         for reg, ufs in REGIOES.items():
             raw_data_unificada[reg]['tot_veic'] = sum(dados_veiculos['uf_veic'].get(u, {}).get('veiculos', 0) for u in ufs)
             raw_data_unificada[reg]['vp'] = sum(dados_veiculos['uf_veic'].get(u, {}).get('vp', 0) for u in ufs)
             raw_data_unificada[reg]['vt'] = sum(dados_veiculos['uf_veic'].get(u, {}).get('vt', 0) for u in ufs)
+            reg_nv = sum(dados_veiculos['uf_veic'].get(u, {}).get('n_validos', 0) for u in ufs)
+            reg_cs = sum(dados_veiculos['uf_veic'].get(u, {}).get('cap_sum', 0.0) for u in ufs)
+            raw_data_unificada[reg]['n_veic_validos'] = reg_nv
+            raw_data_unificada[reg]['cap_sum'] = reg_cs
+            raw_data_unificada[reg]['cap_media'] = round(reg_cs / reg_nv, 2) if reg_nv > 0 else 0.0
 
     # Injetar dados de PCD (PAD) e Alunos em Impedâncias (PARI)
     if dados_alunos:
@@ -690,19 +732,22 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             raw_data_unificada[reg]['al_dif'] = reg_pari
             raw_data_unificada[reg]['al_cad'] = reg_cad
 
-    # Injetar dados de Cobertura Censo 2025 x SETE (PCSC)
+    # Injetar dados de Cobertura Censo 2025 x SETE (PCSC) e Alunos Transportados (script 13)
     if dados_cobertura:
         raw_data_unificada['nacional']['al_transp_sete'] = dados_cobertura['sete_br']
         raw_data_unificada['nacional']['demanda_censo'] = dados_cobertura['censo_br']
+        raw_data_unificada['nacional']['al_transp'] = dados_cobertura['sete_br']
         for s in UF_LABELS.keys():
             if s != 'nacional' and s in raw_data_unificada:
                 raw_data_unificada[s]['al_transp_sete'] = dados_cobertura['sete_uf'].get(s, 0)
                 raw_data_unificada[s]['demanda_censo'] = dados_cobertura['censo_uf'].get(s, 0)
+                raw_data_unificada[s]['al_transp'] = dados_cobertura['sete_uf'].get(s, 0)
         for reg, ufs in REGIOES.items():
             reg_sete = sum(dados_cobertura['sete_uf'].get(u, 0) for u in ufs)
             reg_censo = sum(dados_cobertura['censo_uf'].get(u, 0) for u in ufs)
             raw_data_unificada[reg]['al_transp_sete'] = reg_sete
             raw_data_unificada[reg]['demanda_censo'] = reg_censo
+            raw_data_unificada[reg]['al_transp'] = reg_sete
 
     # Recalcular DATA
     def calcular_indicadores(r, label):
@@ -745,7 +790,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             'MOT_CVE': pct(r.get('mot_cv'), tmi),
             'PRPM': None,
             'ATE': ate,
-            'TETI': pct(r.get('al_adeq'), r.get('al_transp_teti') or at),
+            'TETI': None,
             'IPE': None,
             'TEDC': pct(at, al_cad_val),
             'PATM': pct(r.get('cs_tmun'), r.get('cs_transp')),
@@ -756,11 +801,14 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             'IMFP': r.get('imfp'),
             'IMFT': r.get('imft'),
             'MIFCE': r.get('mifce'),
-            'PAFI': pct(r.get('veic_adeq_idade'), r.get('tot_veic_ano')) or r.get('pafi'),
+            'PAFI': None,
             'PAD': pct(r.get('al_pcd'), al_cad_val),
             'PARI': pct(r.get('al_dif'), al_cad_val or at),
             'PCSC': pct(r.get('al_transp_sete'), r.get('demanda_censo')),
-            'PAIH': pct(r.get('al_hidro_dif'), r.get('al_hidro')),
+            'PAIH': None,
+            'PRPNP': None,
+            'DMC': None,
+            'PVCED': None,
             'TVA': tva_val
         }
 
