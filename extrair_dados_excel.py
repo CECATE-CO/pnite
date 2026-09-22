@@ -126,28 +126,37 @@ def extrair_metricas_por_uf(tabelas):
 
     return detalhes_scripts
 
-def processar_alunos_pcd(data_dir='data'):
+def processar_alunos(data_dir='data'):
     """
-    Processa script_01_alunos_consolidado.csv para calcular o indicador PAD:
-    Alunos com Deficiência Atendidos pelo Transporte Escolar.
-    Critério: def_caminhar, def_ouvir, def_enxergar, def_mental == 'S'
-    Contagem única por aluno (se tiver múltiplas deficiências, conta apenas uma vez).
-    Gera estatísticas por Cidade, Estado, Região e Brasil.
+    Processa script_01_alunos_consolidado.csv para calcular:
+      1) PAD: Alunos com Deficiência Atendidos pelo Transporte Escolar (def_caminhar, def_ouvir, def_enxergar, def_mental == 'S')
+      2) PARI: Percentual de Alunos em Rotas com Impedância (da_porteira, da_mataburro, da_colchete, da_atoleiro, da_ponterustica == 'S')
+    Contagem única por aluno (se tiver múltiplas deficiências ou múltiplos obstáculos, conta apenas uma vez).
+    Gera estatísticas consolidadas por Cidade, Estado, Região e Brasil.
     """
     csv_path = os.path.join(data_dir, 'script_01_alunos_consolidado.csv')
     if not os.path.exists(csv_path):
-        print(f"  [AVISO] Arquivo '{csv_path}' não encontrado para cálculo de PCD.")
+        print(f"  [AVISO] Arquivo '{csv_path}' não encontrado para cálculo de alunos.")
         return None
         
-    print(f"  [INFO] Processando alunos com deficiência em '{csv_path}'...")
-    cols = ['codigo_cidade', 'uf', 'def_caminhar', 'def_ouvir', 'def_enxergar', 'def_mental']
+    print(f"  [INFO] Processando alunos, PCD (PAD) e impedâncias operacionais (PARI) em '{csv_path}'...")
+    cols = ['codigo_cidade', 'uf', 'def_caminhar', 'def_ouvir', 'def_enxergar', 'def_mental',
+            'da_porteira', 'da_mataburro', 'da_colchete', 'da_atoleiro', 'da_ponterustica']
     
     total_br = 0
     pcd_br = 0
+    pari_br = 0
+    porteira_br = 0
+    mataburro_br = 0
+    colchete_br = 0
+    atoleiro_br = 0
+    ponte_br = 0
+
     est_tot = {}
     est_pcd = {}
-    mun_tot = {}
-    mun_pcd = {}
+    est_pari = {}
+    
+    mun_dados = {}
     
     chunksize = 500000
     for chunk in pd.read_csv(csv_path, usecols=cols, chunksize=chunksize, dtype=str):
@@ -156,30 +165,85 @@ def processar_alunos_pcd(data_dir='data'):
                   (chunk['def_enxergar'].str.upper() == 'S') | \
                   (chunk['def_mental'].str.upper() == 'S')
         
+        p = (chunk['da_porteira'].str.upper() == 'S')
+        m = (chunk['da_mataburro'].str.upper() == 'S')
+        c = (chunk['da_colchete'].str.upper() == 'S')
+        a = (chunk['da_atoleiro'].str.upper() == 'S')
+        pr = (chunk['da_ponterustica'].str.upper() == 'S')
+        has_pari = p | m | c | a | pr
+
         total_br += len(chunk)
         pcd_br += int(has_def.sum())
+        pari_br += int(has_pari.sum())
+        porteira_br += int(p.sum())
+        mataburro_br += int(m.sum())
+        colchete_br += int(c.sum())
+        atoleiro_br += int(a.sum())
+        ponte_br += int(pr.sum())
         
         for uf, g in chunk.groupby('uf'):
             s = str(uf).lower().strip()
             est_tot[s] = est_tot.get(s, 0) + len(g)
             est_pcd[s] = est_pcd.get(s, 0) + int(has_def.loc[g.index].sum())
+            est_pari[s] = est_pari.get(s, 0) + int(has_pari.loc[g.index].sum())
             
         for cod, g in chunk.groupby('codigo_cidade'):
-            c = str(cod).strip()
-            mun_tot[c] = mun_tot.get(c, 0) + len(g)
-            mun_pcd[c] = mun_pcd.get(c, 0) + int(has_def.loc[g.index].sum())
+            cd = str(cod).strip()
+            if cd not in mun_dados:
+                mun_dados[cd] = {
+                    'total': 0, 'pcd': 0, 'pari': 0,
+                    'porteira': 0, 'mataburro': 0, 'colchete': 0, 'atoleiro': 0, 'ponte': 0
+                }
+            md = mun_dados[cd]
+            md['total'] += len(g)
+            md['pcd'] += int(has_def.loc[g.index].sum())
+            md['pari'] += int(has_pari.loc[g.index].sum())
+            md['porteira'] += int(p.loc[g.index].sum())
+            md['mataburro'] += int(m.loc[g.index].sum())
+            md['colchete'] += int(c.loc[g.index].sum())
+            md['atoleiro'] += int(a.loc[g.index].sum())
+            md['ponte'] += int(pr.loc[g.index].sum())
             
-    pct_br = round((pcd_br / total_br) * 100, 2) if total_br > 0 else 0.0
-    print(f"  [OK] PCD Nacional: {pcd_br:,} de {total_br:,} alunos ({pct_br}%).")
+    pad_br = round((pcd_br / total_br) * 100, 2) if total_br > 0 else 0.0
+    pari_pct_br = round((pari_br / total_br) * 100, 2) if total_br > 0 else 0.0
+    print(f"  [OK] PCD Nacional (PAD): {pcd_br:,} de {total_br:,} alunos ({pad_br}%).")
+    print(f"  [OK] Alunos em Impedância (PARI): {pari_br:,} de {total_br:,} alunos ({pari_pct_br}%).")
+    print(f"       (Atoleiros: {atoleiro_br:,} | Mata-burros: {mataburro_br:,} | Porteiras: {porteira_br:,} | Pontes: {ponte_br:,} | Colchetes: {colchete_br:,})")
+
+    # Formatar dados municipais
+    mun_formatado = {}
+    for cd, md in mun_dados.items():
+        tot = md['total']
+        pcd = md['pcd']
+        pari = md['pari']
+        mun_formatado[cd] = {
+            'total': tot,
+            'pcd': pcd,
+            'PAD': round((pcd / tot) * 100, 2) if tot > 0 else 0.0,
+            'pari': pari,
+            'PARI': round((pari / tot) * 100, 2) if tot > 0 else 0.0,
+            'porteira': md['porteira'],
+            'mataburro': md['mataburro'],
+            'colchete': md['colchete'],
+            'atoleiro': md['atoleiro'],
+            'ponte': md['ponte']
+        }
     
     return {
         'total_br': total_br,
         'pcd_br': pcd_br,
-        'pad_br': pct_br,
+        'pad_br': pad_br,
+        'pari_br': pari_br,
+        'pari_pct_br': pari_pct_br,
+        'porteira_br': porteira_br,
+        'mataburro_br': mataburro_br,
+        'colchete_br': colchete_br,
+        'atoleiro_br': atoleiro_br,
+        'ponte_br': ponte_br,
         'est_tot': est_tot,
         'est_pcd': est_pcd,
-        'mun_tot': mun_tot,
-        'mun_pcd': mun_pcd
+        'est_pari': est_pari,
+        'municipios': mun_formatado
     }
 
 def processar_rotas_prgm(data_dir='data'):
@@ -323,7 +387,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
     """
     tabelas = carregar_planilhas(data_dir)
     detalhes_por_uf = extrair_metricas_por_uf(tabelas)
-    dados_pcd = processar_alunos_pcd(data_dir)
+    dados_alunos = processar_alunos(data_dir)
     dados_rotas = processar_rotas_prgm(data_dir)
 
     # Obter dados de base de referência (para indicadores metodológicos de Censo, etc.)
@@ -426,15 +490,23 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             raw_data_unificada[reg]['dif'] = reg_imp
             raw_data_unificada[reg]['km_total'] = round(reg_km, 1)
 
-    # Injetar dados de PCD
-    if dados_pcd:
-        raw_data_unificada['nacional']['al_pcd'] = dados_pcd['pcd_br']
-        for s, pcd_val in dados_pcd['est_pcd'].items():
+    # Injetar dados de PCD (PAD) e Alunos em Impedâncias (PARI)
+    if dados_alunos:
+        raw_data_unificada['nacional']['al_pcd'] = dados_alunos['pcd_br']
+        raw_data_unificada['nacional']['al_dif'] = dados_alunos['pari_br']
+        raw_data_unificada['nacional']['al_cad'] = dados_alunos['total_br']
+        for s, pcd_val in dados_alunos['est_pcd'].items():
             if s in raw_data_unificada:
                 raw_data_unificada[s]['al_pcd'] = pcd_val
+                raw_data_unificada[s]['al_dif'] = dados_alunos['est_pari'].get(s, 0)
+                raw_data_unificada[s]['al_cad'] = dados_alunos['est_tot'].get(s, raw_data_unificada[s].get('al_cad'))
         for reg, ufs in REGIOES.items():
-            reg_pcd = sum(dados_pcd['est_pcd'].get(u, 0) for u in ufs)
+            reg_pcd = sum(dados_alunos['est_pcd'].get(u, 0) for u in ufs)
+            reg_pari = sum(dados_alunos['est_pari'].get(u, 0) for u in ufs)
+            reg_cad = sum(dados_alunos['est_tot'].get(u, 0) for u in ufs)
             raw_data_unificada[reg]['al_pcd'] = reg_pcd
+            raw_data_unificada[reg]['al_dif'] = reg_pari
+            raw_data_unificada[reg]['al_cad'] = reg_cad
 
     # Recalcular DATA
     def calcular_indicadores(r, label):
@@ -451,6 +523,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
         tmi = r.get('tot_mot_info')
         tva_val = r.get('tva')
         dif_val = r.get('dif')
+        al_cad_val = r.get('al_cad')
         
         iuc = None
         if at and nvv and cap_m and (nvv * cap_m) > 0:
@@ -478,7 +551,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             'ATE': ate,
             'TETI': pct(r.get('al_adeq'), r.get('al_transp_teti') or at),
             'IPE': None,
-            'TEDC': pct(at, r.get('al_cad')),
+            'TEDC': pct(at, al_cad_val),
             'PATM': pct(r.get('cs_tmun'), r.get('cs_transp')),
             'PATE': pct(r.get('cs_test'), r.get('cs_transp')),
             'IPTE': round(r.get('cs_test') / r.get('cs_transp'), 3) if (r.get('cs_test') and r.get('cs_transp')) else None,
@@ -488,8 +561,8 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             'IMFT': r.get('imft'),
             'MIFCE': r.get('mifce'),
             'PAFI': pct(r.get('veic_adeq_idade'), r.get('tot_veic_ano')) or r.get('pafi'),
-            'PAD': pct(r.get('al_pcd'), r.get('al_cad')),
-            'PARI': pct(r.get('al_dif'), at),
+            'PAD': pct(r.get('al_pcd'), al_cad_val),
+            'PARI': pct(r.get('al_dif'), al_cad_val or at),
             'PAIH': pct(r.get('al_hidro_dif'), r.get('al_hidro')),
             'TVA': tva_val
         }
@@ -519,7 +592,8 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
         'DATA': data_calculada,
         'detalhes_scripts': detalhes_por_uf,
         'municipios_rotas': dados_rotas['municipios_rotas'] if dados_rotas else {},
-        'municipios_pcd': {c: {'pcd': dados_pcd['mun_pcd'].get(c, 0), 'total': dados_pcd['mun_tot'].get(c, 0), 'PAD': round(dados_pcd['mun_pcd'].get(c, 0) / dados_pcd['mun_tot'].get(c, 0) * 100, 2) if dados_pcd['mun_tot'].get(c, 0) > 0 else None} for c in dados_pcd['mun_pcd']} if dados_pcd else {}
+        'municipios_alunos': dados_alunos['municipios'] if dados_alunos else {},
+        'municipios_pcd': {c: {'pcd': d['pcd'], 'total': d['total'], 'PAD': d['PAD']} for c, d in dados_alunos['municipios'].items()} if dados_alunos else {}
     }
 
     json_path = os.path.join(data_dir, 'pnite_dados_consolidados.json')
