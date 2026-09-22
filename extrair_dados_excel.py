@@ -186,6 +186,92 @@ def processar_alunos_pcd(data_dir='data'):
         'mun_pcd': mun_pcd
     }
 
+
+def processar_rotas_prgm(data_dir='data'):
+    """
+    Processa script_03_rotas_consolidado.csv para calcular o indicador PRGM:
+    Percentual de Rotas Georreferenciadas e Dist?ncias em KM.
+    Crit?rio: shape preenchido (n?o nulo, n?o vazio, != 'NULL').
+    Computa por Cidade, Estado, Regi?o e Brasil.
+    """
+    csv_path = os.path.join(data_dir, 'script_03_rotas_consolidado.csv')
+    if not os.path.exists(csv_path):
+        print(f"  [AVISO] Arquivo '{csv_path}' n?o encontrado para c?lculo de PRGM.")
+        return None
+
+    print(f"  [INFO] Processando rotas georreferenciadas e dist?ncias em '{csv_path}'...")
+    cols = ['codigo_cidade', 'uf', 'km', 'shape']
+    
+    tot_br = 0
+    geo_br = 0
+    km_tot_br = 0.0
+    km_geo_br = 0.0
+    
+    uf_rotas = {}
+    mun_rotas = {}
+    
+    chunksize = 50000
+    for chunk in pd.read_csv(csv_path, usecols=cols, chunksize=chunksize, dtype=str):
+        has_shape = chunk['shape'].notna() & (chunk['shape'].str.strip() != '') & (chunk['shape'].str.upper() != 'NULL')
+        km_vals = pd.to_numeric(chunk['km'].str.replace(',', '.'), errors='coerce').fillna(0.0)
+        
+        tot_br += len(chunk)
+        geo_br += int(has_shape.sum())
+        km_tot_br += float(km_vals.sum())
+        km_geo_br += float(km_vals[has_shape].sum())
+        
+        for uf, g in chunk.groupby('uf'):
+            s = str(uf).lower().strip()
+            if s not in uf_rotas:
+                uf_rotas[s] = {'rotas': 0, 'geo': 0, 'km': 0.0, 'km_geo': 0.0}
+            u = uf_rotas[s]
+            u['rotas'] += len(g)
+            u['geo'] += int(has_shape.loc[g.index].sum())
+            u['km'] += float(km_vals.loc[g.index].sum())
+            u['km_geo'] += float(km_vals.loc[g.index[has_shape.loc[g.index]]].sum())
+            
+        for cod, g in chunk.groupby('codigo_cidade'):
+            c = str(cod).strip()
+            if c not in mun_rotas:
+                mun_rotas[c] = {'rotas': 0, 'geo': 0, 'km': 0.0, 'km_geo': 0.0}
+            m = mun_rotas[c]
+            m['rotas'] += len(g)
+            m['geo'] += int(has_shape.loc[g.index].sum())
+            m['km'] += float(km_vals.loc[g.index].sum())
+            m['km_geo'] += float(km_vals.loc[g.index[has_shape.loc[g.index]]].sum())
+
+    prgm_br = round((geo_br / tot_br) * 100, 2) if tot_br > 0 else 0.0
+    print(f"  [OK] PRGM Nacional: {geo_br:,} de {tot_br:,} rotas ({prgm_br}%). Extens?o Total: {km_tot_br:,.1f} km.")
+    
+    # Formatar resultados dos munic?pios com PRGM e m?dias
+    mun_formatado = {}
+    for c, d in mun_rotas.items():
+        r = d['rotas']
+        g = d['geo']
+        k = round(d['km'], 1)
+        kg = round(d['km_geo'], 1)
+        pct = round((g / r) * 100, 2) if r > 0 else 0.0
+        km_med = round(k / r, 1) if r > 0 else 0.0
+        mun_formatado[c] = {
+            'rotas': r,
+            'geo': g,
+            'PRGM': pct,
+            'km_total': k,
+            'km_geo': kg,
+            'km_medio': km_med,
+            'has_geo': g > 0
+        }
+        
+    return {
+        'tot_br': tot_br,
+        'geo_br': geo_br,
+        'prgm_br': prgm_br,
+        'km_tot_br': round(km_tot_br, 1),
+        'km_geo_br': round(km_geo_br, 1),
+        'uf_rotas': uf_rotas,
+        'municipios_rotas': mun_formatado
+    }
+
 def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
     """
     Executa a extração completa dos Excels e compõe a base RAW_DATA e DATA.
@@ -193,6 +279,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
     """
     tabelas = carregar_planilhas(data_dir)
     dados_pcd = processar_alunos_pcd(data_dir)
+    dados_rotas = processar_rotas_prgm(data_dir)
     detalhes_por_uf = extrair_metricas_por_uf(tabelas)
 
     # Obter dados de base de referência (para indicadores do Censo/Metodológicos já consolidados)
@@ -380,6 +467,35 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             data_calculada['estado'][uf] = calcular_indicadores(raw_data_unificada.get(uf, {}), lbl)
 
 
+
+    # Injetar dados calculados de rotas e PRGM (script_03_rotas_consolidado.csv)
+    if dados_rotas:
+        raw_data_unificada['nacional']['tot_rotas'] = dados_rotas['tot_br']
+        raw_data_unificada['nacional']['georref'] = dados_rotas['geo_br']
+        raw_data_unificada['nacional']['km_total'] = dados_rotas['km_tot_br']
+        data_calculada['nacional']['PRGM'] = dados_rotas['prgm_br']
+        
+        for s, d_rot in dados_rotas['uf_rotas'].items():
+            if s in raw_data_unificada:
+                raw_data_unificada[s]['tot_rotas'] = d_rot['rotas']
+                raw_data_unificada[s]['georref'] = d_rot['geo']
+                raw_data_unificada[s]['km_total'] = round(d_rot['km'], 1)
+            if s in data_calculada['estado']:
+                r_tot = d_rot['rotas']
+                r_geo = d_rot['geo']
+                data_calculada['estado'][s]['PRGM'] = round((r_geo / r_tot) * 100, 2) if r_tot > 0 else 0.0
+                
+        # Macrorregi?es
+        for reg, ufs in REGIOES.items():
+            reg_rot = sum(dados_rotas['uf_rotas'].get(u, {}).get('rotas', 0) for u in ufs)
+            reg_geo = sum(dados_rotas['uf_rotas'].get(u, {}).get('geo', 0) for u in ufs)
+            reg_km = sum(dados_rotas['uf_rotas'].get(u, {}).get('km', 0.0) for u in ufs)
+            raw_data_unificada[reg]['tot_rotas'] = reg_rot
+            raw_data_unificada[reg]['georref'] = reg_geo
+            raw_data_unificada[reg]['km_total'] = round(reg_km, 1)
+            if reg in data_calculada['regiao']:
+                data_calculada['regiao'][reg]['PRGM'] = round((reg_geo / reg_rot) * 100, 2) if reg_rot > 0 else 0.0
+
     # Injetar dados calculados de PCD (script_01_alunos_consolidado.csv)
     if dados_pcd:
         raw_data_unificada['nacional']['al_pcd'] = dados_pcd['pcd_br']
@@ -413,6 +529,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
         'RAW_DATA': raw_data_unificada,
         'DATA': data_calculada,
         'detalhes_scripts': detalhes_por_uf,
+        'municipios_rotas': dados_rotas['municipios_rotas'] if dados_rotas else {},
         'municipios_pcd': {c: {'pcd': dados_pcd['mun_pcd'].get(c, 0), 'total': dados_pcd['mun_tot'].get(c, 0), 'PAD': round(dados_pcd['mun_pcd'].get(c, 0) / dados_pcd['mun_tot'].get(c, 0) * 100, 2) if dados_pcd['mun_tot'].get(c, 0) > 0 else None} for c in dados_pcd['mun_pcd']} if dados_pcd else {}
     }
 
