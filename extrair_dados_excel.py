@@ -921,7 +921,7 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
             'TEDC': pct(at, al_cad_val),
             'PATM': pct(r.get('cs_tmun'), r.get('cs_transp')),
             'PATE': pct(r.get('cs_test'), r.get('cs_transp')),
-            'IPTE': round(r.get('cs_test') / r.get('cs_transp'), 3) if (r.get('cs_test') and r.get('cs_transp')) else None,
+            'IPTE': None,
             'MEDATE': r.get('medate_val'),
             'ICA': None,
             'IMFP': r.get('imfp'),
