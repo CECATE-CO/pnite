@@ -1530,6 +1530,610 @@ body {
 }
 
 /* ==========================================================================
+   FRENTE ANALÍTICA 02: INDICADORES DA CAPACITAÇÃO (LAYOUT & COMPONENTES)
+   ========================================================================== */
+.cap-layout-wrap {
+  display: flex;
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  gap: 24px;
+  align-items: flex-start;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* SIDEBAR FIXA LATERAL */
+.cap-sidebar {
+  width: 236px;
+  min-width: 236px;
+  position: sticky;
+  top: 76px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow);
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+}
+
+/* BRANDING DA CAPACITAÇÃO NA SIDEBAR */
+.cap-brand-box {
+  border: 1.5px solid var(--border-mid);
+  border-radius: 10px;
+  padding: 10px 10px;
+  background: var(--bg-page);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cap-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cap-bus-icon-wrap {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cap-bus-svg {
+  width: 100%;
+  height: 100%;
+}
+.cap-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.cap-bt-sub {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.cap-bt-main {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+}
+.cap-brand-fnde {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+  font-size: 9px;
+}
+.cap-fnde-pill {
+  font-weight: 800;
+  background: #005a9c;
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 9px;
+}
+.cap-fnde-title {
+  font-size: 8.5px;
+  color: var(--text-3);
+  line-height: 1.1;
+  flex: 1;
+}
+.cap-fnde-tag {
+  font-size: 8px;
+  font-weight: 700;
+  color: #d97706;
+  background: rgba(245, 158, 11, 0.12);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* MENU DE NAVEGAÇÃO VERTICAL */
+.cap-nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+.cap-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-2);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  transition: all 0.15s ease;
+}
+.cap-nav-btn i {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.cap-nav-btn:hover {
+  background: var(--bg-hover);
+  color: var(--accent-dark);
+  border-color: var(--accent);
+}
+.cap-nav-btn.active {
+  border: 2px solid var(--text-1);
+  background: var(--bg-card);
+  color: var(--text-1);
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+[data-theme="dark"] .cap-nav-btn.active {
+  border-color: #ffffff;
+  background: #282828;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* LOGOS RODAPÉ DA SIDEBAR */
+.cap-sidebar-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.cap-partner-logo {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.88;
+  transition: opacity 0.2s;
+}
+.cap-partner-logo:hover {
+  opacity: 1;
+}
+.cap-ufg-svg, .cap-cecate-svg {
+  height: 34px;
+  width: auto;
+  max-width: 100%;
+}
+
+/* ÁREA PRINCIPAL DA CAPACITAÇÃO */
+.cap-main-area {
+  flex: 1;
+  min-width: 0;
+}
+.cap-subview {
+  display: none;
+}
+.cap-subview.active {
+  display: block;
+}
+
+/* CABEÇALHO DO RELATÓRIO HOME & FILTROS */
+.cap-home-header-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 22px;
+}
+.cap-home-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.cap-home-title-bar {
+  width: 160px;
+  height: 4px;
+  background: #e8990a;
+  border-radius: 2px;
+  margin-bottom: 14px;
+}
+.cap-info-banner {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-shadow: var(--shadow);
+}
+.cap-info-icon {
+  font-size: 22px;
+  color: var(--text-3);
+  flex-shrink: 0;
+  margin-top: -1px;
+}
+.cap-info-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* PAINEL DE FILTROS SUPERIOR */
+.cap-filter-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+}
+.cap-filter-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 12px;
+  position: relative;
+}
+.cap-filter-bar {
+  flex: 1;
+  height: 2px;
+  background: #e8990a;
+  border-radius: 1px;
+  margin-left: 6px;
+}
+.cap-filter-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cap-filter-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-bottom: 4px;
+}
+.cap-filter-field select {
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-1);
+  font-size: 12px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.cap-filter-field select:focus {
+  border-color: var(--accent);
+}
+.cap-filter-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+/* GRID PRINCIPAL: CARDS À ESQUERDA + MAPA À DIREITA */
+.cap-content-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 22px;
+  align-items: flex-start;
+}
+.cap-metrics-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* CARDS DE PERFIL (MOLDURA AZUL SUAVE) */
+.cap-profile-card {
+  background: var(--bg-card);
+  border: 1.5px solid #5b9bd5;
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+[data-theme="dark"] .cap-profile-card {
+  border-color: #3b74ad;
+}
+.cap-card-title {
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-2);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+.cap-main-kpi {
+  text-align: center;
+  margin-bottom: 8px;
+}
+.cap-kpi-num {
+  display: block;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-1);
+  line-height: 1.1;
+}
+.cap-kpi-lbl {
+  display: block;
+  font-size: 12.5px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+.cap-card-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 10px 0;
+}
+.cap-kpi-pair-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  text-align: center;
+}
+.cap-sub-num {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-1);
+  line-height: 1.1;
+}
+.cap-sub-lbl {
+  display: block;
+  font-size: 11.5px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+/* SLIDERS CARD */
+.cap-sliders-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow);
+}
+.cap-slider-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cap-slider-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.cap-slider-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cap-range-val {
+  width: 28px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+.cap-slider-inputs input[type="range"] {
+  flex: 1;
+  accent-color: #e8990a;
+  cursor: pointer;
+}
+
+/* CARD DO MAPA (MOLDURA VERDE-LIMÃO DESTACADA) */
+.cap-map-wrapper {
+  width: 100%;
+}
+.cap-map-card {
+  border: 3.5px solid #ccdf2b;
+  border-radius: 20px;
+  padding: 12px;
+  background: #e2ede0;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+[data-theme="dark"] .cap-map-card {
+  border-color: #b5d424;
+  background: #17241b;
+}
+.cap-map-legend-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 4px 8px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1a201c;
+}
+[data-theme="dark"] .cap-map-legend-bar {
+  color: #f0fdf4;
+}
+.cap-legend-tags {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cap-legend-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.cap-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.dot-nao { background: #2f3e36; }
+.dot-sim { background: #d8eb26; }
+.cap-svg-container {
+  width: 100%;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.cap-svg-container svg {
+  width: 100%;
+  height: auto;
+  max-height: 590px;
+  display: block;
+}
+.cap-map-watermarks {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: #556b59;
+  padding: 6px 8px 2px;
+}
+[data-theme="dark"] .cap-map-watermarks {
+  color: #7b9980;
+}
+.cap-map-tooltip {
+  position: absolute;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 11.5px;
+  color: var(--text-1);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  pointer-events: none;
+  z-index: 50;
+  max-width: 240px;
+  line-height: 1.4;
+}
+
+/* ESTILOS DE SUB-VIEWS PLACEHOLDER */
+.cap-placeholder-page {
+  padding: 30px 20px;
+}
+.cap-back-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: var(--text-1);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 24px;
+  transition: all 0.15s;
+}
+.cap-back-home-btn:hover {
+  background: var(--bg-hover);
+  color: var(--accent);
+}
+.cap-subview-card {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 44px 32px;
+  box-shadow: var(--shadow);
+}
+.cap-subview-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin: 0 auto 18px;
+}
+.cap-subview-card h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 10px;
+}
+.cap-subview-card p {
+  font-size: 13.5px;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.cap-badge-dev {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #d97706;
+  background: rgba(245, 158, 11, 0.12);
+  padding: 4px 12px;
+  border-radius: 16px;
+}
+
+/* RESPONSIVIDADE DA CAPACITAÇÃO */
+@media (max-width: 1150px) {
+  .cap-layout-wrap {
+    flex-direction: column;
+  }
+  .cap-sidebar {
+    width: 100%;
+    min-width: 100%;
+    position: static;
+    max-height: none;
+  }
+  .cap-nav-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  .cap-content-grid {
+    grid-template-columns: 1fr;
+  }
+  .cap-home-header-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .cap-nav-menu {
+    grid-template-columns: 1fr;
+  }
+  .cap-filter-row {
+    grid-template-columns: 1fr;
+  }
+  .cap-svg-container {
+    min-height: 380px;
+  }
+}
+
+/* ==========================================================================
    CONTAINER EDITORIAL DA PÁGINA PRINCIPAL (TRANSPORTE ESCOLAR)
    ========================================================================== */
 .editorial-container {
@@ -5173,23 +5777,381 @@ window.onerror = function(msg, url, line, col, err) {
   </header>
 
   <!-- ====================================================================
-       TELA DE PLACEHOLDER 1: INDICADORES DA CAPACITAÇÃO
+       FRENTE ANALÍTICA: INDICADORES DA CAPACITAÇÃO
        ==================================================================== -->
   <div class="front-view" id="frontCapacitacao">
-    <div class="front-placeholder-view">
-      <div class="placeholder-card">
-        <div class="placeholder-icon warning-icon">
-          <i class="ti ti-alert-triangle"></i>
+    <div class="cap-layout-wrap">
+      
+      <!-- BARRA LATERAL DA CAPACITAÇÃO (7 BOTÕES + IDENTIDADE) -->
+      <aside class="cap-sidebar" id="capSidebar">
+        <!-- CABEÇALHO / LOGO DA CAPACITAÇÃO -->
+        <div class="cap-brand-box">
+          <div class="cap-brand-header">
+            <div class="cap-bus-icon-wrap">
+              <svg viewBox="0 0 48 48" class="cap-bus-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="10" width="36" height="25" rx="5" fill="#f59e0b" stroke="#1f2937" stroke-width="2.2"/>
+                <rect x="10" y="14" width="12" height="10" rx="2" fill="#ffffff" stroke="#1f2937" stroke-width="1.8"/>
+                <rect x="26" y="14" width="12" height="10" rx="2" fill="#ffffff" stroke="#1f2937" stroke-width="1.8"/>
+                <rect x="6" y="27" width="36" height="3" fill="#1f2937"/>
+                <circle cx="14" cy="37" r="4" fill="#1f2937"/>
+                <circle cx="14" cy="37" r="1.5" fill="#e5e7eb"/>
+                <circle cx="34" cy="37" r="4" fill="#1f2937"/>
+                <circle cx="34" cy="37" r="1.5" fill="#e5e7eb"/>
+                <circle cx="10.5" cy="31" r="1.8" fill="#fbbf24"/>
+                <circle cx="37.5" cy="31" r="1.8" fill="#fbbf24"/>
+              </svg>
+            </div>
+            <div class="cap-brand-text">
+              <span class="cap-bt-sub">Capacitações do</span>
+              <span class="cap-bt-main">Transporte</span>
+              <span class="cap-bt-main">Escolar</span>
+            </div>
+          </div>
+          <div class="cap-brand-fnde">
+            <span class="cap-fnde-pill">FNDE</span>
+            <span class="cap-fnde-title">Fundo Nacional de Desenvolvimento da Educação</span>
+            <span class="cap-fnde-tag">CAPACITAÇÃO</span>
+          </div>
         </div>
-        <div class="placeholder-badge" data-i18n="em_desenvolvimento">Em Desenvolvimento</div>
-        <h2 class="placeholder-title" data-i18n="placeholder_cap_title">Estamos preparando tudo por aqui</h2>
-        <p class="placeholder-desc" data-i18n="placeholder_cap_desc">
-          A frente de Indicadores da Capacitação está em fase de estruturação e em breve trará métricas consolidadas sobre a formação e qualificação de motoristas, monitores e técnicos da gestão escolar em todo o Brasil.
-        </p>
-        <button class="placeholder-back-btn" onclick="switchFront('transporte', document.getElementById('frontTabTransporte'))">
-          <i class="ti ti-arrow-left"></i> <span data-i18n="voltar_transporte">Voltar aos Indicadores do Transporte Escolar</span>
-        </button>
-      </div>
+
+        <!-- MENU DE NAVEGAÇÃO VERTICAL (7 BOTÕES) -->
+        <nav class="cap-nav-menu" role="navigation" aria-label="Navegação da Capacitação">
+          <button type="button" class="cap-nav-btn active" id="capNavHome" onclick="switchCapView('home', this)">
+            <i class="ti ti-home"></i>
+            <span>HOME</span>
+          </button>
+          <button type="button" class="cap-nav-btn" id="capNavCapacitacoes" onclick="switchCapView('capacitacoes', this)">
+            <i class="ti ti-school"></i>
+            <span>CAPACITAÇÕES</span>
+          </button>
+          <button type="button" class="cap-nav-btn" id="capNavUf" onclick="switchCapView('uf', this)">
+            <i class="ti ti-map-2"></i>
+            <span>UNIDADES DA FEDERAÇÃO</span>
+          </button>
+          <button type="button" class="cap-nav-btn" id="capNavAval1_5" onclick="switchCapView('aval1_5', this)">
+            <i class="ti ti-clipboard-check"></i>
+            <span>AVALIAÇÃO DAS CAPACITAÇÕES 1 AO 5</span>
+          </button>
+          <button type="button" class="cap-nav-btn" id="capNavStat1_5" onclick="switchCapView('stat1_5', this)">
+            <i class="ti ti-chart-bar"></i>
+            <span>ESTATÍSTICAS DAS AVALIAÇÕES 1 A 5</span>
+          </button>
+          <button type="button" class="cap-nav-btn" id="capNavAval6_16" onclick="switchCapView('aval6_16', this)">
+            <i class="ti ti-clipboard-check"></i>
+            <span>AVALIAÇÃO DAS CAPACITAÇÕES 6 AO 16</span>
+          </button>
+          <button type="button" class="cap-nav-btn" id="capNavStat6_16" onclick="switchCapView('stat6_16', this)">
+            <i class="ti ti-chart-bar"></i>
+            <span>ESTATÍSTICAS DAS AVALIAÇÕES 6 A 16</span>
+          </button>
+        </nav>
+
+        <!-- RODAPÉ DA SIDEBAR: LOGOS UFG E CECATE -->
+        <div class="cap-sidebar-footer">
+          <div class="cap-partner-logo cap-logo-ufg" title="Universidade Federal de Goiás">
+            <svg viewBox="0 0 120 38" class="cap-ufg-svg" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="14" r="7" fill="#0066b2"/>
+              <circle cx="26" cy="14" r="7" fill="#0099cc"/>
+              <circle cx="21" cy="24" r="7" fill="#005599"/>
+              <text x="44" y="24" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="800" fill="currentColor" letter-spacing="1">UFG</text>
+            </svg>
+          </div>
+          <div class="cap-partner-logo cap-logo-cecate" title="CECATE - Centro Colaborador de Apoio ao Transporte Escolar">
+            <svg viewBox="0 0 160 44" class="cap-cecate-svg" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 26 C 18 10, 30 10, 36 26 C 30 34, 18 34, 12 26 Z" fill="#e8890c"/>
+              <path d="M22 16 C 28 8, 42 12, 38 26 C 32 30, 22 26, 22 16 Z" fill="#1d6fa5"/>
+              <text x="46" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="800" fill="currentColor">CECATE</text>
+              <text x="46" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="7" font-weight="600" fill="var(--text-3)">TRANSPORTE ESCOLAR</text>
+            </svg>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CONTEÚDO PRINCIPAL DA CAPACITAÇÃO -->
+      <main class="cap-main-area">
+
+        <!-- SUB-VIEW 1: HOME (INICIAL) -->
+        <section class="cap-subview active" id="capSubHome" aria-label="Visão Geral das Capacitações">
+          
+          <!-- CABEÇALHO DO RELATÓRIO E FILTROS -->
+          <div class="cap-home-header-grid">
+            <div class="cap-home-title-col">
+              <h1 class="cap-home-title">Pesquisa: Capacitações transporte escolar</h1>
+              <div class="cap-home-title-bar"></div>
+              
+              <!-- BANNER DE DESCRIÇÃO TÉCNICA -->
+              <div class="cap-info-banner">
+                <div class="cap-info-icon"><i class="ti ti-info-circle"></i></div>
+                <div class="cap-info-text">
+                  Relatório interativo desenvolvido para acompanhar e analisar as capacitações do Projeto Transporte Escolar da UFG, apresentando indicadores de participação, municípios convidados, CACS, gestores e evolução das capacitações no Centro-Oeste.
+                </div>
+              </div>
+            </div>
+
+            <!-- FILTROS (CANTO SUPERIOR DIREITO) -->
+            <div class="cap-filter-panel">
+              <div class="cap-filter-header">
+                <i class="ti ti-filter"></i>
+                <span>Filtros</span>
+                <div class="cap-filter-bar"></div>
+              </div>
+              <div class="cap-filter-grid">
+                <div class="cap-filter-field full-width">
+                  <label for="capPoloSelect">Polo de Capacitação</label>
+                  <select id="capPoloSelect" onchange="onCapFilterChange()">
+                    <option value="">Todos</option>
+                  </select>
+                </div>
+                <div class="cap-filter-row">
+                  <div class="cap-filter-field">
+                    <label for="capEstadoSelect">Estado</label>
+                    <select id="capEstadoSelect" onchange="onCapFilterChange()">
+                      <option value="">Todos</option>
+                      <option value="GO">GO</option>
+                      <option value="MT">MT</option>
+                      <option value="MS">MS</option>
+                      <option value="DF">DF</option>
+                    </select>
+                  </div>
+                  <div class="cap-filter-field">
+                    <label for="capParticipouSelect">Participou?</label>
+                    <select id="capParticipouSelect" onchange="onCapFilterChange()">
+                      <option value="">Todos</option>
+                      <option value="SIM">SIM</option>
+                      <option value="NAO">NÃO</option>
+                    </select>
+                  </div>
+                  <div class="cap-filter-field">
+                    <label for="capAnoSelect">Ano</label>
+                    <select id="capAnoSelect" onchange="onCapFilterChange()">
+                      <option value="">Todos</option>
+                      <option value="2023">2023</option>
+                      <option value="2024">2024</option>
+                      <option value="2025">2025</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GRID PRINCIPAL DE DADOS (CARDS À ESQUERDA + MAPA À DIREITA) -->
+          <div class="cap-content-grid">
+            
+            <!-- COLUNA DA ESQUERDA: PERFIL E SLIDERS -->
+            <div class="cap-metrics-col">
+              
+              <!-- CARD 1: PERFIL DOS PARTICIPANTES -->
+              <div class="cap-profile-card">
+                <h3 class="cap-card-title">PERFIL DOS PARTICIPANTES</h3>
+                
+                <div class="cap-main-kpi">
+                  <span class="cap-kpi-num" id="capValParticipantes">703</span>
+                  <span class="cap-kpi-lbl">Participantes</span>
+                </div>
+                <div class="cap-card-divider"></div>
+
+                <div class="cap-kpi-pair-row">
+                  <div class="cap-kpi-col">
+                    <span class="cap-sub-num" id="capValGestores">482</span>
+                    <span class="cap-sub-lbl">Gestores</span>
+                  </div>
+                  <div class="cap-kpi-col">
+                    <span class="cap-sub-num" id="capValPctGestores">68,56%</span>
+                    <span class="cap-sub-lbl">% Gestores</span>
+                  </div>
+                </div>
+                <div class="cap-card-divider"></div>
+
+                <div class="cap-kpi-pair-row">
+                  <div class="cap-kpi-col">
+                    <span class="cap-sub-num" id="capValCacs">221</span>
+                    <span class="cap-sub-lbl">CACS</span>
+                  </div>
+                  <div class="cap-kpi-col">
+                    <span class="cap-sub-num" id="capValPctCacs">31,44%</span>
+                    <span class="cap-sub-lbl">% CACS</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CARD 2: PERFIL DOS MUNICÍPIOS -->
+              <div class="cap-profile-card">
+                <h3 class="cap-card-title">PERFIL DOS MUNICÍPIOS</h3>
+                
+                <div class="cap-kpi-pair-row">
+                  <div class="cap-kpi-col">
+                    <span class="cap-sub-num" id="capValConvidados">432</span>
+                    <span class="cap-sub-lbl">Municípios Convidados</span>
+                  </div>
+                  <div class="cap-kpi-col">
+                    <span class="cap-sub-num" id="capValParticipou">283</span>
+                    <span class="cap-sub-lbl">Participou</span>
+                  </div>
+                </div>
+                <div class="cap-card-divider"></div>
+
+                <div class="cap-kpi-pair-row">
+                  <div class="cap-kpi-col">
+                    <span class="cap-sub-num" id="capValTaxaPart">65,51%</span>
+                    <span class="cap-sub-lbl">Taxa de Participação</span>
+                  </div>
+                  <div class="cap-kpi-col">
+                    <span class="cap-sub-num" id="capValAusente">149</span>
+                    <span class="cap-sub-lbl">Ausente</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CONTROLES DESLIZANTES (SLIDERS) -->
+              <div class="cap-sliders-card">
+                <div class="cap-slider-item">
+                  <div class="cap-slider-top">
+                    <span class="cap-slider-title">Total de CACS</span>
+                  </div>
+                  <div class="cap-slider-inputs">
+                    <span class="cap-range-val" id="capCacsMinLbl">0</span>
+                    <input type="range" id="capCacsSlider" min="0" max="7" value="7" oninput="onCapSliderChange()" aria-label="Filtro máximo de CACS">
+                    <span class="cap-range-val" id="capCacsMaxLbl">7</span>
+                  </div>
+                </div>
+
+                <div class="cap-slider-item">
+                  <div class="cap-slider-top">
+                    <span class="cap-slider-title">Total de Gestores</span>
+                  </div>
+                  <div class="cap-slider-inputs">
+                    <span class="cap-range-val" id="capGestoresMinLbl">0</span>
+                    <input type="range" id="capGestoresSlider" min="0" max="7" value="7" oninput="onCapSliderChange()" aria-label="Filtro máximo de Gestores">
+                    <span class="cap-range-val" id="capGestoresMaxLbl">7</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- COLUNA DA DIREITA: MAPA DO CENTRO-OESTE -->
+            <div class="cap-map-wrapper">
+              <div class="cap-map-card" id="capMapCard">
+                
+                <!-- LEGENDA DO MAPA -->
+                <div class="cap-map-legend-bar">
+                  <span class="cap-legend-title">Município Participou?</span>
+                  <div class="cap-legend-tags">
+                    <span class="cap-legend-tag tag-nao">
+                      <span class="cap-dot dot-nao"></span> NÃO
+                    </span>
+                    <span class="cap-legend-tag tag-sim">
+                      <span class="cap-dot dot-sim"></span> SIM
+                    </span>
+                  </div>
+                </div>
+
+                <!-- CONTÊINER DO SVG DO MAPA -->
+                <div class="cap-svg-container" id="capSvgContainer">
+                  <!-- SVG gerado dinamicamente com os 467 municípios do CO + estados vizinhos -->
+                </div>
+
+                <!-- WATERMARKS OFICIAIS -->
+                <div class="cap-map-watermarks">
+                  <span class="cap-wm-left"><i class="ti ti-brand-windows"></i> Microsoft Azure</span>
+                  <span class="cap-wm-right">© 2026 OSM © 2026 TomTom Feedback</span>
+                </div>
+
+                <!-- TOOLTIP FLUTUANTE DO MAPA -->
+                <div class="cap-map-tooltip" id="capMapTooltip" style="display:none;"></div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SUB-VIEWS PLACEHOLDER PARA OS DEMAIS 6 BOTÕES -->
+        <section class="cap-subview" id="capSubCapacitacoes">
+          <div class="cap-placeholder-page">
+            <button class="cap-back-home-btn" onclick="switchCapView('home', document.getElementById('capNavHome'))">
+              <i class="ti ti-arrow-left"></i> Voltar à Home da Capacitação
+            </button>
+            <div class="cap-subview-card">
+              <div class="cap-subview-icon"><i class="ti ti-school"></i></div>
+              <h2>Módulo: Capacitações</h2>
+              <p>Módulo de detalhamento das turmas presenciais, polos regionais, cronograma e execução pedagógica do transporte escolar.</p>
+              <span class="cap-badge-dev">Em estruturação para as próximas etapas</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="cap-subview" id="capSubUf">
+          <div class="cap-placeholder-page">
+            <button class="cap-back-home-btn" onclick="switchCapView('home', document.getElementById('capNavHome'))">
+              <i class="ti ti-arrow-left"></i> Voltar à Home da Capacitação
+            </button>
+            <div class="cap-subview-card">
+              <div class="cap-subview-icon"><i class="ti ti-map-2"></i></div>
+              <h2>Módulo: Unidades da Federação</h2>
+              <p>Desagregação comparativa dos polos e municípios participantes por Unidade da Federação (GO, MT, MS e DF).</p>
+              <span class="cap-badge-dev">Em estruturação para as próximas etapas</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="cap-subview" id="capSubAval1_5">
+          <div class="cap-placeholder-page">
+            <button class="cap-back-home-btn" onclick="switchCapView('home', document.getElementById('capNavHome'))">
+              <i class="ti ti-arrow-left"></i> Voltar à Home da Capacitação
+            </button>
+            <div class="cap-subview-card">
+              <div class="cap-subview-icon"><i class="ti ti-clipboard-check"></i></div>
+              <h2>Módulo: Avaliação das Capacitações 1 ao 5</h2>
+              <p>Resultados dos formulários avaliativos de conteúdo, aplicabilidade prática, instrutores e metodologia das edições 1 a 5.</p>
+              <span class="cap-badge-dev">Em estruturação para as próximas etapas</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="cap-subview" id="capSubStat1_5">
+          <div class="cap-placeholder-page">
+            <button class="cap-back-home-btn" onclick="switchCapView('home', document.getElementById('capNavHome'))">
+              <i class="ti ti-arrow-left"></i> Voltar à Home da Capacitação
+            </button>
+            <div class="cap-subview-card">
+              <div class="cap-subview-icon"><i class="ti ti-chart-bar"></i></div>
+              <h2>Módulo: Estatísticas das Avaliações 1 a 5</h2>
+              <p>Análise estatística descritiva e inferencial com médias, dispersão e índices de satisfação dos participantes das edições 1 a 5.</p>
+              <span class="cap-badge-dev">Em estruturação para as próximas etapas</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="cap-subview" id="capSubAval6_16">
+          <div class="cap-placeholder-page">
+            <button class="cap-back-home-btn" onclick="switchCapView('home', document.getElementById('capNavHome'))">
+              <i class="ti ti-arrow-left"></i> Voltar à Home da Capacitação
+            </button>
+            <div class="cap-subview-card">
+              <div class="cap-subview-icon"><i class="ti ti-clipboard-check"></i></div>
+              <h2>Módulo: Avaliação das Capacitações 6 ao 16</h2>
+              <p>Acompanhamento das avaliações formativas e somativas dos ciclos 6 a 16 do projeto nos estados do Centro-Oeste.</p>
+              <span class="cap-badge-dev">Em estruturação para as próximas etapas</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="cap-subview" id="capSubStat6_16">
+          <div class="cap-placeholder-page">
+            <button class="cap-back-home-btn" onclick="switchCapView('home', document.getElementById('capNavHome'))">
+              <i class="ti ti-arrow-left"></i> Voltar à Home da Capacitação
+            </button>
+            <div class="cap-subview-card">
+              <div class="cap-subview-icon"><i class="ti ti-chart-bar"></i></div>
+              <h2>Módulo: Estatísticas das Avaliações 6 a 16</h2>
+              <p>Distribuição de frequências, correlações e matrizes de resposta para as capacitações 6 a 16.</p>
+              <span class="cap-badge-dev">Em estruturação para as próximas etapas</span>
+            </div>
+          </div>
+        </section>
+
+      </main>
     </div>
   </div>
 
@@ -6097,7 +7059,7 @@ window.onerror = function(msg, url, line, col, err) {
 
       <div class="ef-container">
         <div class="ef-left">
-          <span class="ef-badge pnite-version-val" id="pniteVersionBadge">v.2.9.9</span>
+          <span class="ef-badge pnite-version-val" id="pniteVersionBadge">v.3.0.0</span>
           <span class="ef-badge" role="button" tabindex="0" onclick="openSettingsModal()" style="cursor:pointer;font-weight:600;font-size:11px;background:var(--accent-light);color:var(--accent-dark);padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px" title="Clique para gerenciar fontes e dados"><i class="ti ti-file-spreadsheet"></i> Dados: Excel (pasta data/)</span>
           <span>PNITE — Plataforma Nacional de Inteligência em Transporte Escolar</span>
         </div>
@@ -6206,7 +7168,7 @@ window.onerror = function(msg, url, line, col, err) {
     <div class="smb-sec">
       <div class="smb-sec-title" data-i18n="settings_info_title">Informações da Versão</div>
       <div style="font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:4px;margin-top:6px">
-        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.2.9.9</b></div>
+        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.0.0</b></div>
         <div><span data-i18n="settings_updated">Última Atualização:</span> <b class="pnite-date-val">06/10/2026</b> às <b class="pnite-time-val">17:27</b></div>
         <div><span data-i18n="settings_author">Responsável Técnico:</span> <b class="pnite-author-val">Equipe PNITE</b></div>
       </div>
@@ -6240,14 +7202,15 @@ window.onerror = function(msg, url, line, col, err) {
 <!-- Bibliotecas de Leitura de Dados Excel e Consolidados -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="data/pnite_dados_consolidados.js"></script>
+<script src="data/pnite_capacitacao_dados.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.2.9.9";
+const PNITE_VERSION = "v.3.0.0";
 const PNITE_LAST_UPDATE = "06/10/2026";
-const PNITE_LAST_TIME = "17:27";
+const PNITE_LAST_TIME = "19:15";
 
 // Escapa texto para inserção segura via innerHTML (entradas do usuário, nomes de arquivo)
 function escHtml(s) {
@@ -11676,10 +12639,345 @@ function switchFront(frontId, navBtn) {
   } else if (frontId === 'capacitacao') {
     const el = document.getElementById('frontCapacitacao');
     if (el) el.classList.add('active');
+    setTimeout(() => { initCapacitacaoView(); }, 40);
   } else if (frontId === 'gestao') {
     const el = document.getElementById('frontGestao');
     if (el) el.classList.add('active');
   }
+}
+
+// ==========================================================================
+// FRENTE ANALÍTICA: INDICADORES DA CAPACITAÇÃO (LÓGICA, FILTROS & MAPA)
+// ==========================================================================
+
+let capInitialized = false;
+
+function switchCapView(subviewId, btnEl) {
+  document.querySelectorAll('.cap-nav-btn').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+  
+  document.querySelectorAll('.cap-subview').forEach(v => v.classList.remove('active'));
+  const targetMap = {
+    'home': 'capSubHome',
+    'capacitacoes': 'capSubCapacitacoes',
+    'uf': 'capSubUf',
+    'aval1_5': 'capSubAval1_5',
+    'stat1_5': 'capSubStat1_5',
+    'aval6_16': 'capSubAval6_16',
+    'stat6_16': 'capSubStat6_16'
+  };
+  const subviewEl = document.getElementById(targetMap[subviewId] || 'capSubHome');
+  if (subviewEl) subviewEl.classList.add('active');
+  
+  if (subviewId === 'home') {
+    updateCapacitacaoView();
+  }
+}
+
+function initCapacitacaoView() {
+  const capData = window.PNITE_CAPACITACAO_DATA || [];
+  const poloSelect = document.getElementById('capPoloSelect');
+  
+  // Popula os polos no select apenas uma vez
+  if (poloSelect && poloSelect.options.length <= 1) {
+    const polos = Array.from(new Set(capData.map(d => d.polo).filter(Boolean))).sort();
+    polos.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p;
+      opt.textContent = p;
+      poloSelect.appendChild(opt);
+    });
+  }
+
+  updateCapacitacaoView();
+  capInitialized = true;
+}
+
+function onCapFilterChange() {
+  updateCapacitacaoView();
+}
+
+function onCapSliderChange() {
+  const cacsVal = document.getElementById('capCacsSlider')?.value ?? 7;
+  const gestoresVal = document.getElementById('capGestoresSlider')?.value ?? 7;
+  
+  const cacsLbl = document.getElementById('capCacsMaxLbl');
+  if (cacsLbl) cacsLbl.textContent = cacsVal;
+  
+  const gestoresLbl = document.getElementById('capGestoresMaxLbl');
+  if (gestoresLbl) gestoresLbl.textContent = gestoresVal;
+
+  updateCapacitacaoView();
+}
+
+function updateCapacitacaoView() {
+  const capData = window.PNITE_CAPACITACAO_DATA || [];
+  if (!capData.length) return;
+
+  const selPolo = document.getElementById('capPoloSelect')?.value || '';
+  const selEstado = document.getElementById('capEstadoSelect')?.value || '';
+  const selPart = document.getElementById('capParticipouSelect')?.value || '';
+  const selAno = document.getElementById('capAnoSelect')?.value || '';
+  const maxCacs = parseInt(document.getElementById('capCacsSlider')?.value ?? 7, 10);
+  const maxGestores = parseInt(document.getElementById('capGestoresSlider')?.value ?? 7, 10);
+
+  // Filtragem dos registros
+  const filtered = capData.filter(m => {
+    if (selPolo && m.polo !== selPolo) return false;
+    if (selEstado && m.uf !== selEstado) return false;
+    if (selAno && String(m.ano) !== selAno) return false;
+    if (selPart === 'SIM' && !m.participou) return false;
+    if (selPart === 'NAO' && (!m.convidado || m.participou)) return false;
+    if (m.cacs > maxCacs) return false;
+    if (m.gestores > maxGestores) return false;
+    return true;
+  });
+
+  const filteredCodSet = new Set(filtered.map(m => String(m.cod)));
+
+  // Totalizadores
+  let convidadosCount = 0;
+  let participouCount = 0;
+  let ausenteCount = 0;
+  let totalGestores = 0;
+  let totalCacs = 0;
+
+  filtered.forEach(m => {
+    if (m.convidado) {
+      convidadosCount++;
+      if (m.participou) participouCount++;
+      else ausenteCount++;
+    }
+    totalGestores += (m.gestores || 0);
+    totalCacs += (m.cacs || 0);
+  });
+
+  const totalParticipantes = totalGestores + totalCacs;
+  const pctGestores = totalParticipantes > 0 ? ((totalGestores / totalParticipantes) * 100).toFixed(2).replace('.', ',') + '%' : '—';
+  const pctCacs = totalParticipantes > 0 ? ((totalCacs / totalParticipantes) * 100).toFixed(2).replace('.', ',') + '%' : '—';
+  const taxaPart = convidadosCount > 0 ? ((participouCount / convidadosCount) * 100).toFixed(2).replace('.', ',') + '%' : '—';
+
+  // Atualização dos elementos na DOM
+  const setTxt = (id, txt) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = txt;
+  };
+
+  setTxt('capValParticipantes', totalParticipantes.toLocaleString('pt-BR'));
+  setTxt('capValGestores', totalGestores.toLocaleString('pt-BR'));
+  setTxt('capValPctGestores', pctGestores);
+  setTxt('capValCacs', totalCacs.toLocaleString('pt-BR'));
+  setTxt('capValPctCacs', pctCacs);
+  setTxt('capValConvidados', convidadosCount.toLocaleString('pt-BR'));
+  setTxt('capValParticipou', participouCount.toLocaleString('pt-BR'));
+  setTxt('capValTaxaPart', taxaPart);
+  setTxt('capValAusente', ausenteCount.toLocaleString('pt-BR'));
+
+  // Renderizar / atualizar mapa
+  renderCapacitacaoMap(filteredCodSet);
+}
+
+function renderCapacitacaoMap(filteredCodSet) {
+  const container = document.getElementById('capSvgContainer');
+  if (!container) return;
+
+  const geo = window.PNITE_CAPACITACAO_GEO;
+  if (!geo || !geo.features) {
+    container.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text-3)">Carregando malha do Centro-Oeste...</div>';
+    return;
+  }
+
+  // Parâmetros de projeção geográfica
+  const b = { minX: -64.0, maxX: -44.0, minY: -25.5, maxY: -6.0 };
+  const W = 720;
+  const k = Math.cos(-15.5 * Math.PI / 180);
+  const sx = W / ((b.maxX - b.minX) * k);
+  const H = Math.round((b.maxY - b.minY) * sx);
+
+  function pr(lon, lat) {
+    return [
+      Math.round((lon - b.minX) * k * sx * 10) / 10,
+      Math.round((b.maxY - lat) * sx * 10) / 10
+    ];
+  }
+
+  // Mapa de dados por código
+  const dataMap = new Map();
+  (window.PNITE_CAPACITACAO_DATA || []).forEach(d => dataMap.set(String(d.cod), d));
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#e4eee2;border-radius:12px;">`;
+
+  // 1. Países vizinhos (Bolívia e Paraguai)
+  svg += `<g id="capBgCountries">
+    <!-- Bolívia -->
+    <path d="M 0 160 L 95 190 L 115 310 L 80 430 L 30 520 L 0 540 Z" fill="#b9cdb6" stroke="#9bb198" stroke-width="1.2" opacity="0.85"/>
+    <text x="35" y="360" font-family="system-ui, sans-serif" font-size="16" font-weight="800" fill="#6c8069" letter-spacing="3" transform="rotate(-30, 35, 360)">BOLÍVIA</text>
+    
+    <!-- Paraguai -->
+    <path d="M 50 640 L 160 580 L 220 620 L 245 720 L 50 720 Z" fill="#b9cdb6" stroke="#9bb198" stroke-width="1.2" opacity="0.85"/>
+    <text x="135" y="670" font-family="system-ui, sans-serif" font-size="14" font-weight="800" fill="#6c8069" letter-spacing="3">PARAGUAI</text>
+  </g>`;
+
+  // 2. Estados vizinhos do BR_GEO
+  if (typeof BR_GEO !== 'undefined' && BR_GEO.features) {
+    const vizinhos = ['RO', 'TO', 'BA', 'PI', 'MG', 'SP', 'PR'];
+    svg += '<g id="capSurroundingStates" fill="#c3d7bf" stroke="#92a88e" stroke-width="1.2">';
+    vizinhos.forEach(uf => {
+      const feat = BR_GEO.features.find(f => f.properties && f.properties.SIGLA_UF === uf);
+      if (!feat) return;
+      const polys = feat.geometry.type === 'Polygon' ? [feat.geometry.coordinates] : feat.geometry.coordinates;
+      let d = '';
+      polys.forEach(poly => {
+        poly.forEach(ring => {
+          ring.forEach((pt, idx) => {
+            const xy = pr(pt[0], pt[1]);
+            d += (idx === 0 ? 'M' : 'L') + xy[0] + ' ' + xy[1];
+          });
+          d += 'Z ';
+        });
+      });
+      svg += `<path d="${d}" />`;
+    });
+    svg += '</g>';
+  }
+
+  // 3. Rótulos dos Estados Vizinhos
+  svg += `<g id="capSurroundingLabels" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#586f55" letter-spacing="1.5">
+    <text x="45" y="150">RONDÔNIA</text>
+    <text x="560" y="140">TOCANTINS</text>
+    <text x="645" y="220">PIAUÍ</text>
+    <text x="655" y="300">BAHIA</text>
+    <text x="640" y="470">MINAS GERAIS</text>
+    <text x="540" y="620">SÃO PAULO</text>
+    <text x="430" y="695">PARANÁ</text>
+    <text x="460" y="90" font-size="20" font-weight="900" fill="#4d634a" letter-spacing="4">BRASIL</text>
+  </g>`;
+
+  // 4. Municípios do Centro-Oeste
+  svg += '<g id="capMunicipalities" stroke="#162319" stroke-width="0.55">';
+  geo.features.forEach(f => {
+    const cod = String(f.properties.cod);
+    const mData = dataMap.get(cod) || {};
+    const isInFilter = filteredCodSet.has(cod);
+    
+    // Cores de participação: SIM (amarelo-limão #d8eb26), NÃO (verde-escuro #2f3e36), NÃO-CONVIDADO (#82a187)
+    let fill = '#82a187';
+    if (mData.participou) {
+      fill = '#d8eb26';
+    } else if (mData.convidado) {
+      fill = '#2f3e36';
+    }
+
+    const opacity = isInFilter ? '1' : '0.22';
+
+    const polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
+    let d = '';
+    polys.forEach(poly => {
+      poly.forEach(ring => {
+        ring.forEach((pt, idx) => {
+          const xy = pr(pt[0], pt[1]);
+          d += (idx === 0 ? 'M' : 'L') + xy[0] + ' ' + xy[1];
+        });
+        d += 'Z ';
+      });
+    });
+
+    const nomeSafe = escHtml(f.properties.nome || '');
+    const ufSafe = escHtml(f.properties.uf || '');
+    const poloSafe = escHtml(mData.polo || 'Sem polo');
+    const gest = mData.gestores || 0;
+    const cacs = mData.cacs || 0;
+    const partStatus = mData.participou ? 'SIM' : (mData.convidado ? 'NÃO' : 'Não convidado');
+
+    svg += `<path d="${d}" fill="${fill}" opacity="${opacity}" 
+      data-nome="${nomeSafe}" data-uf="${ufSafe}" data-part="${partStatus}" data-polo="${poloSafe}" data-gest="${gest}" data-cacs="${cacs}"
+      onmousemove="capMapHover(event, this)" onmouseleave="capMapOut()" style="cursor:pointer;transition:opacity 0.2s, fill 0.2s;" />`;
+  });
+  svg += '</g>';
+
+  // 5. Linhas de fronteira estaduais do CO (MT, MS, GO, DF)
+  if (typeof BR_GEO !== 'undefined' && BR_GEO.features) {
+    const coUfs = ['MT', 'GO', 'MS', 'DF'];
+    svg += '<g id="capCoOutlines" fill="none" stroke="#132117" stroke-width="2.2" stroke-linejoin="round" pointer-events="none">';
+    coUfs.forEach(uf => {
+      const feat = BR_GEO.features.find(f => f.properties && f.properties.SIGLA_UF === uf);
+      if (!feat) return;
+      const polys = feat.geometry.type === 'Polygon' ? [feat.geometry.coordinates] : feat.geometry.coordinates;
+      let d = '';
+      polys.forEach(poly => {
+        poly.forEach(ring => {
+          ring.forEach((pt, idx) => {
+            const xy = pr(pt[0], pt[1]);
+            d += (idx === 0 ? 'M' : 'L') + xy[0] + ' ' + xy[1];
+          });
+          d += 'Z ';
+        });
+      });
+      svg += `<path d="${d}" />`;
+    });
+    svg += '</g>';
+  }
+
+  // 6. Rótulos dos Estados do Centro-Oeste
+  svg += `<g id="capStateLabels" font-family="system-ui, sans-serif" font-weight="900" fill="#152419" letter-spacing="1" pointer-events="none">
+    <text x="270" y="270" font-size="16">MATO GROSSO</text>
+    <text x="500" y="375" font-size="16">GOIÁS</text>
+    <text x="315" y="545" font-size="15">MATO GROSSO DO SUL</text>
+    <text x="575" y="360" font-size="10">DF</text>
+  </g>`;
+
+  // 7. Pin de Brasília
+  svg += `<g id="capPinBrasilia" pointer-events="none">
+    <circle cx="583" cy="365" r="4.5" fill="#e11d48" stroke="#ffffff" stroke-width="1.5"/>
+    <circle cx="583" cy="365" r="1.5" fill="#ffffff"/>
+    <text x="591" y="369" font-family="system-ui, sans-serif" font-size="11" font-weight="800" fill="#991b1b">Brasília</text>
+  </g>`;
+
+  svg += '</svg>';
+  container.innerHTML = svg;
+}
+
+function capMapHover(ev, el) {
+  const tt = document.getElementById('capMapTooltip');
+  if (!tt) return;
+
+  const nome = el.getAttribute('data-nome');
+  const uf = el.getAttribute('data-uf');
+  const part = el.getAttribute('data-part');
+  const polo = el.getAttribute('data-polo');
+  const gest = el.getAttribute('data-gest');
+  const cacs = el.getAttribute('data-cacs');
+  const tot = parseInt(gest, 10) + parseInt(cacs, 10);
+
+  const partBadge = part === 'SIM' 
+    ? '<span style="background:#d8eb26;color:#18281a;padding:2px 6px;border-radius:4px;font-weight:800;font-size:10px">SIM</span>'
+    : '<span style="background:#2f3e36;color:#ffffff;padding:2px 6px;border-radius:4px;font-weight:800;font-size:10px">NÃO</span>';
+
+  tt.innerHTML = `
+    <div style="font-weight:800;font-size:13px;color:var(--text-1);margin-bottom:4px">${nome} (${uf})</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <span style="color:var(--text-2);font-size:11px">Participou:</span>
+      ${partBadge}
+    </div>
+    <div style="font-size:11px;color:var(--text-2);margin-bottom:2px"><b>Polo:</b> ${polo}</div>
+    <div style="font-size:11px;color:var(--text-2);margin-bottom:2px"><b>Gestores:</b> ${gest} | <b>CACS:</b> ${cacs}</div>
+    <div style="font-size:11px;color:var(--text-1);font-weight:700;margin-top:4px;border-top:1px dashed var(--border);padding-top:3px">Total de participantes: ${tot}</div>
+  `;
+
+  const card = document.getElementById('capMapCard');
+  if (card) {
+    const rect = card.getBoundingClientRect();
+    const x = ev.clientX - rect.left + 14;
+    const y = ev.clientY - rect.top + 14;
+    tt.style.left = Math.min(x, rect.width - 220) + 'px';
+    tt.style.top = Math.max(10, Math.min(y, rect.height - 120)) + 'px';
+    tt.style.display = 'block';
+  }
+}
+
+function capMapOut() {
+  const tt = document.getElementById('capMapTooltip');
+  if (tt) tt.style.display = 'none';
 }
 
 // --------------------------------------------------------------------------
@@ -12769,12 +14067,13 @@ function processarUploadExcel(event) {
       </div>
     </div>
     <div class="pif-body">
-      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.2.9.9</strong></div>
+      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.0.0</strong></div>
       <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">06/10/2026</span></div>
-      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">17:27</span></div>
+      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">19:15</span></div>
       <div class="pif-row"><span>Responsável técnico:</span><span class="pnite-author-val">Equipe PNITE</span></div>
       <div class="pif-note">
         <i class="ti ti-check" style="color:var(--accent);margin-right:3px"></i>
+        <strong>Indicadores da Capacitação (v.3.0.0):</strong> implementação da nova frente de capacitação com home inicial, filtros dinâmicos (polo, estado, participação e ano), cards de perfil dos participantes e municípios, sliders de CACS e gestores, mapa coroplético do Centro-Oeste e navegação lateral com 7 botões analíticos.<br>
         <strong>Arquivo principal (v.2.9.9):</strong> a aplicação passa a residir em <code>PNITE.html</code>; versões anteriores são arquivadas como <code>old/PNITE [V.X.Y.Z].html</code>.<br>
         <strong>Média nacional calculada (v.2.9.8):</strong> a "Média Nacional" dos cards e o valor nacional do guia de indicadores passam a ser calculados a partir da base nacional consolidada (<code>DATA.nacional</code>), substituindo valores fixos divergentes (ex.: PRIO 28,4% → 17,8%; PRRM 94,9% → 92,4%).<br>
         <strong>Diretrizes do agente (v.2.9.7):</strong> boas práticas técnicas da revisão geral incorporadas ao <code>AGENTS.md</code> (§44).<br>
@@ -12784,7 +14083,7 @@ function processarUploadExcel(event) {
   </div>
   <button class="pif-btn" id="pifBtn" aria-label="Informações de Versão">
     <i class="ti ti-info-circle"></i>
-    <span class="pif-btn-label pnite-version-val">v.2.9.9</span>
+    <span class="pif-btn-label pnite-version-val">v.3.0.0</span>
   </button>
 </div>
 
