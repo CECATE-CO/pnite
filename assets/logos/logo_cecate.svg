@@ -1,0 +1,6 @@
+<svg viewBox="0 0 160 44" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 26 C 18 10, 30 10, 36 26 C 30 34, 18 34, 12 26 Z" fill="#e8890c"/>
+  <path d="M22 16 C 28 8, 42 12, 38 26 C 32 30, 22 26, 22 16 Z" fill="#1d6fa5"/>
+  <text x="46" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="800" fill="#1d6fa5">CECATE</text>
+  <text x="46" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="7" font-weight="600" fill="#64748b">TRANSPORTE ESCOLAR</text>
+</svg>
