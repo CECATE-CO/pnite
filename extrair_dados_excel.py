@@ -669,7 +669,8 @@ def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
     ref_raw = {}
     ref_data = {}
     
-    arquivos_html = glob.glob('PNITE [V.*].html') + glob.glob('old/PNITE [V.*].html')
+    # Arquivo principal fixo na raiz (PNITE.html); versões arquivadas em old/ servem de reserva
+    arquivos_html = glob.glob('PNITE.html') + sorted(glob.glob('old/PNITE [[]V.*[]].html'), reverse=True)
     if arquivos_html:
         html_alvo = arquivos_html[0]
         try:

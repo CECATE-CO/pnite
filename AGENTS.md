@@ -66,16 +66,25 @@ Não interrompa o fluxo de desenvolvimento para perguntas que possam ser resolvi
 ---
 
 ## 3. ARQUIVO PRINCIPAL DO PROJETO
-O arquivo principal atual da aplicação é:
-`PNITE [V.2.9.8].html`
+O arquivo principal da aplicação tem **nome fixo**:
+`PNITE.html`
 
-Esse arquivo contém a estrutura HTML, CSS e JavaScript da aplicação.
+Esse arquivo contém a estrutura HTML, CSS e JavaScript da aplicação. O nome nunca recebe número de versão; a versão vigente é identificada exclusivamente pela constante `PNITE_VERSION` e pelo rodapé (§25 e §26).
 
 ### 3.1. REGRA MANDATÓRIA DE ARQUIVAMENTO NA PASTA `old/`
-- Sempre que uma nova versão for criada ou for solicitada qualquer alteração na aplicação, a versão atual anterior **DEVE ser obrigatoriamente movida para a pasta `old/`** (ex.: `old/PNITE [V.2.2.0].html`).
-- Apenas o arquivo da versão mais recente permanece na raiz do repositório (ex.: `PNITE [V.2.3.0].html`).
-- A pasta `old/` mantém o repositório histórico integral de todas as versões anteriores (`v.1.0.0`, `v.1.1.0`, `v.1.2.0`, `v.1.3.0`, ..., até a versão imediatamente anterior à atual).
-- Nunca sobrescrever ou descartar uma versão anterior na raiz; sempre movê-la para `old/`.
+- Na raiz do repositório existe **apenas** `PNITE.html`, sempre com a versão mais recente.
+- Sempre que uma nova versão for criada ou for solicitada qualquer alteração na aplicação, **antes de editar**, a versão vigente deve ser copiada para `old/` com o número da versão que ela contém no nome, no formato:
+  `old/PNITE [V.X.Y.Z].html` (ex.: `old/PNITE [V.2.9.8].html`)
+- O número usado no nome do arquivo arquivado é o valor atual de `PNITE_VERSION` (a versão que está sendo substituída), com `V` maiúsculo e sem o prefixo `v.` minúsculo.
+- Somente depois do arquivamento, `PNITE.html` é editado e recebe a nova versão.
+- Sequência obrigatória:
+  1. Ler `PNITE_VERSION` em `PNITE.html` (ex.: `v.2.9.8`);
+  2. Copiar `PNITE.html` → `old/PNITE [V.2.9.8].html`;
+  3. Editar `PNITE.html` e incrementar `PNITE_VERSION` (ex.: `v.2.9.9`);
+  4. Incluir no mesmo commit o novo arquivo em `old/` e o `PNITE.html` alterado.
+- A pasta `old/` mantém o histórico integral de todas as versões anteriores (`v.1.0.0`, `v.1.1.0`, ..., até a versão imediatamente anterior à atual).
+- Nunca sobrescrever um arquivo já existente em `old/`, nunca criar cópias versionadas na raiz (ex.: `PNITE [V.2.9.9].html`) e nunca renomear `PNITE.html`.
+- Scripts e ferramentas que precisem do HTML principal devem referenciá-lo por `PNITE.html` (e, como reserva, por `old/PNITE [V.*].html`, escapando os colchetes em padrões `glob`: `old/PNITE [[]V.*[]].html`).
 
 **Antes de realizar qualquer alteração:**
 1. Leia o arquivo atual;
@@ -333,15 +342,16 @@ TODA alteração no projeto deve gerar uma nova versão sem exceções.
 
 ## 28. FLUXO OBRIGATÓRIO GIT
 1. `git status`
-2. Editar código
-3. Testar
-4. Verificar `git diff`
-5. Atualizar versão
-6. Testar novamente
-7. `git status`
-8. `git add`
-9. `git commit`
-10. `git push`
+2. Arquivar a versão vigente: copiar `PNITE.html` → `old/PNITE [V.X.Y.Z].html` (§3.1)
+3. Editar código em `PNITE.html`
+4. Testar
+5. Verificar `git diff`
+6. Atualizar versão
+7. Testar novamente
+8. `git status`
+9. `git add`
+10. `git commit`
+11. `git push`
 
 ---
 
