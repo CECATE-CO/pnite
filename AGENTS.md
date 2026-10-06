@@ -67,7 +67,7 @@ Não interrompa o fluxo de desenvolvimento para perguntas que possam ser resolvi
 
 ## 3. ARQUIVO PRINCIPAL DO PROJETO
 O arquivo principal atual da aplicação é:
-`PNITE [V.2.9.6].html`
+`PNITE [V.2.9.7].html`
 
 Esse arquivo contém a estrutura HTML, CSS e JavaScript da aplicação.
 
@@ -253,19 +253,20 @@ Devem ser interpretados com rigor dentro de TODAS as regras deste documento (esc
 ---
 
 ## 22. PROCESSO OBRIGATÓRIO ANTES DA ALTERAÇÃO
-1. `git status`
+1. `git status` — e confirmar que não há outro processo Git em andamento (ver §44.1)
 2. Verificar branch atual
 3. Verificar versão atual
 4. Ler o código relacionado à solicitação
 5. Localizar dependências e mapear impactos
 6. Definir a menor intervenção necessária com estabilidade
-7. Executar a alteração
+7. Executar a alteração aplicando as boas práticas técnicas da §44
 
 ---
 
 ## 23. TESTES OBRIGATÓRIOS
 Validar funcionalmente: carregamento sem erros no console, menus, filtros, botões, gráficos, tabelas, mapa coroplético, tooltips, cálculos, memória de cálculo, alternância de tema (light/dark) e responsividade.
 Corrigir automaticamente eventuais anomalias antes de concluir.
+O protocolo mínimo de verificação (sintaxe, duplicidades, navegador headless, larguras e temas) está descrito em §44.9.
 
 ---
 
@@ -407,6 +408,9 @@ Uma tarefa só está concluída com todos os itens satisfeitos:
 - [ ] Testes realizados;
 - [ ] Interface e responsividade validadas;
 - [ ] Dark mode verificado;
+- [ ] Nenhum `null`, `undefined` ou `NaN` visível na interface;
+- [ ] Sem overflow horizontal em 375px, 768px e 1280px;
+- [ ] Boas práticas técnicas da §44 aplicadas ao código alterado;
 - [ ] Versão incrementada e visível (regra Z → Y → X);
 - [ ] `git diff` verificado;
 - [ ] Commit no padrão oficial realizado;
@@ -465,3 +469,87 @@ O usuário poderá formular pedidos diretos e enxutos. Interprete qualquer solic
 ## 43. REGRA FINAL
 Para cada solicitação recebida:
 **ENTENDER → INSPECIONAR → PLANEJAR → IMPLEMENTAR → TESTAR → CORRIGIR → VALIDAR → VERSIONAR → COMMITAR → FAZER PUSH → RELATAR**
+
+---
+
+## 44. BOAS PRÁTICAS TÉCNICAS OBRIGATÓRIAS
+Regras consolidadas a partir da revisão geral da v.2.9.6. Cada item corresponde a um defeito real já encontrado na PNITE e deve ser verificado sempre que o código relacionado for criado ou alterado.
+
+### 44.1. Git e ambiente
+- Antes de qualquer operação Git, verificar se há outro processo Git ativo (clone, checkout, download LFS do GitHub Desktop) ou `.git/index.lock` presente. Aguardar a conclusão; nunca apagar o lock nem forçar operações concorrentes.
+- Se o `git status` mostrar exclusão em massa de arquivos que existem no disco, **não** fazer commit: investigar a causa (clone incompleto, índice corrompido) antes de prosseguir.
+- Os CSVs em `data/` são versionados via Git LFS; não converter, recodificar nem adicioná-los fora do LFS.
+- Arquivos de regras do agente devem permanecer idênticos: `AGENTS.md` e `.agents/rules/DIRETRIZES_AGENTE_PNITE.md`. Toda alteração em um deve ser replicada no outro no mesmo commit.
+
+### 44.2. Codificação e formato de arquivo
+- Salvar sempre em UTF-8 e preservar as quebras de linha existentes do arquivo (o HTML principal usa CRLF).
+- Após edições por script, procurar caracteres corrompidos (ex.: `s?o`, `Intelig?ncia`, `(A ? B) ? 100`) e restaurar os acentos e símbolos (`÷`, `×`, `—`).
+- O console do Windows pode exibir `�` para caracteres válidos: confirmar no próprio arquivo (bytes/UTF-8) antes de "corrigir".
+
+### 44.3. JavaScript
+- **Sem declarações duplicadas:** antes de criar uma função, pesquisar `function nome(` no arquivo inteiro. Duas declarações globais com o mesmo nome fazem a última sobrescrever silenciosamente a primeira. Código substituído deve ser removido, não deixado como cópia morta.
+- **Handlers inline válidos:** todo `onclick`/`onchange`/`oninput`, inclusive os gerados em template strings, deve chamar uma função existente com o nome exato (verificar por busca).
+- **Funções reutilizáveis não podem ser IIFE nomeadas:** `(function nome(){...})()` não cria `nome` no escopo global. Declarar `function nome(){...}` e chamar `nome();` em seguida.
+- **Scripts no `<head>`** não podem acessar `document.body` (ainda é `null`).
+- **Variáveis `let`/`const` globais** usadas por funções chamadas cedo devem ser protegidas contra a zona morta temporal (ex.: `try { ... } catch (e) { ... }`).
+- **Nulos e números:** usar `v != null` (cobre `null` e `undefined`) antes de `.toFixed()`; tratar `NaN` com `Number.isNaN`. A interface nunca pode exibir `null`, `undefined` ou `NaN`; usar `—`.
+- **Funções com muitos parâmetros posicionais** (ex.: `card(sigla, nome, tipo, dados, formula, result, fonte, sup, ausente, badge)`): conferir a ordem dos argumentos em cada chamada e passar `null` explicitamente nas posições vazias.
+- **Acesso a colunas por `indexOf`:** tratar o retorno `-1`. Usar um auxiliar que retorne `null` para colunas inexistentes; nunca usar `row[cols.indexOf('x')] || 0` quando a coluna pode não existir.
+- **Requisições assíncronas:** reaproveitar a promessa em andamento (cache de requisições pendentes por chave) e, após cada `await`, verificar se o estado ainda é o mesmo (UF, nível, aba) antes de alterar o DOM.
+- **Histórico:** chamar `history.pushState` apenas quando o hash de destino for diferente do atual, para não reempilhar entradas no Voltar/Avançar.
+- **Listeners:** registrar uma única vez e preferir delegação no `document`; nunca adicionar listeners dentro de funções de renderização.
+- **Segurança:** todo texto vindo do usuário (busca, nome de arquivo, mensagens de erro) inserido via `innerHTML` deve passar por `escHtml()`.
+- **Gráficos Chart.js:** destruir (`.destroy()`) ou atualizar (`.update()`) a instância anterior antes de recriar.
+
+### 44.4. Dados, escopo e textos interpretativos
+- **Ausência de dado ≠ zero:** um dado inexistente deve ser exibido como `—` ou "Sem dados", nunca como `0` ou `0,0%`.
+- **Fallbacks numéricos fixos são médias nacionais** e só podem ser usados no escopo nacional (`natFb(valor)`). Em Região, UF e Município, a falta de dado não pode ser preenchida com valor de outro escopo.
+- Município sem registro no SETE não pode herdar dados nacionais ou estaduais.
+- **Textos interpretativos** (badges, tooltips, legendas, cartões) devem derivar do mesmo valor exibido do indicador, e não de colunas auxiliares que podem não existir.
+- O nome da escala de cor na legenda deve vir da mesma função que define a cor do mapa (`getMapaTheme`).
+- Mensagens da interface devem descrever o comportamento real (ex.: não afirmar "dados integrados" quando a planilha é apenas lida).
+- Divergências entre valores do mesmo indicador em locais diferentes do código devem ser **relatadas** ao usuário, não corrigidas por julgamento próprio (§11 e §33).
+
+### 44.5. HTML e acessibilidade
+- Botões apenas com ícone: `type="button"` e `aria-label` descritivo (`title` sozinho não basta).
+- Campos sem `<label>` visível: `aria-label`. Rótulos visíveis devem ter `for` apontando para o `id` do campo.
+- Elementos clicáveis devem ser `<button>`. Quando não for possível (itens gerados de ranking, cabeçalhos expansíveis), usar `role="button"` e `tabindex="0"`; o listener delegado global já trata Enter/Espaço.
+- Cabeçalhos expansíveis devem manter `aria-expanded` e `aria-controls` sincronizados com o estado.
+- Modais: `role="dialog"`, `aria-modal="true"`, título associado (`aria-labelledby`) e fechamento por Esc.
+- Links de navegação apontam para a seção real (`href="#secX"`), nunca `href="#"`.
+- Imagens não podem usar fallback de domínio de terceiros (§6); `onerror` deve começar com `this.onerror=null`.
+
+### 44.6. CSS e design system
+- Antes de usar `var(--token)`, confirmar que o token está definido nos temas claro e escuro.
+- Não usar o atalho `background:` em componentes que dependem de `background-image` (ex.: a seta de `.form-select`); usar `background-color`.
+- Não usar o atalho `border:` em regras que precisam preservar estados de hover/foco; usar `border-width`/`border-style`.
+- Estilos inline de layout (`grid-template-columns`, `min-width` fixo, cores) anulam media queries e temas: definir na classe.
+- Verificar se existe redefinição posterior do mesmo seletor que anule um media query anterior.
+- Toda fonte usada em `font-family` precisa estar carregada; preferir `var(--font-serif)` e as fontes já importadas.
+- Evitar `!important`; quando inevitável, documentar o motivo.
+
+### 44.7. Temas (light/dark)
+- A plataforma suporta apenas `light` e `dark`. O valor legado `dim` é normalizado para `dark`.
+- O tema salvo em `localStorage` (`pnite_theme`) é aplicado no `<head>`, antes da renderização, para evitar o flash do tema claro.
+- Texto sobre fundos `--c-blue` no modo escuro deve usar `var(--c-navy)` (o azul escuro é claro demais para texto branco).
+- Contraste mínimo de 4,5:1 para texto normal nos dois temas; cores de estado (sucesso/erro) precisam de variante para o modo escuro.
+
+### 44.8. Responsividade
+- `minmax()` em grades deve usar `min(Xpx, 100%)` para não estourar telas estreitas.
+- Filhos de flex/grid que contêm texto longo ou `<select>` precisam de `min-width: 0` e `max-width: 100%`.
+- Barras de navegação e grupos de pílulas longos usam rolagem horizontal controlada (`overflow-x: auto`) em telas ≤ 760px.
+- Elementos interativos têm área mínima de 44×44px em `@media (pointer: coarse)`.
+- Modais: `max-height: calc(100vh - 40px)` e `overflow-y: auto`.
+
+### 44.9. Protocolo mínimo de verificação
+1. **Sintaxe:** extrair cada bloco `<script>` e executar `node --check`.
+2. **Duplicidades:** listar declarações `function nome(` de nível global e confirmar que não há nomes repetidos; listar `id="..."` estáticos repetidos.
+3. **Navegador headless** (Chrome/Edge via `puppeteer-core`), carregando o arquivo local:
+   - zero `pageerror` e zero erros de console no carregamento e durante as interações;
+   - escopos Nacional, Região, Estado e Município, conferindo dashboard, mapa, tabelas SETE e memória de cálculo;
+   - alternância de tema e persistência em `localStorage`;
+   - navegação entre módulos e botão Voltar;
+   - `document.documentElement.scrollWidth <= clientWidth` em 375px, 768px e 1280px, nos dois temas;
+   - capturas de tela claro/escuro em desktop e celular para inspeção visual.
+4. **Linha de base:** quando houver dúvida se um problema é novo ou pré-existente, executar o mesmo teste na versão anterior em `old/`.
+5. Scripts de teste e arquivos temporários ficam fora do repositório (pasta temporária), salvo pedido explícito.
