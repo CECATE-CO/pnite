@@ -653,10 +653,13 @@ def processar_profissionais(data_dir='data'):
         'pmnve_br': pmnve_br
     }
 
-def extrair_e_consolidar_tudo(data_dir='data', html_ref=None):
+def extrair_e_consolidar_tudo(data_dir=None, html_ref=None):
     """
     Executa a extração completa dos Excels e compõe a base RAW_DATA e DATA.
     """
+    if data_dir is None:
+        transp_dir = os.path.join('data', 'Transporte Escolar')
+        data_dir = transp_dir if os.path.isdir(transp_dir) else 'data'
     tabelas = carregar_planilhas(data_dir)
     detalhes_por_uf = extrair_metricas_por_uf(tabelas)
     dados_alunos = processar_alunos(data_dir)

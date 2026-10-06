@@ -40,7 +40,8 @@ from psycopg import sql
 from dotenv import load_dotenv
 
 RAIZ = Path(__file__).resolve().parent.parent
-PASTA_DADOS = RAIZ / "data"
+PASTA_TRANSP = RAIZ / "data" / "Transporte Escolar"
+PASTA_DADOS = PASTA_TRANSP if PASTA_TRANSP.is_dir() else (RAIZ / "data")
 DICIONARIO = PASTA_DADOS / "dicionario.docx"
 
 csv.field_size_limit(2**31 - 1)
