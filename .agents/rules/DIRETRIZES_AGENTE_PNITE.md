@@ -67,7 +67,7 @@ Não interrompa o fluxo de desenvolvimento para perguntas que possam ser resolvi
 
 ## 3. ARQUIVO PRINCIPAL DO PROJETO
 O arquivo principal atual da aplicação é:
-`PNITE [V.2.9.7].html`
+`PNITE [V.2.9.8].html`
 
 Esse arquivo contém a estrutura HTML, CSS e JavaScript da aplicação.
 
@@ -503,7 +503,8 @@ Regras consolidadas a partir da revisão geral da v.2.9.6. Cada item corresponde
 
 ### 44.4. Dados, escopo e textos interpretativos
 - **Ausência de dado ≠ zero:** um dado inexistente deve ser exibido como `—` ou "Sem dados", nunca como `0` ou `0,0%`.
-- **Fallbacks numéricos fixos são médias nacionais** e só podem ser usados no escopo nacional (`natFb(valor)`). Em Região, UF e Município, a falta de dado não pode ser preenchida com valor de outro escopo.
+- **Proibido valor numérico fixo de indicador no código** (médias, benchmarks, "valores de reserva"). Valores de referência nacionais são sempre **calculados** a partir da base nacional consolidada (`DATA.nacional`) por `getNationalAverage(sigla)` e formatados por `formatIndicatorValue(ind, v)`; `ALL_INDICATORS[].valNac` é sincronizado por `syncNationalValues()`.
+- Em qualquer escopo, a falta de dado não pode ser preenchida com valor de outro escopo nem com constante: exibir `—`.
 - Município sem registro no SETE não pode herdar dados nacionais ou estaduais.
 - **Textos interpretativos** (badges, tooltips, legendas, cartões) devem derivar do mesmo valor exibido do indicador, e não de colunas auxiliares que podem não existir.
 - O nome da escala de cor na legenda deve vir da mesma função que define a cor do mapa (`getMapaTheme`).
