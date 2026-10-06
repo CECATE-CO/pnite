@@ -12,7 +12,7 @@ assets/
 │   ├── logo_pnite_color.png      # Logomarca oficial colorida (versão de contraste e favicon)
 │   ├── logo_pnite_white.png      # Logomarca monocromática branca (para header e fundos escuros)
 │   ├── logo_pnite_original.png   # Logomarca original em alta resolução
-│   ├── logo_ufg.svg              # Marca vetorial da Universidade Federal de Goiás
+│   ├── logo_ufg.jpg              # Marca oficial da Universidade Federal de Goiás
 │   └── logo_cecate.svg           # Marca vetorial do CECATE / UFG
 └── img/
     └── escolar_sao_goncalo.png   # Imagem ilustrativa de frota do transporte escolar
