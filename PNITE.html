@@ -1705,10 +1705,27 @@ body {
 .cap-partner-logo:hover {
   opacity: 1;
 }
-.cap-ufg-svg, .cap-cecate-svg {
-  height: 34px;
-  width: auto;
+.cap-partner-img {
   max-width: 100%;
+  height: auto;
+  max-height: 42px;
+  object-fit: contain;
+  display: block;
+}
+.cap-ufg-img {
+  max-height: 38px;
+  border-radius: 6px;
+}
+.cap-cecate-img {
+  max-height: 44px;
+}
+[data-theme="dark"] .cap-ufg-img {
+  background: #ffffff;
+  padding: 3px 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+[data-theme="dark"] .cap-cecate-img {
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.35));
 }
 
 /* ÁREA PRINCIPAL DA CAPACITAÇÃO */
@@ -5849,20 +5866,10 @@ window.onerror = function(msg, url, line, col, err) {
         <!-- RODAPÉ DA SIDEBAR: LOGOS UFG E CECATE -->
         <div class="cap-sidebar-footer">
           <div class="cap-partner-logo cap-logo-ufg" title="Universidade Federal de Goiás">
-            <svg viewBox="0 0 120 38" class="cap-ufg-svg" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="14" r="7" fill="#0066b2"/>
-              <circle cx="26" cy="14" r="7" fill="#0099cc"/>
-              <circle cx="21" cy="24" r="7" fill="#005599"/>
-              <text x="44" y="24" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="800" fill="currentColor" letter-spacing="1">UFG</text>
-            </svg>
+            <img src="assets/logos/logo_ufg.jpg" alt="Logo UFG" class="cap-partner-img cap-ufg-img" onerror="this.onerror=null;this.style.display='none'">
           </div>
           <div class="cap-partner-logo cap-logo-cecate" title="CECATE - Centro Colaborador de Apoio ao Transporte Escolar">
-            <svg viewBox="0 0 160 44" class="cap-cecate-svg" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 26 C 18 10, 30 10, 36 26 C 30 34, 18 34, 12 26 Z" fill="#e8890c"/>
-              <path d="M22 16 C 28 8, 42 12, 38 26 C 32 30, 22 26, 22 16 Z" fill="#1d6fa5"/>
-              <text x="46" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="800" fill="currentColor">CECATE</text>
-              <text x="46" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="7" font-weight="600" fill="var(--text-3)">TRANSPORTE ESCOLAR</text>
-            </svg>
+            <img src="assets/logos/logo_cecate.svg" alt="Logo CECATE" class="cap-partner-img cap-cecate-img" onerror="this.onerror=null;this.style.display='none'">
           </div>
         </div>
       </aside>
@@ -7168,8 +7175,8 @@ window.onerror = function(msg, url, line, col, err) {
     <div class="smb-sec">
       <div class="smb-sec-title" data-i18n="settings_info_title">Informações da Versão</div>
       <div style="font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:4px;margin-top:6px">
-        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.0.3</b></div>
-        <div><span data-i18n="settings_updated">Última Atualização:</span> <b class="pnite-date-val">06/10/2026</b> às <b class="pnite-time-val">20:55</b></div>
+        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.0.4</b></div>
+        <div><span data-i18n="settings_updated">Última Atualização:</span> <b class="pnite-date-val">06/10/2026</b> às <b class="pnite-time-val">21:05</b></div>
         <div><span data-i18n="settings_author">Responsável Técnico:</span> <b class="pnite-author-val">Equipe PNITE</b></div>
       </div>
     </div>
@@ -7208,9 +7215,9 @@ window.onerror = function(msg, url, line, col, err) {
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.3.0.3";
+const PNITE_VERSION = "v.3.0.4";
 const PNITE_LAST_UPDATE = "06/10/2026";
-const PNITE_LAST_TIME = "20:55";
+const PNITE_LAST_TIME = "21:05";
 
 // Escapa texto para inserção segura via innerHTML (entradas do usuário, nomes de arquivo)
 function escHtml(s) {
@@ -14067,12 +14074,13 @@ function processarUploadExcel(event) {
       </div>
     </div>
     <div class="pif-body">
-      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.0.3</strong></div>
+      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.0.4</strong></div>
       <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">06/10/2026</span></div>
-      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">20:55</span></div>
+      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">21:05</span></div>
       <div class="pif-row"><span>Responsável técnico:</span><span class="pnite-author-val">Equipe PNITE</span></div>
       <div class="pif-note">
         <i class="ti ti-check" style="color:var(--accent);margin-right:3px"></i>
+        <strong>Atualização das logomarcas institucionais (v.3.0.4):</strong> integração dos arquivos oficiais <code>assets/logos/logo_ufg.jpg</code> e <code>assets/logos/logo_cecate.svg</code> no rodapé da navegação lateral da Capacitação, com estilização responsiva e suporte refinado aos modos claro e escuro.<br>
         <strong>Documentos de convocação das capacitações (v.3.0.3):</strong> inclusão e padronização dos documentos oficiais de convocação e municípios convidados dos polos 12º ao 16º CTE (12CTE a 16CTE) na base de dados de Capacitação.<br>
         <strong>Organização de assets e projeto (v.3.0.2):</strong> centralização das logomarcas e imagens na pasta <code>assets/logos/</code> e <code>assets/img/</code>, inclusão de vetores SVG, documentação em <code>README.md</code> e realocação de utilitários em <code>scripts/</code>.<br>
         <strong>Organização de bases de dados (v.3.0.1):</strong> reorganização da pasta <code>data/</code> em três diretórios temáticos (<code>Transporte Escolar/</code>, <code>Capacitação/</code> e <code>Gestão/</code>) e atualização das origens de carregamento dos dados.<br>
@@ -14086,7 +14094,7 @@ function processarUploadExcel(event) {
   </div>
   <button class="pif-btn" id="pifBtn" aria-label="Informações de Versão">
     <i class="ti ti-info-circle"></i>
-    <span class="pif-btn-label pnite-version-val">v.3.0.3</span>
+    <span class="pif-btn-label pnite-version-val">v.3.0.4</span>
   </button>
 </div>
 

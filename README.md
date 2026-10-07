@@ -52,7 +52,7 @@ pnite/
 │   │   ├── logo_pnite_color.png
 │   │   ├── logo_pnite_white.png
 │   │   ├── logo_pnite_original.png
-│   │   ├── logo_ufg.svg
+│   │   ├── logo_ufg.jpg
 │   │   └── logo_cecate.svg
 │   └── img/                   # Ilustrações e fotografias de frotas
 │       └── escolar_sao_goncalo.png
