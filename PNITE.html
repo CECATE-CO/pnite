@@ -5085,6 +5085,42 @@ body {
   stroke: var(--accent);
   stroke-width: 2.2px;
 }
+/* v.3.0.9 — traçado das rotas do município selecionado (camada #mapaRotasLayer) */
+.mapa-rota, .mapa-rota-halo {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mapa-rota-halo { stroke: var(--bg-card); stroke-width: 5px; opacity: .85; pointer-events: none; }
+.mapa-rota { stroke-width: 2.2px; cursor: help; transition: stroke-width .15s ease; }
+.mapa-rota-t1, .mapa-rota-t0 { stroke: #111827; }   /* rodoviária / não informada (contraste com qualquer rampa do coroplético) */
+.mapa-rota-t2 { stroke: #0e7490; }                  /* aquaviária */
+.mapa-rota-t3 { stroke: #b45309; }                  /* mista */
+[data-theme="dark"] .mapa-rota-t1, [data-theme="dark"] .mapa-rota-t0 { stroke: #e0e7ff; }
+[data-theme="dark"] .mapa-rota-t2 { stroke: #22d3ee; }
+[data-theme="dark"] .mapa-rota-t3 { stroke: #fbbf24; }
+.mapa-rota:hover { stroke: var(--accent); stroke-width: 4px; }
+.mapa-rotas-info {
+  position: absolute; top: 10px; left: 10px; right: 10px; z-index: 15;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+  max-width: 560px; padding: 6px 6px 6px 12px; border-radius: 10px;
+  background: var(--bg-card); color: var(--text-1); border: 1px solid var(--border-mid, var(--border));
+  box-shadow: var(--shadow); font-size: 12px; line-height: 1.4;
+}
+.mapa-rotas-info[hidden] { display: none; }
+.mapa-rotas-info.erro { border-left: 4px solid var(--c-rose, #c0392b); }
+.mapa-rotas-info.carregando .ti-loader { display: inline-block; animation: pniteGiro 1s linear infinite; }
+@keyframes pniteGiro { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .mapa-rotas-info.carregando .ti-loader { animation: none; } }
+.mapa-rotas-info-texto { min-width: 0; overflow-wrap: anywhere; }
+.mapa-rotas-voltar {
+  flex: none; min-height: 44px; padding: 0 12px; display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--border-mid, var(--border)); border-radius: 8px; background: transparent;
+  color: var(--text-1); font: inherit; font-weight: 600; cursor: pointer;
+}
+.mapa-rotas-voltar:hover { background: var(--bg-input, rgba(0,0,0,.05)); }
+.mapa-rotas-voltar:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Card de Comparacao Territorial */
 .map-comparison-card .mc-header {
@@ -7665,7 +7701,7 @@ window.onerror = function(msg, url, line, col, err) {
     <div class="smb-sec">
       <div class="smb-sec-title" data-i18n="settings_info_title">Informações da Versão</div>
       <div style="font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:4px;margin-top:6px">
-        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.0.8</b></div>
+        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.0.9</b></div>
         <div><span data-i18n="settings_updated">Última Atualização:</span> <b class="pnite-date-val">06/10/2026</b> às <b class="pnite-time-val">21:05</b></div>
         <div><span data-i18n="settings_author">Responsável Técnico:</span> <b class="pnite-author-val">Equipe PNITE</b></div>
       </div>
@@ -7707,7 +7743,7 @@ window.onerror = function(msg, url, line, col, err) {
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.3.0.8";
+const PNITE_VERSION = "v.3.0.9";
 const PNITE_LAST_UPDATE = "06/10/2026";
 const PNITE_LAST_TIME = "21:29";
 
@@ -8884,7 +8920,13 @@ window.PNITE_API = (function() {
     atualizarEscopo: atualizarEscopo,
     configurado: configurado,
     municipio: function(cod) { return municipios.get(parseInt(cod, 10)); },
-    ufsCarregadas: function() { return ufsCarregadas.slice(); }
+    ufsCarregadas: function() { return ufsCarregadas.slice(); },
+    // Traçado simplificado das rotas do município (public.rotas_tracado, GeoJSON em EPSG:4326)
+    rotasMunicipio: function(cod, sinal) {
+      if (!configurado()) return Promise.reject(new Error('API não configurada'));
+      return consultar('rotas_tracado', { codigo_cidade: 'eq.' + parseInt(cod, 10),
+        select: 'id_rota,nome,tipo,tipo_label,km,geometria', order: 'id_rota' }, sinal);
+    }
   };
 })();
 
@@ -10982,6 +11024,7 @@ function showMapMunOfflineNotice(ufKey){
 
 function zoomIntoState(ufKey, targetCod){
   if (!ufKey) return;
+  if (typeof mapaLimparRotas === 'function') mapaLimparRotas();   // traçado pertence ao município anterior
   ufKey = ufKey.toUpperCase();
   const ufCode = (typeof UF_IBGE_CODES !== 'undefined') ? UF_IBGE_CODES[ufKey] : null;
 
@@ -11087,6 +11130,7 @@ function zoomIntoState(ufKey, targetCod){
 }
 
 function mapaResetToNacional(){
+  if (typeof mapaLimparRotas === 'function') mapaLimparRotas();
   if (window._zoomAnimId) {
     cancelAnimationFrame(window._zoomAnimId);
     window._zoomAnimId = null;
@@ -11320,7 +11364,7 @@ async function renderMapaMunicipal(ufKey, targetCod){
     const cls = 'mun-path' + (noData ? ' mun-nodata' : '') + (isSel ? ' selected' : '') + (isCap ? ' mun-capital-poly' : '');
 
     const pSvg = '<path class="' + cls + '"' + capStyle + ' d="' + d + '"' + fill + ' data-k="' + cod + '" data-nm="' + m.nome + '"' +
-      ' onmousemove="mapaHover(event,this)" onmouseleave="mapaOut()" onclick="selectMunFromMap(' + cod + ')"></path>';
+      ' onmousemove="mapaHover(event,this)" onmouseleave="mapaOut()" onclick="mapaClicarMunicipio(' + cod + ')"></path>';
 
     if (isCap) {
       capitalPathSvg = pSvg;
@@ -11769,6 +11813,154 @@ function selectMunFromMap(cod){
 
 function selectMunFromComparison(cod){
   selectMunFromMap(cod);
+}
+
+// ================================================================
+// PNITE v.3.0.9 — ZOOM NO MUNICÍPIO E TRAÇADO DAS ROTAS (MAPA DOS INDICADORES)
+// ----------------------------------------------------------------
+// Clique em um município do mapa: destaca, aproxima a câmera (viewBox) até o
+// contorno do município e baixa da API o traçado das rotas (public.rotas_tracado).
+// O SETE grava o shape em Web Mercator (EPSG:3857); o banco converte para
+// longitude/latitude (EPSG:4326) e simplifica (~10 m), então aqui basta a mesma
+// projeção do mapa (mapaProject). As rotas ficam na camada #mapaRotasLayer.
+// ================================================================
+let _mapaRotasControle = null;
+
+function mapaClicarMunicipio(cod){
+  selectMunFromMap(cod);
+  mapaFocarMunicipio(cod);
+}
+
+function mapaFocarMunicipio(cod){
+  const svg = document.querySelector('#mapaSvgWrap svg');
+  const path = document.querySelector('#mapaMunLayer path[data-k="' + cod + '"]');
+  if (!svg || !path) return;
+  const bb = path.getBBox();
+  if (!bb || !bb.width || !bb.height) return;
+  const ASPECT = 760 / 678.2;
+  const folga = Math.max(bb.width, bb.height) * 0.12;
+  let w = Math.max(bb.width + 2 * folga, 4), h = bb.height + 2 * folga;
+  if (w / h < ASPECT) w = h * ASPECT; else h = w / ASPECT;
+  const cx = bb.x + bb.width / 2, cy = bb.y + bb.height / 2;
+  animateViewBox(svg, currentViewBox, { x: cx - w / 2, y: cy - h / 2, w: w, h: h }, 750);
+  mapaCarregarRotas(cod);
+}
+
+function mapaCamadaRotas(){
+  const svg = document.querySelector('#mapaSvgWrap svg');
+  if (!svg) return null;
+  let g = document.getElementById('mapaRotasLayer');
+  if (!g) {
+    g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('id', 'mapaRotasLayer');
+    svg.appendChild(g);
+  }
+  return g;
+}
+
+function mapaLimparRotas(){
+  if (_mapaRotasControle) { _mapaRotasControle.abort(); _mapaRotasControle = null; }
+  const g = document.getElementById('mapaRotasLayer');
+  if (g) g.innerHTML = '';
+  const info = document.getElementById('mapaRotasInfo');
+  if (info) info.hidden = true;
+}
+
+// Selo de estado das rotas no canto do mapa (carregando / total / sem dados / erro) + voltar à UF
+function mapaRotasInfo(tipo, texto){
+  const wrap = document.getElementById('mapaSvgWrap');
+  if (!wrap) return;
+  let el = document.getElementById('mapaRotasInfo');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'mapaRotasInfo';
+    el.className = 'mapa-rotas-info';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    wrap.appendChild(el);
+  }
+  const icone = tipo === 'carregando' ? 'ti-loader' : (tipo === 'erro' ? 'ti-alert-triangle' : 'ti-route');
+  el.className = 'mapa-rotas-info ' + tipo;
+  el.innerHTML = '<span class="mapa-rotas-info-texto"><i class="ti ' + icone + '" aria-hidden="true"></i> ' + texto + '</span>'
+    + '<button type="button" class="mapa-rotas-voltar" onclick="mapaVoltarUf()" aria-label="Voltar à visão da UF inteira">'
+    + '<i class="ti ti-zoom-out" aria-hidden="true"></i> Ver UF</button>';
+  el.hidden = false;
+}
+
+async function mapaCarregarRotas(cod){
+  const camada = mapaCamadaRotas();
+  if (!camada) return;
+  if (_mapaRotasControle) _mapaRotasControle.abort();
+  const ctl = _mapaRotasControle = new AbortController();
+  camada.innerHTML = '';
+  const nomeMun = (typeof BRAZIL_MUN_NAMES !== 'undefined' && BRAZIL_MUN_NAMES[String(cod)]) ? BRAZIL_MUN_NAMES[String(cod)] : ('Município ' + cod);
+  mapaRotasInfo('carregando', 'Carregando rotas de ' + escHtml(nomeMun) + '…');
+  try {
+    if (!window.PNITE_API) throw new Error('API indisponível');
+    const linhas = await PNITE_API.rotasMunicipio(cod, ctl.signal);
+    if (ctl !== _mapaRotasControle) return;            // outro município foi selecionado
+    const proj = mapaProject();
+    let halo = '', rotas = '', semTracado = 0;
+    linhas.forEach(function(r){
+      const g = r.geometria;
+      const partes = !g ? [] : (g.type === 'LineString' ? [g.coordinates] : (g.type === 'MultiLineString' ? g.coordinates : []));
+      let d = '';
+      partes.forEach(function(linha){
+        linha.forEach(function(pt, i){
+          const xy = proj.p(pt[0], pt[1]);
+          d += (i === 0 ? 'M' : 'L') + xy[0].toFixed(4) + ' ' + xy[1].toFixed(4);   // 4 casas: ~6 m na escala do mapa
+        });
+      });
+      if (!d) { semTracado++; return; }
+      const tipo = [1, 2, 3].includes(r.tipo) ? r.tipo : 0;
+      halo += d;
+      rotas += '<path class="mapa-rota mapa-rota-t' + tipo + '" d="' + d + '"'
+        + ' data-nome="' + escHtml(r.nome || ('Rota ' + r.id_rota)) + '"'
+        + ' data-tipo="' + escHtml(r.tipo_label || 'Tipo não informado') + '"'
+        + ' data-km="' + (r.km === null || r.km === undefined ? '' : escHtml(r.km)) + '"'
+        + ' onmousemove="mapaHoverRota(event,this)" onmouseleave="mapaOut()"></path>';
+    });
+    // Um único contorno (halo) sob as rotas garante contraste sobre qualquer cor do mapa coroplético
+    camada.innerHTML = (halo ? '<path class="mapa-rota-halo" d="' + halo + '"></path>' : '') + rotas;
+    const total = linhas.length - semTracado;
+    if (total > 0) {
+      mapaRotasInfo('ok', '<b>' + total + '</b> rota' + (total > 1 ? 's' : '') + ' georreferenciada' + (total > 1 ? 's' : '')
+        + ' em ' + escHtml(nomeMun) + (semTracado ? ' · ' + semTracado + ' sem traçado válido' : ''));
+    } else {
+      mapaRotasInfo('vazio', 'Nenhuma rota georreferenciada na API para ' + escHtml(nomeMun));
+    }
+  } catch (e) {
+    if (ctl !== _mapaRotasControle) return;
+    console.error('PNITE — falha ao carregar o traçado das rotas', cod, e);
+    mapaRotasInfo('erro', 'Não foi possível carregar as rotas de ' + escHtml(nomeMun));
+  }
+}
+
+function mapaHoverRota(ev, el){
+  const tt = document.getElementById('mapTooltip');
+  const wrap = document.getElementById('mapaSvgWrap');
+  if (!tt || !wrap) return;
+  const km = el.getAttribute('data-km');
+  const kmTxt = km ? Number(km).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' km' : 'não informada';
+  // Atributos já estão escapados; getAttribute devolve o texto original, então escapa de novo
+  tt.innerHTML = '<div class="tt-uf">' + escHtml(el.getAttribute('data-nome')) + '</div>'
+    + '<div class="tt-sub"><b>Tipo:</b> ' + escHtml(el.getAttribute('data-tipo')) + '</div>'
+    + '<div class="tt-sub"><b>Extensão cadastrada:</b> ' + escHtml(kmTxt) + '</div>';
+  const r = wrap.getBoundingClientRect();
+  let x = ev.clientX - r.left + 14, y = ev.clientY - r.top + 10;
+  if (x > r.width - 210) x -= 225;
+  tt.style.left = x + 'px';
+  tt.style.top = y + 'px';
+  tt.style.display = 'block';
+}
+
+function mapaVoltarUf(){
+  mapaLimparRotas();
+  const svg = document.querySelector('#mapaSvgWrap svg');
+  const uf = (typeof currentMapUf === 'string' && currentMapUf) ? currentMapUf.toUpperCase() : null;
+  if (svg && uf && typeof UF_VIEWBOXES !== 'undefined' && UF_VIEWBOXES[uf]) {
+    animateViewBox(svg, currentViewBox, UF_VIEWBOXES[uf], 650);
+  }
 }
 
 function mapaHover(ev, el){
@@ -15377,12 +15569,13 @@ function processarUploadExcel(event) {
       </div>
     </div>
     <div class="pif-body">
-      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.0.8</strong></div>
+      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.0.9</strong></div>
       <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">08/10/2026</span></div>
-      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">16:49</span></div>
+      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">17:08</span></div>
       <div class="pif-row"><span>Responsável técnico:</span><span class="pnite-author-val">Equipe PNITE</span></div>
       <div class="pif-note">
         <i class="ti ti-check" style="color:var(--accent);margin-right:3px"></i>
+        <strong>Rotas no mapa (v.3.0.9):</strong> ao clicar em um município no Mapa dos Indicadores, o mapa aproxima até o município e plota o traçado de todas as rotas, lido da API (<code>rotas_tracado</code>: shapes do SETE convertidos de Web Mercator para longitude/latitude e simplificados no banco), com nome, tipo e extensão no tooltip e botão para voltar à UF.<br>
         <strong>Indicadores via API (v.3.0.8):</strong> a plataforma deixa de carregar o pacote compilado e passa a consultar a API do Supabase: Brasil, regiões e UFs na abertura e o escopo selecionado a cada troca de território (inclusive municípios). Base atual em carga piloto (Goiás), sinalizada na interface; configuração pública em <code>config.local.js</code>, gerado do <code>.env</code> por <code>scripts/gerar_config_web.py</code>.<br>
         <strong>Indicadores por nível no Supabase (v.3.0.7):</strong> os indicadores passam a ser calculados em quatro views materializadas em cascata (<code>indicadores_municipio</code> → <code>_estado</code> → <code>_regiao</code> → <code>_nacional</code>), com contadores em colunas consultáveis pela API; a view <code>indicadores</code> mantém a interface única. Valores idênticos à versão anterior.<br>
         <strong>Base de dados no Supabase (v.3.0.6):</strong> estrutura relacional dos dados brutos do SETE (ano de carga 2026) e do Censo Escolar (2025) no Supabase, com views de leitura limpa, agregações municipais e a view pública <code>indicadores</code> (por escopo, somente agregados) consultável via API; carga piloto de GO validada contra o pacote compilado. A plataforma continua lendo o pacote local até a migração do front-end.<br>
@@ -15401,7 +15594,7 @@ function processarUploadExcel(event) {
   </div>
   <button class="pif-btn" id="pifBtn" aria-label="Informações de Versão">
     <i class="ti ti-info-circle"></i>
-    <span class="pif-btn-label pnite-version-val">v.3.0.8</span>
+    <span class="pif-btn-label pnite-version-val">v.3.0.9</span>
   </button>
 </div>
 

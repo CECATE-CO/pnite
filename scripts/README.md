@@ -56,6 +56,7 @@ Camadas (definidas em `supabase/migrations/`):
 | `ref` | UFs, municípios IBGE, pareamento de cargas, valores de referência legados | não exposto |
 | `analise` | views de leitura limpa (`v_alunos`, `v_rotas`, ...) e agregações municipais | não exposto |
 | `public` | `indicadores_municipio` → `indicadores_estado` → `indicadores_regiao` → `indicadores_nacional` (views materializadas em cascata: cada nível soma o anterior) e `indicadores` (união dos quatro, interface por `nivel`/`chave`) | leitura (`anon`) |
+| `public` | `rotas_tracado`: traçado das rotas por município, convertido de Web Mercator (EPSG:3857) para longitude/latitude (EPSG:4326) e simplificado (~10 m) com PostGIS | leitura (`anon`) |
 
 Os dados brutos contêm dados pessoais (CPF, placa, coordenadas de alunos) e nunca são expostos; a chave publishable lê apenas `public.indicadores`.
 
