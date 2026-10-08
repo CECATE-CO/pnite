@@ -23,9 +23,14 @@ A PNITE é uma aplicação web de alta performance projetada para execução dir
    ```bash
    git clone https://github.com/mathmorato/pnite.git
    ```
-2. Abra o arquivo principal no navegador:
+2. Gere a configuração pública da API (URL e chave publishable do Supabase) a partir do `.env` (modelo em `.env.example`):
+   ```bash
+   python scripts/gerar_config_web.py      # cria config.local.js (fora do Git)
+   ```
+   Desde a v.3.0.8 os indicadores do Transporte Escolar são lidos da API do Supabase; sem o `config.local.js` a plataforma exibe um aviso de configuração ausente.
+3. Abra o arquivo principal no navegador:
    - Dê um duplo-clique em `PNITE.html`, ou
-   - Inicie um servidor local se preferir:
+   - Inicie um servidor local se preferir (nunca a partir de uma pasta que exponha o `.env`):
      ```bash
      npx serve .
      # ou
@@ -123,9 +128,9 @@ O script recalcula os totais nacionais, agregações regionais/estaduais e atual
 
 Ao abrir o `PNITE.html`, os dados atualizados são refletidos imediatamente.
 
-### Base de dados no Supabase (em migração)
+### Base de dados no Supabase
 
-Os dados brutos do SETE e do Censo Escolar estão sendo migrados para o Supabase, com os indicadores calculados no banco e servidos por escopo via API (`/rest/v1/indicadores`). Estrutura, carga e validação estão descritas em [`scripts/README.md`](scripts/README.md#base-de-dados-no-supabase). As credenciais ficam no `.env` (modelo em `.env.example`), que nunca deve ser versionado nem servido pelo navegador.
+Os dados brutos do SETE e do Censo Escolar ficam no Supabase, com os indicadores calculados no banco e servidos por escopo via API (`/rest/v1/indicadores_{nacional,regiao,estado,municipio}`). A plataforma consulta a API na abertura (Brasil, regiões e UFs) e a cada troca de território. Base atual em carga piloto (Goiás). Estrutura, carga e validação estão descritas em [`scripts/README.md`](scripts/README.md#base-de-dados-no-supabase). As credenciais ficam no `.env` (modelo em `.env.example`), que nunca deve ser versionado nem servido pelo navegador.
 
 ---
 

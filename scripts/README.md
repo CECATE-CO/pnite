@@ -18,6 +18,9 @@ Conjunto de scripts Python e Node.js para processamento, extração, agregação
 - **`scripts/validar_paridade.py`**:
   Compara a API (`/rest/v1/indicadores`, chave publishable) com o pacote compilado `pnite_dados_consolidados.json`, campo a campo, por escopo.
 
+- **`scripts/gerar_config_web.py`**:
+  Gera `config.local.js` (fora do Git) a partir do `.env`, copiando **somente** valores públicos: `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` e `ANO_CARGA_SETE`. É lido pelo `PNITE.html` para consultar a API.
+
 - **`scripts/supabase_api.py`**:
   Cliente mínimo da API do Supabase usado pelos scripts acima (lê `SUPABASE_URL` e `SUPABASE_SECRET_KEY` do `.env`).
 
