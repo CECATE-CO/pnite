@@ -130,7 +130,7 @@ Ao abrir o `PNITE.html`, os dados atualizados são refletidos imediatamente.
 
 ### Base de dados no Supabase
 
-Os dados brutos do SETE e do Censo Escolar ficam no Supabase, com os indicadores calculados no banco e servidos por escopo via API (`/rest/v1/indicadores_{nacional,regiao,estado,municipio}`). A plataforma consulta a API na abertura (Brasil, regiões e UFs) e a cada troca de território. Base atual em carga piloto (Goiás). Estrutura, carga e validação estão descritas em [`scripts/README.md`](scripts/README.md#base-de-dados-no-supabase). As credenciais ficam no `.env` (modelo em `.env.example`), que nunca deve ser versionado nem servido pelo navegador.
+Os dados brutos do SETE e do Censo Escolar ficam no Supabase, com os indicadores calculados no banco e servidos por escopo via API (`/rest/v1/indicadores_{nacional,regiao,estado,municipio}`). A plataforma consulta a API na abertura (Brasil, regiões e UFs) e a cada troca de território. Base nacional completa: SETE (ano de carga 2026) e Censo Escolar (2025) das 27 UFs. Estrutura, carga e validação estão descritas em [`scripts/README.md`](scripts/README.md#base-de-dados-no-supabase). As credenciais ficam no `.env` (modelo em `.env.example`), que nunca deve ser versionado nem servido pelo navegador.
 
 ---
 

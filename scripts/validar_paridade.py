@@ -44,12 +44,19 @@ MAPA_MUNICIPAL = {
 }
 
 
-def buscar(params):
+def buscar(params, pagina=1000):
+    """Lê todas as linhas, paginando: o PostgREST do servidor limita cada resposta a 1000 linhas."""
     url = os.environ["SUPABASE_URL"].rstrip("/") + "/rest/v1/indicadores"
     chave = os.environ["SUPABASE_PUBLISHABLE_KEY"]
-    resp = requests.get(url, params=params, headers={"apikey": chave}, timeout=60)
-    resp.raise_for_status()
-    return resp.json()
+    linhas = []
+    while True:
+        resp = requests.get(url, params={**params, "order": "nivel,chave", "limit": pagina, "offset": len(linhas)},
+                            headers={"apikey": chave}, timeout=60)
+        resp.raise_for_status()
+        lote = resp.json()
+        linhas += lote
+        if len(lote) < pagina:
+            return linhas
 
 
 def igual(a, b):
