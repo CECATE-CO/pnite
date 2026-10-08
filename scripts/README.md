@@ -52,7 +52,7 @@ Camadas (definidas em `supabase/migrations/`):
 | `censo` | microdados do Censo Escolar (`matricula`) | não exposto |
 | `ref` | UFs, municípios IBGE, pareamento de cargas, valores de referência legados | não exposto |
 | `analise` | views de leitura limpa (`v_alunos`, `v_rotas`, ...) e agregações municipais | não exposto |
-| `public` | `indicadores`: indicadores e contadores agregados por escopo | leitura (`anon`) |
+| `public` | `indicadores_municipio` → `indicadores_estado` → `indicadores_regiao` → `indicadores_nacional` (views materializadas em cascata: cada nível soma o anterior) e `indicadores` (união dos quatro, interface por `nivel`/`chave`) | leitura (`anon`) |
 
 Os dados brutos contêm dados pessoais (CPF, placa, coordenadas de alunos) e nunca são expostos; a chave publishable lê apenas `public.indicadores`.
 
@@ -68,6 +68,10 @@ python scripts/validar_paridade.py
 
 Consulta pela API:
 ```
+GET {SUPABASE_URL}/rest/v1/indicadores_estado?ano_carga=eq.2026&uf=eq.go
+GET {SUPABASE_URL}/rest/v1/indicadores_municipio?ano_carga=eq.2026&uf=eq.go&select=label,georref,indicadores&order=georref.desc
+GET {SUPABASE_URL}/rest/v1/indicadores_regiao?ano_carga=eq.2026&regiao=eq.centro-oeste
+GET {SUPABASE_URL}/rest/v1/indicadores_nacional?ano_carga=eq.2026
 GET {SUPABASE_URL}/rest/v1/indicadores?ano_carga=eq.2026&nivel=eq.estado&chave=eq.go
 GET {SUPABASE_URL}/rest/v1/indicadores?ano_carga=eq.2026&nivel=eq.municipio&uf=eq.go&select=chave,label,indicadores
 Cabeçalho: apikey: {SUPABASE_PUBLISHABLE_KEY}
