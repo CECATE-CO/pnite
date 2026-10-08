@@ -56,7 +56,8 @@ DICIONARIO = PASTA_DADOS / "dicionario.docx"
 ARQ_CENSO = "Micro_Dados_Censo_Tabela_Matricula_2025_V2.csv"
 ARQ_MUNICIPIOS = "Lista de Municipios IBGE.csv"
 PASTA_MIGRACOES = RAIZ / "supabase" / "migrations"
-CHECKPOINT = RAIZ / "scripts" / ".checkpoint_carga.json"
+# Um checkpoint por tabela: permite cargas paralelas (ex.: rotas num processo, o resto em outro)
+PASTA_CHECKPOINT = RAIZ / "scripts" / ".checkpoint_carga"
 
 ANO_SETE = int(os.getenv("ANO_CARGA_SETE", "2026"))
 ANO_CENSO = int(os.getenv("ANO_CARGA_CENSO", "2025"))
@@ -390,15 +391,24 @@ def tem_shape(v):
 # Carga
 # ---------------------------------------------------------------------------
 
-def ler_checkpoint():
+def arquivo_checkpoint(chave):
+    return PASTA_CHECKPOINT / (re.sub(r"[^\w.-]", "_", chave) + ".json")
+
+
+def ler_checkpoint(chave):
     try:
-        return json.loads(CHECKPOINT.read_text(encoding="utf-8"))
+        return json.loads(arquivo_checkpoint(chave).read_text(encoding="utf-8")).get("linhas", 0)
     except (OSError, ValueError):
-        return {}
+        return 0
 
 
-def gravar_checkpoint(dados):
-    CHECKPOINT.write_text(json.dumps(dados, indent=1), encoding="utf-8")
+def gravar_checkpoint(chave, linhas):
+    PASTA_CHECKPOINT.mkdir(exist_ok=True)
+    arquivo_checkpoint(chave).write_text(json.dumps({"tabela": chave, "linhas": linhas}), encoding="utf-8")
+
+
+def limpar_checkpoint(chave):
+    arquivo_checkpoint(chave).unlink(missing_ok=True)
 
 
 def sql_insert(tabela, colunas, linhas, substituir=None):
@@ -466,8 +476,7 @@ def carregar_tabela(schema, nome, cfg, ano, args):
                  ("id_rota", "integer"), ("shape", "text")]
 
     chave_ck = f"{tabela}|{ano}|{args.uf or '*'}"
-    checkpoint = ler_checkpoint()
-    pular = checkpoint.get(chave_ck, 0) if args.retomar else 0
+    pular = ler_checkpoint(chave_ck) if args.retomar else 0
 
     filtro = f"ano_carga = {ano}" + (f" AND lower({coluna_uf}) = {sql_literal(args.uf)}" if args.uf else "")
     if not pular:
@@ -489,8 +498,7 @@ def carregar_tabela(schema, nome, cfg, ano, args):
         enviar_linhas(tabela, colunas, lote)
         enviar_linhas("sete.rota_shape", col_shape, lote_shape)
         enviadas += len(lote)
-        checkpoint[chave_ck] = pular + enviadas
-        gravar_checkpoint(checkpoint)
+        gravar_checkpoint(chave_ck, pular + enviadas)
         lote, lote_shape, bytes_lote = [], [], 0
         taxa = enviadas / max(time.time() - inicio, 1e-6)
         print(f"    ... {pular + enviadas:,} linhas ({taxa:,.0f}/s)", flush=True)
@@ -548,8 +556,7 @@ def carregar_tabela(schema, nome, cfg, ano, args):
         print(f"    [NULL] linha {linha}, {coluna} = {valor!r} (valor inválido para o tipo)")
     if len(invalidos) > 20:
         print(f"    ... e mais {len(invalidos) - 20} valores inválidos convertidos em NULL")
-    checkpoint.pop(chave_ck, None)
-    gravar_checkpoint(checkpoint)
+    limpar_checkpoint(chave_ck)
     return no_banco == lidas
 
 
