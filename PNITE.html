@@ -7643,7 +7643,7 @@ window.onerror = function(msg, url, line, col, err) {
     <div class="smb-sec">
       <div class="smb-sec-title" data-i18n="settings_info_title">Informações da Versão</div>
       <div style="font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:4px;margin-top:6px">
-        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.0.5</b></div>
+        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.0.6</b></div>
         <div><span data-i18n="settings_updated">Última Atualização:</span> <b class="pnite-date-val">06/10/2026</b> às <b class="pnite-time-val">21:05</b></div>
         <div><span data-i18n="settings_author">Responsável Técnico:</span> <b class="pnite-author-val">Equipe PNITE</b></div>
       </div>
@@ -7684,7 +7684,7 @@ window.onerror = function(msg, url, line, col, err) {
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.3.0.5";
+const PNITE_VERSION = "v.3.0.6";
 const PNITE_LAST_UPDATE = "06/10/2026";
 const PNITE_LAST_TIME = "21:29";
 
@@ -15110,12 +15110,13 @@ function processarUploadExcel(event) {
       </div>
     </div>
     <div class="pif-body">
-      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.0.5</strong></div>
-      <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">06/10/2026</span></div>
-      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">21:05</span></div>
+      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.0.6</strong></div>
+      <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">08/10/2026</span></div>
+      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">16:15</span></div>
       <div class="pif-row"><span>Responsável técnico:</span><span class="pnite-author-val">Equipe PNITE</span></div>
       <div class="pif-note">
         <i class="ti ti-check" style="color:var(--accent);margin-right:3px"></i>
+        <strong>Base de dados no Supabase (v.3.0.6):</strong> estrutura relacional dos dados brutos do SETE (ano de carga 2026) e do Censo Escolar (2025) no Supabase, com views de leitura limpa, agregações municipais e a view pública <code>indicadores</code> (por escopo, somente agregados) consultável via API; carga piloto de GO validada contra o pacote compilado. A plataforma continua lendo o pacote local até a migração do front-end.<br>
         <strong>Indicadores da Capacitação com dados reais (v.3.0.5):</strong> extração dos arquivos das capacitações 5ª a 16ª (convocações, inscrições, presença e avaliações) e do legado das capacitações 1ª a 4ª por <code>scripts/extrair_capacitacao.py</code>, em base normalizada sem dados pessoais e esquema SQL de referência; implementação das páginas Capacitações, Unidades da Federação, Avaliação e Estatísticas (1ª a 5ª e 6ª a 16ª) e atualização da Home com dados reais.<br>
         <strong>Atualização das logomarcas institucionais (v.3.0.4):</strong> integração dos arquivos oficiais <code>assets/logos/logo_ufg.jpg</code> e <code>assets/logos/logo_cecate.svg</code> no rodapé da navegação lateral da Capacitação, com estilização responsiva e suporte refinado aos modos claro e escuro.<br>
         <strong>Documentos de convocação das capacitações (v.3.0.3):</strong> inclusão e padronização dos documentos oficiais de convocação e municípios convidados dos polos 12º ao 16º CTE (12CTE a 16CTE) na base de dados de Capacitação.<br>
@@ -15131,7 +15132,7 @@ function processarUploadExcel(event) {
   </div>
   <button class="pif-btn" id="pifBtn" aria-label="Informações de Versão">
     <i class="ti ti-info-circle"></i>
-    <span class="pif-btn-label pnite-version-val">v.3.0.5</span>
+    <span class="pif-btn-label pnite-version-val">v.3.0.6</span>
   </button>
 </div>
 

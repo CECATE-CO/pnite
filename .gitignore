@@ -4,3 +4,5 @@ __pycache__/
 ~$*
 *.tmp
 .env
+scripts/.checkpoint_carga.json
+config.local.js

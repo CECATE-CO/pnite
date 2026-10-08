@@ -1,33 +1,43 @@
 """
-PNITE — Carga dos dados brutos do SETE no Supabase (PostgreSQL).
+PNITE — Estrutura e carga dos dados brutos (SETE e Censo Escolar) no Supabase via API.
 
-Cria, caso não existam, as tabelas ``dado_bruto_{entidade}`` que replicam a
-estrutura dos arquivos ``data/script_XX_*_consolidado.csv`` (precedidas da
-coluna ``ano_carga``) e carrega os dados via COPY.
+O Postgres do servidor não aceita conexão direta, então tudo trafega por HTTPS no
+endpoint ``/pg/query`` (ver ``scripts/supabase_api.py``), com a chave secreta do ``.env``.
 
-Tipos de coluna seguem o dicionário ``data/dicionario.docx``; quando o arquivo
-estiver disponível, as descrições do dicionário viram COMMENT ON COLUMN.
+Fluxo:
+  1) ``--gerar-ddl``: gera ``supabase/migrations/0003_sete.sql`` e ``0004_censo.sql`` a
+     partir de ``TABELAS``/cabeçalho do Censo (tipos do dicionário; descrições viram COMMENT);
+  2) ``python scripts/supabase_migrar.py``: aplica as migrações pendentes;
+  3) carga, uma tabela por vez: ``--tabelas alunos rotas ...`` (padrão: todas), opcionalmente
+     só uma UF (``--uf go``, usado na carga piloto).
 
 Regras de carga:
-- ``ano_carga`` recebe o valor de ``--ano-carga`` (padrão 2026) em todas as linhas;
-- a carga é idempotente: antes de inserir, remove as linhas do mesmo ano_carga;
-- valores que não podem ser convertidos ao tipo da coluna (ex.: data
-  "20222-09-30", latitude "string") são gravados como NULL e listados no log;
-- rotas: apenas uma amostra é enviada (``--limite-rotas`` linhas e no máximo
-  ``--limite-mb-rotas`` MB), pois a coluna shape (GeoJSON) soma ~1,9 GB;
-- antes de cada tabela, o tamanho estimado é comparado com ``--limite-mb-banco``;
-  tabelas que ultrapassariam o limite são puladas (use ``--forcar`` para ignorar).
+- ``ano_carga`` = ``ANO_CARGA_SETE`` (2026) para o SETE e ``ANO_CARGA_CENSO`` (2025) para o Censo;
+- idempotente: antes de inserir, apaga as linhas do mesmo ano_carga (e da UF, se filtrada);
+- lotes de ``--lote-mb`` MB enviados como JSON (``INSERT ... SELECT FROM json_array_elements``)
+  em requisições de até ~1,9 MB (limite do postgres-meta); valores maiores sobem em partes;
+  um checkpoint permite retomar com ``--retomar``;
+- valores que não podem ser convertidos ao tipo da coluna viram NULL e são listados no log;
+- rotas: o GeoJSON (``shape``, ~1,9 GB) vai para ``sete.rota_shape``; ``sete.rotas`` guarda
+  ``tem_shape`` com a mesma regra do extrair_dados_excel.py (não nulo, não vazio, ≠ 'NULL').
 
-RLS: as tabelas ficam com Row Level Security ativo e apenas o papel
-``authenticated`` pode ler (SELECT) pela API REST.
+Referências (``--tabelas municipios referencia``):
+- municipios: ``Lista de Municipios IBGE.csv`` -> ``ref.municipios``;
+- referencia: RAW_DATA legado + planilhas ``consolidado *.xlsx`` -> ``ref.raw_referencia`` e
+  ``ref.detalhes_scripts`` (requer pandas/openpyxl; reutiliza extrair_dados_excel.py).
 
 Uso:
-    pip install "psycopg[binary]" python-dotenv python-docx
-    python scripts/criar_banco_dados_brutos.py [--tabelas rotas alunos] [--somente-estrutura]
+    pip install requests python-dotenv python-docx pandas openpyxl
+    python scripts/criar_banco_dados_brutos.py --gerar-ddl
+    python scripts/supabase_migrar.py
+    python scripts/criar_banco_dados_brutos.py --tabelas municipios referencia
+    python scripts/criar_banco_dados_brutos.py --uf go            # piloto
+    python scripts/criar_banco_dados_brutos.py                    # carga completa
 """
 
 import argparse
 import csv
+import json
 import os
 import re
 import sys
@@ -35,14 +45,21 @@ import time
 from datetime import date, datetime
 from pathlib import Path
 
-import psycopg
-from psycopg import sql
-from dotenv import load_dotenv
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from supabase_api import LIMITE_CORPO, RAIZ, executar_sql, literal_dolar, tamanho_corpo  # noqa: E402
 
-RAIZ = Path(__file__).resolve().parent.parent
-PASTA_TRANSP = RAIZ / "data" / "Transporte Escolar"
-PASTA_DADOS = PASTA_TRANSP if PASTA_TRANSP.is_dir() else (RAIZ / "data")
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
+PASTA_DADOS = RAIZ / "data" / "Transporte Escolar"
 DICIONARIO = PASTA_DADOS / "dicionario.docx"
+ARQ_CENSO = "Micro_Dados_Censo_Tabela_Matricula_2025_V2.csv"
+ARQ_MUNICIPIOS = "Lista de Municipios IBGE.csv"
+PASTA_MIGRACOES = RAIZ / "supabase" / "migrations"
+CHECKPOINT = RAIZ / "scripts" / ".checkpoint_carga.json"
+
+ANO_SETE = int(os.getenv("ANO_CARGA_SETE", "2026"))
+ANO_CENSO = int(os.getenv("ANO_CARGA_CENSO", "2025"))
 
 csv.field_size_limit(2**31 - 1)
 
@@ -50,8 +67,7 @@ SN = "char(1)"  # variáveis binárias S/N
 CIDADE = [("codigo_cidade", "integer"), ("nome_cidade", "text"), ("uf", "varchar(2)"), ("estado", "text")]
 
 # Ordem das colunas = ordem do cabeçalho de cada CSV (validada na carga).
-# A lista está em ordem crescente de volume para que, se o limite de espaço for
-# atingido, as tabelas menores já estejam carregadas.
+# Ordem crescente de volume: as tabelas menores carregam primeiro.
 TABELAS = {
     "normas": {
         "arquivo": "script_09_normas_consolidado.csv",
@@ -102,7 +118,7 @@ TABELAS = {
         "arquivo": "script_04_veiculos_consolidado.csv",
         "descricao": "Frota (veículos) do transporte escolar cadastrada no SETE.",
         "colunas": [*CIDADE, ("id_veiculo", "integer"), ("placa", "text"), ("ano", "integer"), ("modo", "smallint"),
-                    ("origem", "smallint"), ("km_inicial", "numeric"), ("capacidade", "bigint"),
+                    ("origem", "smallint"), ("km_inicial", "numeric"), ("capacidade", "numeric"),
                     ("km_atual", "numeric"), ("tipo", "smallint"), ("renavam", "text"), ("manutencao", SN),
                     ("marca", "smallint"), ("id_firebase", "text"), ("ipva", "numeric"), ("dpvat", "numeric"),
                     ("seguro_anual", "numeric"), ("consumo", "numeric"), ("tipo_combustivel", SN),
@@ -145,16 +161,6 @@ TABELAS = {
                     ("informacoes_adicionais", "jsonb"), ("nome_unidade_anexa", "text"), ("tipo_unidade", "text")],
         "indices": [("codigo_cidade", "id_escola")],
     },
-    "rotas": {
-        "arquivo": "script_03_rotas_consolidado.csv",
-        "descricao": "Rotas do transporte escolar cadastradas no SETE (carga parcial/amostral).",
-        "colunas": [*CIDADE, ("id_rota", "integer"), ("nome", "text"), ("km", "numeric"), ("da_porteira", SN),
-                    ("da_mataburro", SN), ("da_colchete", SN), ("da_atoleiro", SN), ("da_ponterustica", SN),
-                    ("turno_matutino", SN), ("turno_vespertino", SN), ("turno_noturno", SN), ("shape", "text"),
-                    ("tempo", "numeric"), ("tipo", "smallint"), ("ativo", "smallint")],
-        "indices": [("codigo_cidade", "id_rota")],
-        "amostra": True,
-    },
     "rota_atende_aluno": {
         "arquivo": "script_13_rota_atende_aluno_consolidado.csv",
         "descricao": "Vínculo rota × aluno (chave: codigo_cidade + id_rota / id_aluno).",
@@ -179,112 +185,71 @@ TABELAS = {
                     ("dt_alteracao", "timestamp")],
         "indices": [("codigo_cidade", "id_aluno")],
     },
+    "rotas": {
+        "arquivo": "script_03_rotas_consolidado.csv",
+        "descricao": "Rotas do transporte escolar cadastradas no SETE (o traçado fica em sete.rota_shape).",
+        "colunas": [*CIDADE, ("id_rota", "integer"), ("nome", "text"), ("km", "numeric"), ("da_porteira", SN),
+                    ("da_mataburro", SN), ("da_colchete", SN), ("da_atoleiro", SN), ("da_ponterustica", SN),
+                    ("turno_matutino", SN), ("turno_vespertino", SN), ("turno_noturno", SN), ("shape", "text"),
+                    ("tempo", "numeric"), ("tipo", "smallint"), ("ativo", "smallint")],
+        "indices": [("codigo_cidade", "id_rota")],
+        "shape_separado": True,
+    },
 }
 
 # Seções do dicionário (docx) -> tabela
 SECOES_DICIONARIO = {"Escolas": "escolas", "Alunos": "alunos", "Rotas": "rotas",
                      "Veículos": "veiculos", "Motoristas": "motoristas", "Monitores": "monitores"}
 
-# Fator empírico (tamanho no PostgreSQL ÷ tamanho do CSV), incluindo índices.
-# Medido na carga de 2026: ~1,2 (escolas) a ~2,5 (tabelas de vínculo); usa-se o pior caso.
-FATOR_TAMANHO = 2.5
-
 RE_INT = re.compile(r"^-?\d+(\.0+)?$")
 RE_NUM = re.compile(r"^-?(\d+(\.\d*)?|\.\d+)$")
 LIMITES_INT = {"smallint": 2**15, "integer": 2**31, "bigint": 2**63}
 
 
-def conversor(tipo):
-    """Retorna função valor_csv -> valor_banco (None = NULL; ValueError = valor inválido)."""
-    if tipo in LIMITES_INT:
-        limite = LIMITES_INT[tipo]
+# ---------------------------------------------------------------------------
+# Estrutura
+# ---------------------------------------------------------------------------
 
-        def f(v):
-            if not RE_INT.match(v):
-                raise ValueError
-            n = int(v.split(".")[0])
-            if not -limite <= n < limite:
-                raise ValueError
-            return n
-        return f
-    if tipo in ("numeric", "double precision"):
-        def f(v):
-            if RE_NUM.match(v) or v.lower() == "nan":
-                return v
-            raise ValueError
-        return f
-    if tipo == "timestamp":
-        def f(v):
-            return datetime.fromisoformat(v)  # ValueError para anos > 9999, mês/dia inválidos etc.
-        return f
-    if tipo == "date":
-        def f(v):
-            return date.fromisoformat(v)
-        return f
-    if tipo == SN or tipo.startswith("varchar"):
-        tamanho = 1 if tipo == SN else int(tipo[8:-1])
-
-        def f(v):
-            if len(v) > tamanho:
-                raise ValueError
-            return v
-        return f
-    return lambda v: v  # text / jsonb (jsonb validado pelo próprio PostgreSQL)
+def colunas_banco(cfg):
+    """Colunas efetivamente criadas no banco (rotas: shape sai, tem_shape entra)."""
+    cols = [(c, t) for c, t in cfg["colunas"] if not (cfg.get("shape_separado") and c == "shape")]
+    if cfg.get("shape_separado"):
+        cols.append(("tem_shape", "boolean"))
+    return cols
 
 
-def nome_tabela(entidade):
-    return f"dado_bruto_{entidade}"
+def cabecalho_censo():
+    with open(PASTA_DADOS / ARQ_CENSO, encoding="latin1", newline="") as fh:
+        return next(csv.reader(fh, delimiter=";"))
 
 
-def conectar():
-    load_dotenv(RAIZ / ".env")
-    obrigatorias = ["DATABASE_HOST", "DATABASE_NAME", "DATABASE_USER", "DATABASE_PASSWORD"]
-    faltando = [v for v in obrigatorias if not os.getenv(v)]
-    if faltando:
-        sys.exit(f"Variáveis ausentes no .env: {', '.join(faltando)}")
-    conn = psycopg.connect(
-        host=os.environ["DATABASE_HOST"], dbname=os.environ["DATABASE_NAME"],
-        user=os.environ["DATABASE_USER"], password=os.environ["DATABASE_PASSWORD"],
-        port=int(os.getenv("DATABASE_PORT", "5432")), sslmode="require",
-    )
-    conn.execute("SET statement_timeout = 0")  # COPY de tabelas grandes excede o padrão de 2 min
-    conn.commit()
-    return conn
+def tipo_coluna_censo(nome):
+    if nome.startswith("CO_"):
+        return "bigint"
+    if nome.startswith(("QT_", "IN_", "TP_", "NU_")):
+        return "integer"
+    return "text"
 
 
-def criar_tabela(conn, entidade, cfg, ano_carga):
-    tabela = sql.Identifier(nome_tabela(entidade))
-    colunas = [sql.SQL("ano_carga smallint NOT NULL DEFAULT {}").format(sql.Literal(ano_carga))]
-    colunas += [sql.SQL("{} {}").format(sql.Identifier(c), sql.SQL(t)) for c, t in cfg["colunas"]]
-    with conn.cursor() as cur:
-        cur.execute(sql.SQL("CREATE TABLE IF NOT EXISTS public.{} ({})").format(tabela, sql.SQL(", ").join(colunas)))
-        cur.execute(sql.SQL("COMMENT ON TABLE public.{} IS {}").format(tabela, sql.Literal(
-            f"Dado bruto do SETE — {cfg['descricao']} Fonte: data/{cfg['arquivo']}.")))
-        cur.execute(sql.SQL("COMMENT ON COLUMN public.{}.ano_carga IS {}").format(
-            tabela, sql.Literal("Ano de referência da carga do dado.")))
-        for i, cols in enumerate(cfg["indices"]):
-            cur.execute(sql.SQL("CREATE INDEX IF NOT EXISTS {} ON public.{} (ano_carga, {})").format(
-                sql.Identifier(f"idx_{nome_tabela(entidade)}_{i}"), tabela,
-                sql.SQL(", ").join(map(sql.Identifier, cols))))
-        if any(c == "shape" for c, _ in cfg["colunas"]):
-            cur.execute(sql.SQL("ALTER TABLE public.{} ALTER COLUMN shape SET COMPRESSION lz4").format(tabela))
-        # Acesso via API REST: somente usuários autenticados, somente leitura.
-        cur.execute(sql.SQL("ALTER TABLE public.{} ENABLE ROW LEVEL SECURITY").format(tabela))
-        cur.execute(sql.SQL("REVOKE ALL ON public.{} FROM anon, authenticated").format(tabela))
-        cur.execute(sql.SQL("GRANT SELECT ON public.{} TO authenticated").format(tabela))
-        cur.execute(sql.SQL("DROP POLICY IF EXISTS leitura_autenticada ON public.{}").format(tabela))
-        cur.execute(sql.SQL("CREATE POLICY leitura_autenticada ON public.{} FOR SELECT TO authenticated USING (true)")
-                    .format(tabela))
-    conn.commit()
+def config_censo():
+    cab = cabecalho_censo()
+    return {
+        "arquivo": ARQ_CENSO,
+        "descricao": "Microdados do Censo Escolar (tabela de matrículas por escola).",
+        "colunas": [(c.lower(), tipo_coluna_censo(c)) for c in cab],
+        "indices": [("co_municipio",), ("sg_uf",)],
+        "csv": {"encoding": "latin1", "delimiter": ";"},
+        "coluna_uf": "sg_uf",
+    }
 
 
 def ler_dicionario():
-    """Lê data/dicionario.docx -> {tabela: {coluna: descrição}}. Retorna {} se indisponível."""
+    """Lê data/Transporte Escolar/dicionario.docx -> {tabela: {coluna: descrição}}."""
     try:
         import docx
         from docx.oxml.ns import qn
     except ImportError:
-        print("  [aviso] python-docx não instalado; comentários do dicionário não aplicados.")
+        print("  [aviso] python-docx não instalado; comentários do dicionário não gerados.")
         return {}
     if not DICIONARIO.exists():
         return {}
@@ -306,122 +271,358 @@ def ler_dicionario():
     return resultado
 
 
-def aplicar_comentarios(conn, dicionario):
-    with conn.cursor() as cur:
-        for entidade, descricoes in dicionario.items():
-            colunas = {c for c, _ in TABELAS[entidade]["colunas"]}
-            for coluna, texto in descricoes.items():
-                if coluna in colunas:
-                    cur.execute(sql.SQL("COMMENT ON COLUMN public.{}.{} IS {}").format(
-                        sql.Identifier(nome_tabela(entidade)), sql.Identifier(coluna), sql.Literal(texto)))
-    conn.commit()
+def sql_literal(texto):
+    return "'" + texto.replace("'", "''") + "'"
 
 
-def tamanho_banco_mb(conn):
-    return conn.execute("SELECT pg_database_size(current_database())").fetchone()[0] / 2**20
+def ddl_tabela(schema, nome, cfg, ano_padrao, comentarios=None):
+    tabela = f"{schema}.{nome}"
+    linhas = [f"-- {cfg['descricao']}", f"CREATE TABLE IF NOT EXISTS {tabela} ("]
+    defs = [f"    ano_carga smallint NOT NULL DEFAULT {ano_padrao}"]
+    defs += [f"    {c} {t}" for c, t in colunas_banco(cfg)]
+    linhas.append(",\n".join(defs))
+    linhas.append(");")
+    linhas.append(f"COMMENT ON TABLE {tabela} IS "
+                  f"{sql_literal(cfg['descricao'] + ' Fonte: data/Transporte Escolar/' + cfg['arquivo'] + '.')};")
+    linhas.append(f"COMMENT ON COLUMN {tabela}.ano_carga IS 'Ano de referência da carga do dado.';")
+    for coluna, texto in sorted((comentarios or {}).items()):
+        if coluna in {c for c, _ in colunas_banco(cfg)}:
+            linhas.append(f"COMMENT ON COLUMN {tabela}.{coluna} IS {sql_literal(texto)};")
+    if cfg.get("shape_separado"):
+        linhas.append(f"COMMENT ON COLUMN {tabela}.tem_shape IS "
+                      "'Rota georreferenciada: shape não nulo, não vazio e diferente de NULL (regra do PRGM).';")
+    coluna_uf = cfg.get("coluna_uf", "uf")
+    linhas.append(f"CREATE INDEX IF NOT EXISTS idx_{schema}_{nome}_uf ON {tabela} (ano_carga, {coluna_uf});")
+    for i, cols in enumerate(cfg["indices"]):
+        linhas.append(f"CREATE INDEX IF NOT EXISTS idx_{schema}_{nome}_{i} ON {tabela} (ano_carga, {', '.join(cols)});")
+    return "\n".join(linhas)
 
 
-def carregar_tabela(conn, entidade, cfg, args):
+def gerar_ddl():
+    dicionario = ler_dicionario()
+    partes = ["-- ============================================================================",
+              "-- PNITE — 0003: dados brutos do SETE (gerado por scripts/criar_banco_dados_brutos.py --gerar-ddl)",
+              "-- Colunas = cabeçalho dos CSVs; tipos e descrições = dicionário do SETE.",
+              "-- ============================================================================", ""]
+    for nome, cfg in TABELAS.items():
+        partes += [ddl_tabela("sete", nome, cfg, ANO_SETE, dicionario.get(nome)), ""]
+    partes += [
+        "-- Traçado (GeoJSON) das rotas, separado por volume (~1,9 GB no CSV).",
+        "CREATE TABLE IF NOT EXISTS sete.rota_shape (",
+        f"    ano_carga smallint NOT NULL DEFAULT {ANO_SETE},",
+        "    codigo_cidade integer,",
+        "    uf varchar(2),",
+        "    id_rota integer,",
+        "    shape text",
+        ");",
+        "ALTER TABLE sete.rota_shape ALTER COLUMN shape SET COMPRESSION lz4;",
+        "COMMENT ON TABLE sete.rota_shape IS 'Traçado GeoJSON das rotas do SETE (coluna shape de script_03_rotas).';",
+        "CREATE INDEX IF NOT EXISTS idx_sete_rota_shape_0 ON sete.rota_shape (ano_carga, codigo_cidade, id_rota);",
+        "CREATE INDEX IF NOT EXISTS idx_sete_rota_shape_uf ON sete.rota_shape (ano_carga, uf);",
+        "",
+    ]
+    (PASTA_MIGRACOES / "0003_sete.sql").write_text("\n".join(partes), encoding="utf-8")
+
+    censo = ["-- ============================================================================",
+             "-- PNITE — 0004: microdados do Censo Escolar (gerado por criar_banco_dados_brutos.py --gerar-ddl)",
+             "-- Colunas = cabeçalho do CSV do INEP em minúsculas.",
+             "-- ============================================================================", "",
+             ddl_tabela("censo", "matricula", config_censo(), ANO_CENSO), ""]
+    (PASTA_MIGRACOES / "0004_censo.sql").write_text("\n".join(censo), encoding="utf-8")
+    print("Gerados: supabase/migrations/0003_sete.sql e 0004_censo.sql"
+          + ("" if dicionario else " (sem comentários do dicionário)"))
+
+
+# ---------------------------------------------------------------------------
+# Conversão de valores
+# ---------------------------------------------------------------------------
+
+def conversor(tipo):
+    """Retorna função valor_csv -> texto aceito pelo Postgres (None = NULL; ValueError = inválido)."""
+    if tipo in LIMITES_INT:
+        limite = LIMITES_INT[tipo]
+
+        def f(v):
+            if not RE_INT.match(v):
+                raise ValueError
+            n = int(v.split(".")[0])
+            if not -limite <= n < limite:
+                raise ValueError
+            return str(n)
+        return f
+    if tipo in ("numeric", "double precision"):
+        def f(v):
+            v = v.replace(",", ".")  # mesma regra do extrair_dados_excel.py (km, tempo)
+            if v.lower() == "nan":
+                return None  # NaN é ignorado nas somas do pandas; no banco vira NULL
+            if RE_NUM.match(v):
+                return v
+            raise ValueError
+        return f
+    if tipo == "timestamp":
+        return lambda v: datetime.fromisoformat(v).isoformat(sep=" ")
+    if tipo == "date":
+        return lambda v: date.fromisoformat(v).isoformat()
+    if tipo == "boolean":
+        return lambda v: v
+    if tipo == "jsonb":
+        def f(v):
+            json.loads(v)
+            return v
+        return f
+    if tipo == SN or tipo.startswith("varchar"):
+        tamanho = 1 if tipo == SN else int(tipo[8:-1])
+
+        def f(v):
+            if len(v) > tamanho:
+                raise ValueError
+            return v
+        return f
+    return lambda v: v
+
+
+def tem_shape(v):
+    v = (v or "").strip()
+    return v != "" and v.upper() != "NULL"
+
+
+# ---------------------------------------------------------------------------
+# Carga
+# ---------------------------------------------------------------------------
+
+def ler_checkpoint():
+    try:
+        return json.loads(CHECKPOINT.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def gravar_checkpoint(dados):
+    CHECKPOINT.write_text(json.dumps(dados, indent=1), encoding="utf-8")
+
+
+def sql_insert(tabela, colunas, linhas, substituir=None):
+    """INSERT a partir de um array JSON de arrays (posicional, mais compacto que objetos).
+
+    ``substituir`` = {índice_coluna: expressão SQL} troca a leitura do JSON por outra expressão.
+    """
+    substituir = substituir or {}
+    exprs = ", ".join(substituir.get(i, f"(e->>{i})::{t}") for i, (_, t) in enumerate(colunas))
+    nomes = ", ".join(c for c, _ in colunas)
+    payload = json.dumps(linhas, ensure_ascii=False, separators=(",", ":"))
+    return (f"INSERT INTO {tabela} ({nomes}) SELECT {exprs} "
+            f"FROM json_array_elements({literal_dolar(payload)}::json) AS e;")
+
+
+def enviar_linhas(tabela, colunas, linhas):
+    """Envia as linhas em requisições de até LIMITE_CORPO bytes, dividindo o lote quando preciso."""
+    if not linhas:
+        return
+    sql = sql_insert(tabela, colunas, linhas)
+    if tamanho_corpo(sql) <= LIMITE_CORPO:
+        executar_sql(sql)
+    elif len(linhas) == 1:
+        enviar_linha_grande(tabela, colunas, linhas[0])
+    else:
+        meio = len(linhas) // 2
+        enviar_linhas(tabela, colunas, linhas[:meio])
+        enviar_linhas(tabela, colunas, linhas[meio:])
+
+
+def enviar_linha_grande(tabela, colunas, linha, tamanho_parte=600_000):
+    """Linha maior que o limite (ex.: GeoJSON de rota extensa): o maior valor sobe em partes
+    para pnite_meta.partes_texto e é remontado no banco com string_agg."""
+    idx = max(range(len(linha)), key=lambda i: len(linha[i] or ""))
+    texto = linha[idx]
+    token = os.urandom(8).hex()
+    partes = [texto[i:i + tamanho_parte] for i in range(0, len(texto), tamanho_parte)]
+    for n, parte in enumerate(partes):
+        executar_sql(f"INSERT INTO pnite_meta.partes_texto (token, parte, texto) "
+                     f"VALUES ('{token}', {n}, {literal_dolar(parte)});")
+    tipo = colunas[idx][1]
+    expr = (f"(SELECT string_agg(texto, '' ORDER BY parte) FROM pnite_meta.partes_texto "
+            f"WHERE token = '{token}')::{tipo}")
+    copia = list(linha)
+    copia[idx] = None
+    executar_sql(sql_insert(tabela, colunas, [copia], {idx: expr})
+                 + f" DELETE FROM pnite_meta.partes_texto WHERE token = '{token}';")
+
+
+def carregar_tabela(schema, nome, cfg, ano, args):
     caminho = PASTA_DADOS / cfg["arquivo"]
-    nomes = [c for c, _ in cfg["colunas"]]
+    opcoes_csv = cfg.get("csv", {"encoding": "utf-8-sig", "delimiter": ","})
+    nomes_csv = [c for c, _ in cfg["colunas"]]
     conversores = [conversor(t) for _, t in cfg["colunas"]]
-    amostra = cfg.get("amostra", False)
-    limite_linhas = args.limite_rotas if amostra else None
-    limite_bytes = args.limite_mb_rotas * 2**20 if amostra else None
+    separa_shape = cfg.get("shape_separado", False)
+    idx_shape = nomes_csv.index("shape") if separa_shape else None
+    coluna_uf = cfg.get("coluna_uf", "uf")
+    idx_uf = nomes_csv.index(coluna_uf)
+    idx_cidade = nomes_csv.index("codigo_cidade") if "codigo_cidade" in nomes_csv else None
+    idx_rota = nomes_csv.index("id_rota") if "id_rota" in nomes_csv else None
 
-    tabela = sql.Identifier(nome_tabela(entidade))
-    copy_sql = sql.SQL("COPY public.{} ({}) FROM STDIN").format(
-        tabela, sql.SQL(", ").join(map(sql.Identifier, ["ano_carga", *nomes])))
+    tabela = f"{schema}.{nome}"
+    colunas = [("ano_carga", "smallint")] + colunas_banco(cfg)
+    col_shape = [("ano_carga", "smallint"), ("codigo_cidade", "integer"), ("uf", "varchar(2)"),
+                 ("id_rota", "integer"), ("shape", "text")]
 
-    linhas, bytes_lidos, invalidos = 0, 0, []
+    chave_ck = f"{tabela}|{ano}|{args.uf or '*'}"
+    checkpoint = ler_checkpoint()
+    pular = checkpoint.get(chave_ck, 0) if args.retomar else 0
+
+    filtro = f"ano_carga = {ano}" + (f" AND lower({coluna_uf}) = {sql_literal(args.uf)}" if args.uf else "")
+    if not pular:
+        executar_sql(f"DELETE FROM {tabela} WHERE {filtro};"
+                     + (f" DELETE FROM sete.rota_shape WHERE {filtro.replace(coluna_uf, 'uf')};" if separa_shape else ""))
+    else:
+        print(f"  retomando {tabela} após {pular:,} linhas já enviadas")
+
+    lote, lote_shape, bytes_lote = [], [], 0
+    limite = args.lote_mb * 2**20
+    lidas = enviadas = 0
+    invalidos = []
     inicio = time.time()
-    with open(caminho, encoding="utf-8-sig", newline="") as fh, conn.cursor() as cur:
-        leitor = csv.reader(fh)
-        cabecalho = next(leitor)
-        if cabecalho != nomes:
-            raise RuntimeError(f"Cabeçalho de {cfg['arquivo']} difere da estrutura esperada:\n"
-                               f"  CSV:      {cabecalho}\n  esperado: {nomes}")
-        cur.execute(sql.SQL("DELETE FROM public.{} WHERE ano_carga = %s").format(tabela), (args.ano_carga,))
-        with cur.copy(copy_sql) as copia:
-            for registro in leitor:
-                tamanho = sum(len(v) for v in registro)
-                if limite_bytes and linhas and bytes_lidos + tamanho > limite_bytes:
-                    continue  # amostra: pula rotas que estourariam o limite de MB
-                valores = [args.ano_carga]
-                for nome, conv, v in zip(nomes, conversores, registro):
-                    if v == "":
-                        valores.append(None)
-                        continue
-                    try:
-                        valores.append(conv(v))
-                    except ValueError:
-                        valores.append(None)
-                        invalidos.append((linhas + 2, nome, v[:60]))
-                copia.write_row(valores)
-                linhas += 1
-                bytes_lidos += tamanho
-                if limite_linhas and linhas >= limite_linhas:
-                    break
-                if linhas % 500_000 == 0:
-                    print(f"    ... {linhas:,} linhas", flush=True)
-    conn.commit()
-    with conn.cursor() as cur:
-        cur.execute(sql.SQL("ANALYZE public.{}").format(tabela))
-    conn.commit()
 
-    print(f"  {nome_tabela(entidade)}: {linhas:,} linhas em {time.time() - inicio:.0f}s"
-          + (f" (amostra, {bytes_lidos / 2**20:.1f} MB de dados)" if amostra else ""))
+    def enviar():
+        nonlocal lote, lote_shape, bytes_lote, enviadas
+        if not lote:
+            return
+        enviar_linhas(tabela, colunas, lote)
+        enviar_linhas("sete.rota_shape", col_shape, lote_shape)
+        enviadas += len(lote)
+        checkpoint[chave_ck] = pular + enviadas
+        gravar_checkpoint(checkpoint)
+        lote, lote_shape, bytes_lote = [], [], 0
+        taxa = enviadas / max(time.time() - inicio, 1e-6)
+        print(f"    ... {pular + enviadas:,} linhas ({taxa:,.0f}/s)", flush=True)
+
+    with open(caminho, encoding=opcoes_csv["encoding"], newline="") as fh:
+        leitor = csv.reader(fh, delimiter=opcoes_csv["delimiter"])
+        cabecalho = next(leitor)
+        if [c.lower() for c in cabecalho] != nomes_csv:
+            raise RuntimeError(f"Cabeçalho de {cfg['arquivo']} difere da estrutura esperada:\n"
+                               f"  CSV:      {cabecalho}\n  esperado: {nomes_csv}")
+        for registro in leitor:
+            if args.uf and registro[idx_uf].strip().lower() != args.uf:
+                continue
+            lidas += 1
+            if lidas <= pular:
+                continue
+            valores = [str(ano)]
+            for i, (nome_col, conv, v) in enumerate(zip(nomes_csv, conversores, registro)):
+                if i == idx_shape:
+                    continue
+                v = v.replace("\x00", "")
+                if v == "":
+                    valores.append(None)
+                    continue
+                try:
+                    valores.append(conv(v))
+                except ValueError:
+                    valores.append(None)
+                    invalidos.append((lidas + 1, nome_col, v[:60]))
+            if separa_shape:
+                shape = registro[idx_shape]
+                possui = tem_shape(shape)
+                valores.append("true" if possui else "false")
+                if possui:
+                    lote_shape.append([str(ano), valores[1 + idx_cidade], valores[1 + idx_uf],
+                                       valores[1 + idx_rota], shape.replace("\x00", "")])
+                    bytes_lote += int(len(shape) * 1.3)  # aspas do GeoJSON são escapadas no corpo HTTP
+            lote.append(valores)
+            # estimativa do corpo: valores + aspas/vírgulas/escape (o limite real é conferido no envio)
+            bytes_lote += sum(len(v) + 6 for v in valores if v)
+            if bytes_lote >= limite:
+                enviar()
+    enviar()
+
+    total = pular + enviadas
+    executar_sql(f"ANALYZE {tabela};"
+                 + (" ANALYZE sete.rota_shape;" if separa_shape else "")
+                 + f" INSERT INTO pnite_meta.cargas_log (tabela, ano_carga, filtro_uf, linhas, invalidos)"
+                   f" VALUES ({sql_literal(tabela)}, {ano}, {sql_literal(args.uf) if args.uf else 'NULL'},"
+                   f" {total}, {len(invalidos)});")
+    no_banco = executar_sql(f"SELECT count(*) AS n FROM {tabela} WHERE {filtro};")[0]["n"]
+    status = "OK" if no_banco == lidas else f"DIVERGENTE (CSV {lidas:,})"
+    print(f"  {tabela}: {no_banco:,} linhas no banco em {time.time() - inicio:.0f}s — {status}")
     for linha, coluna, valor in invalidos[:20]:
         print(f"    [NULL] linha {linha}, {coluna} = {valor!r} (valor inválido para o tipo)")
     if len(invalidos) > 20:
         print(f"    ... e mais {len(invalidos) - 20} valores inválidos convertidos em NULL")
-    return linhas
+    checkpoint.pop(chave_ck, None)
+    gravar_checkpoint(checkpoint)
+    return no_banco == lidas
+
+
+def carregar_municipios():
+    codigos = {r["codigo_ibge"]: r["sigla"] for r in executar_sql("SELECT codigo_ibge, sigla FROM ref.uf;")}
+    linhas = []
+    with open(PASTA_DADOS / ARQ_MUNICIPIOS, encoding="utf-8-sig", newline="") as fh:
+        leitor = csv.reader(fh, delimiter=";")
+        next(leitor)
+        for r in leitor:
+            if len(r) < 9 or not r[2].strip():
+                continue
+            linhas.append([r[2].strip(), r[3].strip(), codigos[int(r[0])], r[5].strip() or None,
+                           r[6].strip() or None, r[7].strip() or None, r[8].strip() or None])
+    colunas = [("codigo_ibge", "integer"), ("nome", "text"), ("uf", "text"), ("codigo_rgi", "integer"),
+               ("nome_rgi", "text"), ("codigo_rgim", "integer"), ("nome_rgim", "text")]
+    executar_sql("DELETE FROM ref.municipios;\n" + sql_insert("ref.municipios", colunas, linhas))
+    print(f"  ref.municipios: {len(linhas):,} municípios")
+
+
+def carregar_referencia(ano):
+    """RAW_DATA de referência (legado do HTML + planilhas consolidado *.xlsx) e detalhes_scripts."""
+    os.chdir(RAIZ)  # extrair_dados_excel.py resolve PNITE.html e data/ a partir da raiz
+    sys.path.insert(0, str(RAIZ))
+    import extrair_dados_excel as ext
+
+    tabelas = ext.carregar_planilhas(str(PASTA_DADOS))
+    detalhes = ext.extrair_metricas_por_uf(tabelas)
+    raw = ext.montar_raw_referencia(detalhes)
+    linhas_raw = [[str(ano), chave, json.dumps(dados, ensure_ascii=False)] for chave, dados in raw.items()]
+    linhas_det = [[str(ano), chave, script, json.dumps(dados, ensure_ascii=False)]
+                  for chave, scripts in detalhes.items() for script, dados in scripts.items()]
+    executar_sql(
+        f"DELETE FROM ref.raw_referencia WHERE ano_carga = {ano};"
+        f" DELETE FROM ref.detalhes_scripts WHERE ano_carga = {ano};\n"
+        + sql_insert("ref.raw_referencia", [("ano_carga", "smallint"), ("chave", "text"), ("dados", "jsonb")], linhas_raw)
+        + "\n" + sql_insert("ref.detalhes_scripts", [("ano_carga", "smallint"), ("chave", "text"),
+                                                      ("script", "text"), ("dados", "jsonb")], linhas_det))
+    print(f"  ref.raw_referencia: {len(linhas_raw)} escopos | ref.detalhes_scripts: {len(linhas_det)} registros")
 
 
 def main():
-    p = argparse.ArgumentParser(description="Cria e carrega as tabelas dado_bruto_* no Supabase.")
-    p.add_argument("--tabelas", nargs="*", choices=list(TABELAS), help="entidades a processar (padrão: todas)")
-    p.add_argument("--ano-carga", type=int, default=2026)
-    p.add_argument("--limite-rotas", type=int, default=2000, help="nº máximo de rotas enviadas (amostra)")
-    p.add_argument("--limite-mb-rotas", type=float, default=50, help="volume máximo (MB de CSV) de rotas enviadas")
-    p.add_argument("--limite-mb-banco", type=float, default=float(os.getenv("SUPABASE_LIMITE_MB", 480)),
-                   help="tamanho máximo do banco; tabelas que o excederiam são puladas")
-    p.add_argument("--forcar", action="store_true", help="ignora o limite de tamanho do banco")
-    p.add_argument("--somente-estrutura", action="store_true", help="apenas cria as tabelas, sem carga")
+    entidades = ["municipios", "referencia", *TABELAS, "censo"]
+    p = argparse.ArgumentParser(description="Estrutura e carga dos dados brutos da PNITE no Supabase (via API).")
+    p.add_argument("--gerar-ddl", action="store_true", help="gera as migrações 0003/0004 e sai")
+    p.add_argument("--tabelas", nargs="*", choices=entidades, help="o que carregar (padrão: SETE + Censo)")
+    p.add_argument("--uf", help="carrega apenas uma UF (sigla, ex.: go) — carga piloto")
+    p.add_argument("--lote-mb", type=float, default=1.5,
+                   help="tamanho aproximado de cada lote (MB); requisições acima do limite do servidor são divididas")
+    p.add_argument("--retomar", action="store_true", help="retoma a partir do checkpoint da última carga")
     args = p.parse_args()
+    if args.uf:
+        args.uf = args.uf.strip().lower()
 
-    entidades = args.tabelas or list(TABELAS)
-    conn = conectar()
-    print(f"Conectado. Tamanho atual do banco: {tamanho_banco_mb(conn):.0f} MB")
-
-    print("Criando tabelas (se não existirem)...")
-    for entidade in entidades:
-        criar_tabela(conn, entidade, TABELAS[entidade], args.ano_carga)
-    aplicar_comentarios(conn, {k: v for k, v in ler_dicionario().items() if k in entidades})
-    conn.execute("NOTIFY pgrst, 'reload schema'")  # atualiza o cache de esquema da API REST
-    conn.commit()
-    if args.somente_estrutura:
+    if args.gerar_ddl:
+        gerar_ddl()
         return
 
-    puladas = []
-    for entidade in entidades:
-        cfg = TABELAS[entidade]
-        mb_csv = (PASTA_DADOS / cfg["arquivo"]).stat().st_size / 2**20
-        if cfg.get("amostra"):
-            mb_csv = min(mb_csv, args.limite_mb_rotas)
-        atual = tamanho_banco_mb(conn)
-        estimado = atual + mb_csv * FATOR_TAMANHO
-        if not args.forcar and estimado > args.limite_mb_banco:
-            print(f"  [PULADA] {nome_tabela(entidade)}: estimativa {estimado:.0f} MB > limite "
-                  f"{args.limite_mb_banco:.0f} MB (atual {atual:.0f} MB)")
-            puladas.append(entidade)
-            continue
-        carregar_tabela(conn, entidade, cfg, args)
-
-    print(f"Concluído. Tamanho final do banco: {tamanho_banco_mb(conn):.0f} MB")
-    if puladas:
-        print("Tabelas criadas mas não carregadas (limite de espaço): " + ", ".join(puladas))
-    conn.close()
+    alvo = args.tabelas or [*TABELAS, "censo"]
+    falhas = []
+    for nome in alvo:
+        print(f"[{nome}]", flush=True)
+        if nome == "municipios":
+            carregar_municipios()
+        elif nome == "referencia":
+            carregar_referencia(ANO_SETE)
+        elif nome == "censo":
+            if not carregar_tabela("censo", "matricula", config_censo(), ANO_CENSO, args):
+                falhas.append(nome)
+        elif not carregar_tabela("sete", nome, TABELAS[nome], ANO_SETE, args):
+            falhas.append(nome)
+    if falhas:
+        sys.exit("Contagem divergente em: " + ", ".join(falhas))
 
 
 if __name__ == "__main__":

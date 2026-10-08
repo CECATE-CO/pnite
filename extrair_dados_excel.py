@@ -653,21 +653,13 @@ def processar_profissionais(data_dir='data'):
         'pmnve_br': pmnve_br
     }
 
-def extrair_e_consolidar_tudo(data_dir=None, html_ref=None):
+def montar_raw_referencia(detalhes_por_uf):
     """
-    Executa a extração completa dos Excels e compõe a base RAW_DATA e DATA.
+    Monta o RAW_DATA de referência por escopo (nacional, regiões e UFs): valores legados
+    embutidos no PNITE.html (_FALLBACK_RAW_DATA) sobrepostos pelos totais das planilhas
+    'consolidado *.xlsx'. Os campos calculados a partir dos CSVs brutos são aplicados depois.
+    Também é usado por scripts/criar_banco_dados_brutos.py (tabela ref.raw_referencia).
     """
-    if data_dir is None:
-        transp_dir = os.path.join('data', 'Transporte Escolar')
-        data_dir = transp_dir if os.path.isdir(transp_dir) else 'data'
-    tabelas = carregar_planilhas(data_dir)
-    detalhes_por_uf = extrair_metricas_por_uf(tabelas)
-    dados_alunos = processar_alunos(data_dir)
-    dados_rotas = processar_rotas_prgm(data_dir)
-    dados_veiculos = processar_veiculos_origem(data_dir)
-    dados_profissionais = processar_profissionais(data_dir)
-    dados_cobertura = processar_censo_e_cobertura(data_dir)
-
     # Obter dados de base de referência (para indicadores metodológicos de Censo, etc.)
     ref_raw = {}
     ref_data = {}
@@ -743,6 +735,25 @@ def extrair_e_consolidar_tudo(data_dir=None, html_ref=None):
             s15 = scripts['script_15_rota_passa_por_escolas']
             if s15.get('total_escolas_distintas') is not None:
                 node['esc_at'] = s15['total_escolas_distintas']
+
+    return raw_data_unificada
+
+def extrair_e_consolidar_tudo(data_dir=None, html_ref=None):
+    """
+    Executa a extração completa dos Excels e compõe a base RAW_DATA e DATA.
+    """
+    if data_dir is None:
+        transp_dir = os.path.join('data', 'Transporte Escolar')
+        data_dir = transp_dir if os.path.isdir(transp_dir) else 'data'
+    tabelas = carregar_planilhas(data_dir)
+    detalhes_por_uf = extrair_metricas_por_uf(tabelas)
+    dados_alunos = processar_alunos(data_dir)
+    dados_rotas = processar_rotas_prgm(data_dir)
+    dados_veiculos = processar_veiculos_origem(data_dir)
+    dados_profissionais = processar_profissionais(data_dir)
+    dados_cobertura = processar_censo_e_cobertura(data_dir)
+
+    raw_data_unificada = montar_raw_referencia(detalhes_por_uf)
 
     # Injetar dados calculados de rotas (PRGM, PRIO/dif, km, tempos)
     if dados_rotas:

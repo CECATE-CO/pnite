@@ -69,6 +69,8 @@ pnite/
 │   │   └── *CTE - Avaliação, Formulário e Lista de Presença.xlsx
 │   └── Gestão/                # Diretório reservado para indicadores de governança e regulação
 │
+├── supabase/migrations/       # Estrutura SQL do banco (schemas, tabelas, views, API)
+│
 ├── scripts/                   # Utilitários de agregação e banco de dados
 │   ├── README.md              # Descrição das rotinas de suporte
 │   ├── criar_banco_dados_brutos.py
@@ -120,6 +122,10 @@ O script recalcula os totais nacionais, agregações regionais/estaduais e atual
 - `data/Transporte Escolar/pnite_dados_consolidados.js`
 
 Ao abrir o `PNITE.html`, os dados atualizados são refletidos imediatamente.
+
+### Base de dados no Supabase (em migração)
+
+Os dados brutos do SETE e do Censo Escolar estão sendo migrados para o Supabase, com os indicadores calculados no banco e servidos por escopo via API (`/rest/v1/indicadores`). Estrutura, carga e validação estão descritas em [`scripts/README.md`](scripts/README.md#base-de-dados-no-supabase). As credenciais ficam no `.env` (modelo em `.env.example`), que nunca deve ser versionado nem servido pelo navegador.
 
 ---
 
