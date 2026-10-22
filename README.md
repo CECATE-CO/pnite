@@ -37,6 +37,16 @@ A PNITE é uma aplicação web de alta performance projetada para execução dir
      python -m http.server 8000
      ```
 
+### Publicação na Vercel
+
+O repositório já está configurado (`vercel.json`, `.vercelignore`, `scripts/build_vercel.mjs`):
+
+1. Na Vercel, **Add New → Project** e importe o repositório do GitHub (Framework Preset: *Other*; as demais opções vêm do `vercel.json`).
+2. Em **Settings → Environment Variables**, cadastre apenas os valores públicos: `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` e `ANO_CARGA_SETE`. **Nunca** cadastre `SUPABASE_SECRET_KEY` nem senhas.
+3. Faça o deploy. O build (`node scripts/build_vercel.mjs`) monta `dist/` com `PNITE.html` (servido como `index.html`), os logos e imagens, os dois arquivos JS da capacitação e o `config.local.js` gerado das variáveis. Sem as variáveis, o build falha e a versão no ar não é substituída.
+
+Só a lista fechada de arquivos do build é publicada: `data/` (CSVs brutos com dados pessoais), planilhas de inscrição, `upload/`, `old/` e `.env` nunca vão para o site. Para conferir localmente: `node scripts/build_vercel.mjs` e `python -m http.server 8000 --directory dist`.
+
 ---
 
 ## 📂 Organização do Repositório

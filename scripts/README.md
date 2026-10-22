@@ -15,6 +15,9 @@ Conjunto de scripts Python e Node.js para processamento, extração, agregação
 - **`scripts/importar_planilha.py`**:
   Envio genérico de planilhas (CSV, TSV, TXT, XLSX, XLSM, XLS, ODS) ao Supabase via API. Sem argumentos, lê toda a pasta `upload/` (fora do Git; ver `upload/README.md`) e cria uma tabela por arquivo no schema privado `importacao`, com colunas em snake_case e tipos inferidos (inteiro, numérico em formato BR ou internacional, data, texto; códigos com zero à esquerda ficam como texto). Opções: `--simular`, `--modo criar|substituir|anexar`, `--tabela schema.nome`, `--aba`, `--todas-abas`, `--ano-carga`. Recusa os schemas `public`, `sete`, `censo`, `analise` e `pnite_meta`.
 
+- **`scripts/build_vercel.mjs`**:
+  Build da publicação na Vercel (executado pelo `vercel.json`). Copia para `dist/` só uma lista fechada de arquivos (`PNITE.html` → `index.html`, `assets/logos`, `assets/img` e os dois JS da capacitação) e gera `dist/config.local.js` com os mesmos valores públicos de `gerar_config_web.py`, lidos das variáveis de ambiente da Vercel (ou do `.env` local). Falha se faltar alguma variável ou se a chave não for publishable.
+
 - **`scripts/supabase_migrar.py`**:
   Aplica as migrações SQL de `supabase/migrations/` (schemas, tabelas, views de análise e a view pública `indicadores`), registrando-as em `pnite_meta.migracoes`.
 

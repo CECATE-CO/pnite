@@ -7701,7 +7701,7 @@ window.onerror = function(msg, url, line, col, err) {
     <div class="smb-sec">
       <div class="smb-sec-title" data-i18n="settings_info_title">Informações da Versão</div>
       <div style="font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:4px;margin-top:6px">
-        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.1.2</b></div>
+        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.1.3</b></div>
         <div><span data-i18n="settings_updated">Última Atualização:</span> <b class="pnite-date-val">06/10/2026</b> às <b class="pnite-time-val">21:05</b></div>
         <div><span data-i18n="settings_author">Responsável Técnico:</span> <b class="pnite-author-val">Equipe PNITE</b></div>
       </div>
@@ -7743,7 +7743,7 @@ window.onerror = function(msg, url, line, col, err) {
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.3.1.2";
+const PNITE_VERSION = "v.3.1.3";
 const PNITE_LAST_UPDATE = "06/10/2026";
 const PNITE_LAST_TIME = "21:29";
 
@@ -15586,12 +15586,13 @@ function processarUploadExcel(event) {
       </div>
     </div>
     <div class="pif-body">
-      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.1.2</strong></div>
+      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.1.3</strong></div>
       <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">22/10/2026</span></div>
-      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">11:43</span></div>
+      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">11:47</span></div>
       <div class="pif-row"><span>Responsável técnico:</span><span class="pnite-author-val">Equipe PNITE</span></div>
       <div class="pif-note">
         <i class="ti ti-check" style="color:var(--accent);margin-right:3px"></i>
+        <strong>Publicação na Vercel (v.3.1.3):</strong> <code>vercel.json</code> e build <code>scripts/build_vercel.mjs</code>, que publica só a lista fechada de arquivos da interface (sem dados brutos) e gera a configuração pública da API a partir das variáveis de ambiente da Vercel.<br>
         <strong>Envio de planilhas (v.3.1.2):</strong> pasta <code>upload/</code> (fora do Git) e script <code>scripts/importar_planilha.py</code>, que envia CSV, XLSX, XLS e ODS ao schema privado <code>importacao</code> do Supabase, uma tabela por arquivo, com tipos inferidos.<br>
         <strong>Base nacional completa (v.3.1.1):</strong> carga de todas as UFs no Supabase (SETE 2026: 82.887 rotas, 3,76 mi de alunos, 31.626 traçados; Censo 2025: 178.766 escolas), com contagens conferidas contra os CSVs; traçado simplificado passa a ser calculado na carga; demanda do Censo com UF em branco atribuída pelo código IBGE do município.<br>
         <strong>Cores e qualidade das rotas (v.3.1.0):</strong> cada rota do município recebe uma cor própria (sequência de ângulo dourado, estável por rota), com destaque da rota sob o cursor; o mapa sinaliza rotas cujo traçado está fora dos limites do município, indicando revisão do cadastro no SETE.<br>
@@ -15614,7 +15615,7 @@ function processarUploadExcel(event) {
   </div>
   <button class="pif-btn" id="pifBtn" aria-label="Informações de Versão">
     <i class="ti ti-info-circle"></i>
-    <span class="pif-btn-label pnite-version-val">v.3.1.2</span>
+    <span class="pif-btn-label pnite-version-val">v.3.1.3</span>
   </button>
 </div>
 
