@@ -45,7 +45,7 @@ O repositório já está configurado (`vercel.json`, `.vercelignore`, `scripts/b
 2. Em **Settings → Environment Variables**, cadastre apenas os valores públicos: `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` e `ANO_CARGA_SETE`. **Nunca** cadastre `SUPABASE_SECRET_KEY` nem senhas.
 3. Faça o deploy. O build (`node scripts/build_vercel.mjs`) monta `dist/` com `PNITE.html` (servido como `index.html`), os logos e imagens, os dois arquivos JS da capacitação e o `config.local.js` gerado das variáveis. Sem as variáveis, o build falha e a versão no ar não é substituída.
 
-Só a lista fechada de arquivos do build é publicada: `data/` (CSVs brutos com dados pessoais), planilhas de inscrição, `upload/`, `old/` e `.env` nunca vão para o site. Para conferir localmente: `node scripts/build_vercel.mjs` e `python -m http.server 8000 --directory dist`.
+Só a lista fechada de arquivos do build é publicada (HTML, logos e imagens); todos os dados vêm das APIs. `data/`, `upload/`, `old/` e `.env` nunca vão para o site. Para conferir localmente: `node scripts/build_vercel.mjs` e `python -m http.server 8000 --directory dist`.
 
 ---
 
@@ -72,19 +72,19 @@ pnite/
 │   └── img/                   # Ilustrações e fotografias de frotas
 │       └── escolar_sao_goncalo.png
 │
-├── data/                      # Bases de dados estruturadas por frente analítica
+├── data/                      # SOMENTE LOCAL (fora do Git desde a v.3.1.4): dados brutos com dados pessoais
 │   ├── Transporte Escolar/    # Planilhas e consolidados do SETE e Censo Escolar
 │   │   ├── pnite_dados_consolidados.js
 │   │   ├── pnite_dados_consolidados.json
 │   │   ├── malhas_mg.json
 │   │   ├── sete_mun.json
 │   │   └── *.xlsx / *.csv consolidados
-│   ├── Capacitação/           # Dados e formulários das oficinas regionais (5CTE a 16CTE)
-│   │   ├── pnite_capacitacao_dados.js
+│   ├── Capacitação/           # Formulários das oficinas regionais (5CTE a 16CTE) → banco (extrair_capacitacao.py)
 │   │   └── *CTE - Avaliação, Formulário e Lista de Presença.xlsx
 │   └── Gestão/                # Diretório reservado para indicadores de governança e regulação
 │
 ├── supabase/migrations/       # Estrutura SQL do banco (schemas, tabelas, views, API)
+├── upload/                    # Planilhas para envio ao banco (fora do Git; ver upload/README.md)
 │
 ├── scripts/                   # Utilitários de agregação e banco de dados
 │   ├── README.md              # Descrição das rotinas de suporte
@@ -136,9 +136,13 @@ O script recalcula os totais nacionais, agregações regionais/estaduais e atual
 - `data/Transporte Escolar/pnite_dados_consolidados.json`
 - `data/Transporte Escolar/pnite_dados_consolidados.js`
 
-Ao abrir o `PNITE.html`, os dados atualizados são refletidos imediatamente.
+Esses arquivos são de uso local (a interface lê os indicadores da API do Supabase, descrita abaixo).
+
+> A pasta `data/` não é versionada desde a v.3.1.4: contém dados brutos com dados pessoais e fica apenas na máquina de quem faz a carga. A interface não lê nenhum arquivo de `data/`.
 
 ### Base de dados no Supabase
+
+Os dados das capacitações também vêm da API (`/rest/v1/capacitacao_dados`, gravada por `scripts/extrair_capacitacao.py`), e a malha municipal do mapa da capacitação vem da API de malhas do IBGE.
 
 Os dados brutos do SETE e do Censo Escolar ficam no Supabase, com os indicadores calculados no banco e servidos por escopo via API (`/rest/v1/indicadores_{nacional,regiao,estado,municipio}`). A plataforma consulta a API na abertura (Brasil, regiões e UFs) e a cada troca de território. Base nacional completa: SETE (ano de carga 2026) e Censo Escolar (2025) das 27 UFs. Estrutura, carga e validação estão descritas em [`scripts/README.md`](scripts/README.md#base-de-dados-no-supabase). As credenciais ficam no `.env` (modelo em `.env.example`), que nunca deve ser versionado nem servido pelo navegador.
 

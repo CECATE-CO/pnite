@@ -2242,6 +2242,8 @@ body {
   color: var(--text-3);
   font-size: 12.5px;
 }
+.cap-status.erro { color: var(--red); }
+.cap-status-acao { margin-left: 8px; }
 
 /* TABELAS */
 .cap-table-wrap {
@@ -6220,6 +6222,7 @@ window.onerror = function(msg, url, line, col, err) {
 
       <!-- CONTEÚDO PRINCIPAL DA CAPACITAÇÃO -->
       <main class="cap-main-area">
+        <div class="cap-empty cap-status" id="capStatus" role="status" aria-live="polite" hidden></div>
 
         <!-- SUB-VIEW 1: HOME (INICIAL) -->
         <section class="cap-subview active" id="capSubHome" aria-label="Visão Geral das Capacitações">
@@ -7701,7 +7704,7 @@ window.onerror = function(msg, url, line, col, err) {
     <div class="smb-sec">
       <div class="smb-sec-title" data-i18n="settings_info_title">Informações da Versão</div>
       <div style="font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:4px;margin-top:6px">
-        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.1.3</b></div>
+        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.1.4</b></div>
         <div><span data-i18n="settings_updated">Última Atualização:</span> <b class="pnite-date-val">06/10/2026</b> às <b class="pnite-time-val">21:05</b></div>
         <div><span data-i18n="settings_author">Responsável Técnico:</span> <b class="pnite-author-val">Equipe PNITE</b></div>
       </div>
@@ -7736,14 +7739,12 @@ window.onerror = function(msg, url, line, col, err) {
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <!-- Configuração pública da API (URL + chave publishable), gerada do .env por scripts/gerar_config_web.py -->
 <script src="config.local.js"></script>
-<script src="data/Capacitação/pnite_capacitacao_geo.js"></script>
-<script src="data/Capacitação/pnite_capacitacao_dados.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.3.1.3";
+const PNITE_VERSION = "v.3.1.4";
 const PNITE_LAST_UPDATE = "06/10/2026";
 const PNITE_LAST_TIME = "21:29";
 
@@ -8699,7 +8700,10 @@ window.PNITE_API = (function() {
 
   async function consultar(view, filtros, sinalExterno) {
     const c = cfg();
-    const qs = new URLSearchParams(Object.assign({ ano_carga: 'eq.' + c.anoCarga }, filtros));
+    // ano_carga: null em filtros consulta views sem ano de carga (ex.: capacitacao_dados)
+    const params = Object.assign({ ano_carga: 'eq.' + c.anoCarga }, filtros);
+    Object.keys(params).forEach(function(k) { if (params[k] == null) delete params[k]; });
+    const qs = new URLSearchParams(params);
     const url = c.supabaseUrl.replace(/\/$/, '') + '/rest/v1/' + view + '?' + qs.toString();
     const emCache = cache.get(url);
     if (emCache && Date.now() - emCache.t < TTL_MS) return emCache.dados;
@@ -8926,6 +8930,14 @@ window.PNITE_API = (function() {
       if (!configurado()) return Promise.reject(new Error('API não configurada'));
       return consultar('rotas_tracado', { codigo_cidade: 'eq.' + parseInt(cod, 10),
         select: 'id_rota,nome,tipo,tipo_label,km,geometria', order: 'id_rota' }, sinal);
+    },
+    // Base das capacitações (public.capacitacao_dados): objeto {tabela: {colunas, linhas}}
+    capacitacao: function() {
+      if (!configurado()) return Promise.reject(new Error('API não configurada (config.local.js ausente)'));
+      return consultar('capacitacao_dados', { ano_carga: null, select: 'dados' }).then(function(linhas) {
+        if (!linhas.length || !linhas[0].dados) throw new Error('base das capacitações vazia na API');
+        return linhas[0].dados;
+      });
     }
   };
 })();
@@ -13625,10 +13637,11 @@ function switchFront(frontId, navBtn) {
 // FRENTE ANALÍTICA: INDICADORES DA CAPACITAÇÃO (LÓGICA, FILTROS & MAPA)
 // ==========================================================================
 
-// Base: window.PNITE_CAPACITACAO (data/Capacitação/pnite_capacitacao_dados.js, gerado por
-// scripts/extrair_capacitacao.py). Tabelas {colunas, linhas} espelham o esquema SQL
-// data/Capacitação/schema_capacitacao.sql.
-const CAP_STATE = { dados: null, charts: {}, view: 'home', eventos: false, geo: null, mapInfo: {} };
+// Base: API do Supabase (public.capacitacao_dados, gravada por scripts/extrair_capacitacao.py),
+// com tabelas {colunas, linhas} do schema `capacitacao` (supabase/migrations/0012_capacitacao.sql).
+// Malha municipal do mapa: API de malhas do IBGE (loadMunicipalGeoForUf, com cache).
+const CAP_STATE = { raw: null, malhas: null, carga: null, dados: null, charts: {}, view: 'home', eventos: false, geo: null, mapInfo: {} };
+const CAP_UFS_MAPA = ['GO', 'MT', 'MS', 'DF'];
 const CAP_VIEWS = {
   home: 'capSubHome', capacitacoes: 'capSubCapacitacoes', uf: 'capSubUf',
   aval1_5: 'capSubAval1_5', stat1_5: 'capSubStat1_5', aval6_16: 'capSubAval6_16', stat6_16: 'capSubStat6_16'
@@ -13665,9 +13678,45 @@ function capAgruparPor(lista, chave) {
   return m;
 }
 
+// Carrega a base (Supabase) e a malha do Centro-Oeste (IBGE) uma única vez; a promessa em
+// andamento é reaproveitada e descartada em caso de falha, para permitir nova tentativa.
+function capCarregar() {
+  if (!CAP_STATE.carga) {
+    capStatus('carregando');
+    CAP_STATE.carga = Promise.all([
+      window.PNITE_API.capacitacao(),
+      Promise.all(CAP_UFS_MAPA.map(uf => loadMunicipalGeoForUf(uf)))
+    ]).then(([raw, malhas]) => {
+      CAP_STATE.raw = raw;
+      CAP_STATE.malhas = malhas;
+      capStatus(null);
+    }).catch(err => {
+      CAP_STATE.carga = null;
+      capStatus('erro', err);
+      throw err;
+    });
+  }
+  return CAP_STATE.carga;
+}
+
+function capStatus(tipo, erro) {
+  const el = document.getElementById('capStatus');
+  if (!el) return;
+  el.hidden = !tipo;
+  el.classList.toggle('erro', tipo === 'erro');
+  if (tipo === 'carregando') {
+    el.textContent = 'Carregando os dados das capacitações (API do Supabase)…';
+  } else if (tipo === 'erro') {
+    const detalhe = erro && erro.name === 'AbortError' ? 'tempo de resposta esgotado' : (erro && erro.message) || '';
+    el.innerHTML = '<i class="ti ti-alert-triangle" aria-hidden="true"></i> Não foi possível carregar os dados das capacitações.'
+      + (detalhe ? ' (' + escHtml(detalhe) + ')' : '')
+      + ' <button type="button" class="btn btn-outline cap-status-acao" onclick="initCapacitacaoView()"><i class="ti ti-refresh" aria-hidden="true"></i> Tentar novamente</button>';
+  }
+}
+
 function capDados() {
   if (CAP_STATE.dados) return CAP_STATE.dados;
-  const raw = window.PNITE_CAPACITACAO;
+  const raw = CAP_STATE.raw;
   if (!raw) return null;
   const caps = capLinhas(raw.capacitacoes).map(c => {
     const ano = Number(c.data_inicio.slice(0, 4));
@@ -13895,7 +13944,10 @@ function capRegistrarEventos() {
 
 function initCapacitacaoView() {
   const d = capDados();
-  if (!d) return;
+  if (!d) {
+    capCarregar().then(initCapacitacaoView).catch(() => { /* falha exibida por capStatus */ });
+    return;
+  }
   capRegistrarEventos();
 
   const poloSelect = document.getElementById('capPoloSelect');
@@ -13998,8 +14050,9 @@ function capStatusMunicipios(rows, d) {
 // --------------------------------------------------------------------------
 function capGeometria() {
   if (CAP_STATE.geo) return CAP_STATE.geo;
-  const geo = window.PNITE_CAPACITACAO_GEO;
-  if (!geo || !geo.features) return null;
+  const features = (CAP_STATE.malhas || []).flatMap(m => (m && m.features) || []);
+  if (!features.length) return null;
+  const nomes = new Map(capLinhas(CAP_STATE.raw && CAP_STATE.raw.municipios_mapa).map(m => [m.cod_ibge, m]));
   const b = { minX: -64.0, maxX: -44.0, minY: -25.5, maxY: -6.0 };
   const W = 720;
   const k = Math.cos(-15.5 * Math.PI / 180);
@@ -14020,7 +14073,11 @@ function capGeometria() {
   const caminhosUf = siglas => siglas.map(uf).filter(Boolean).map(f => caminho(f.geometry));
   CAP_STATE.geo = {
     W, H, pr,
-    municipios: geo.features.map(f => ({ cod: String(f.properties.cod), nome: f.properties.nome || '', uf: f.properties.uf || '', d: caminho(f.geometry) })),
+    municipios: features.map(f => {
+      const cod = String(f.properties.codarea);
+      const m = nomes.get(cod) || {};
+      return { cod, nome: m.nome || '', uf: m.uf || '', d: caminho(f.geometry) };
+    }),
     vizinhos: caminhosUf(['RO', 'TO', 'BA', 'PI', 'MG', 'SP', 'PR']),
     contornos: caminhosUf(['MT', 'GO', 'MS', 'DF'])
   };
@@ -15586,12 +15643,13 @@ function processarUploadExcel(event) {
       </div>
     </div>
     <div class="pif-body">
-      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.1.3</strong></div>
+      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.1.4</strong></div>
       <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">22/10/2026</span></div>
-      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">11:47</span></div>
+      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">11:57</span></div>
       <div class="pif-row"><span>Responsável técnico:</span><span class="pnite-author-val">Equipe PNITE</span></div>
       <div class="pif-note">
         <i class="ti ti-check" style="color:var(--accent);margin-right:3px"></i>
+        <strong>Capacitação via API (v.3.1.4):</strong> os dados das capacitações passam a ser lidos da API do Supabase (view <code>capacitacao_dados</code>, schema privado <code>capacitacao</code>) e a malha municipal do Centro-Oeste da API de malhas do IBGE; os arquivos JS estáticos da capacitação deixam de ser carregados e a pasta <code>data/</code> sai do Git.<br>
         <strong>Publicação na Vercel (v.3.1.3):</strong> <code>vercel.json</code> e build <code>scripts/build_vercel.mjs</code>, que publica só a lista fechada de arquivos da interface (sem dados brutos) e gera a configuração pública da API a partir das variáveis de ambiente da Vercel.<br>
         <strong>Envio de planilhas (v.3.1.2):</strong> pasta <code>upload/</code> (fora do Git) e script <code>scripts/importar_planilha.py</code>, que envia CSV, XLSX, XLS e ODS ao schema privado <code>importacao</code> do Supabase, uma tabela por arquivo, com tipos inferidos.<br>
         <strong>Base nacional completa (v.3.1.1):</strong> carga de todas as UFs no Supabase (SETE 2026: 82.887 rotas, 3,76 mi de alunos, 31.626 traçados; Censo 2025: 178.766 escolas), com contagens conferidas contra os CSVs; traçado simplificado passa a ser calculado na carga; demanda do Censo com UF em branco atribuída pelo código IBGE do município.<br>
@@ -15615,7 +15673,7 @@ function processarUploadExcel(event) {
   </div>
   <button class="pif-btn" id="pifBtn" aria-label="Informações de Versão">
     <i class="ti ti-info-circle"></i>
-    <span class="pif-btn-label pnite-version-val">v.3.1.3</span>
+    <span class="pif-btn-label pnite-version-val">v.3.1.4</span>
   </button>
 </div>
 

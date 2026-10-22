@@ -9,8 +9,6 @@ upload/
 dic/
 data222/
 supabase/
-data/Transporte Escolar/
-data/Capacitação/*.xlsx
-data/Capacitação/*.html
+data/
 *.ipynb
 __pycache__/

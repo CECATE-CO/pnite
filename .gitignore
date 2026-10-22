@@ -14,3 +14,6 @@ upload/*
 # Build e configuração local da Vercel
 dist/
 .vercel/
+
+# Dados brutos locais (dados pessoais): fora do Git desde a v.3.1.4; a interface lê as APIs
+data/

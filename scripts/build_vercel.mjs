@@ -1,8 +1,8 @@
 /**
  * PNITE — Monta o site estático publicado na Vercel em dist/.
  *
- * Só os arquivos de PUBLICAVEIS vão para dist/ (lista fechada): o repositório tem dados
- * brutos com dados pessoais (data/, planilhas de inscrição) que nunca podem ser servidos.
+ * Só os arquivos de PUBLICAVEIS vão para dist/ (lista fechada): os dados vêm das APIs do
+ * Supabase e do IBGE; dados brutos locais (data/, upload/) nunca podem ser servidos.
  *
  * config.local.js é gerado com os mesmos valores públicos de scripts/gerar_config_web.py
  * (URL do Supabase, chave publishable e ano de carga), lidos das variáveis de ambiente da
@@ -23,8 +23,6 @@ const PUBLICAVEIS = [
   ['PNITE.html', 'index.html'],
   ['assets/logos', 'assets/logos'],
   ['assets/img', 'assets/img'],
-  ['data/Capacitação/pnite_capacitacao_dados.js', 'data/Capacitação/pnite_capacitacao_dados.js'],
-  ['data/Capacitação/pnite_capacitacao_geo.js', 'data/Capacitação/pnite_capacitacao_geo.js'],
 ];
 
 const PERMITIDAS = { SUPABASE_URL: 'supabaseUrl', SUPABASE_PUBLISHABLE_KEY: 'publishableKey', ANO_CARGA_SETE: 'anoCarga' };

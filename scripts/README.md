@@ -31,7 +31,7 @@ Conjunto de scripts Python e Node.js para processamento, extração, agregação
   Cliente mínimo da API do Supabase usado pelos scripts acima (lê `SUPABASE_URL` e `SUPABASE_SECRET_KEY` do `.env`).
 
 - **`scripts/extrair_capacitacao.py`**:
-  Extrai e consolida os dados das capacitações a partir de `data/Capacitação/` (convocações HTML, formulários de inscrição, listas de presença e avaliações de cada `XCTE`, além do legado `legado_cte_01a04_powerbi.json` das capacitações 1 a 4). Gera `data/Capacitação/pnite_capacitacao_dados.js` em tabelas normalizadas, sem dados pessoais, seguindo o esquema `data/Capacitação/schema_capacitacao.sql` (base da futura migração para SQL). Uso: `pip install openpyxl` e `python scripts/extrair_capacitacao.py`.
+  Extrai e consolida os dados das capacitações a partir de `data/Capacitação/` (convocações HTML, formulários de inscrição, listas de presença e avaliações de cada `XCTE`, além do legado `legado_cte_01a04_powerbi.json` das capacitações 1 a 4). Grava as tabelas consolidadas, sem dados pessoais, no schema privado `capacitacao` do Supabase (migração `0012_capacitacao.sql`), numa única transação, e atualiza a view pública `public.capacitacao_dados` lida pelo `PNITE.html`. Uso: `pip install openpyxl requests python-dotenv` e `python scripts/extrair_capacitacao.py`.
 
 - **`scripts/pegar_dado_rota.py` / `scripts/pegar_dado_rota.js`**:
   Utilitários para amostragem e inspeção detalhada de traçados geométricos de rotas e coordenadas geográficas do SETE.
@@ -47,7 +47,7 @@ Na raiz do repositório:
 ```bash
 python extrair_dados_excel.py
 ```
-Os arquivos consolidados em `data/Transporte Escolar/` serão atualizados automaticamente e lidos pelo `PNITE.html`.
+Os arquivos consolidados em `data/Transporte Escolar/` (pasta local, fora do Git) são atualizados; a interface lê os indicadores da API do Supabase.
 
 ---
 

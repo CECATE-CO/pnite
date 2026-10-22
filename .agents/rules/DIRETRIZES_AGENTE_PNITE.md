@@ -488,7 +488,7 @@ Regras consolidadas a partir da revisão geral da v.2.9.6. Cada item corresponde
 ### 44.1. Git e ambiente
 - Antes de qualquer operação Git, verificar se há outro processo Git ativo (clone, checkout, download LFS do GitHub Desktop) ou `.git/index.lock` presente. Aguardar a conclusão; nunca apagar o lock nem forçar operações concorrentes.
 - Se o `git status` mostrar exclusão em massa de arquivos que existem no disco, **não** fazer commit: investigar a causa (clone incompleto, índice corrompido) antes de prosseguir.
-- Os CSVs em `data/` são versionados via Git LFS; não converter, recodificar nem adicioná-los fora do LFS.
+- A pasta `data/` fica fora do Git desde a v.3.1.4 (dados brutos com dados pessoais; `.gitignore`): nunca adicioná-la de volta nem copiar seu conteúdo para pastas versionadas. A interface não lê arquivos de `data/`: indicadores e capacitação vêm da API do Supabase, e a malha do mapa da capacitação, da API do IBGE.
 - Arquivos de regras do agente devem permanecer idênticos: `AGENTS.md` e `.agents/rules/DIRETRIZES_AGENTE_PNITE.md`. Toda alteração em um deve ser replicada no outro no mesmo commit.
 
 ### 44.2. Codificação e formato de arquivo

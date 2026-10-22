@@ -11,18 +11,18 @@ Lê os arquivos brutos de cada capacitação (XCTE) em ``data/Capacitação/``:
 As capacitações 1 a 4 não possuem arquivos brutos; seus dados vêm de
 ``legado_cte_01a04_powerbi.json`` (extraído do modelo do Power BI ``bi dados.pbix``).
 
-Gera ``data/Capacitação/pnite_capacitacao_dados.js`` com tabelas normalizadas
-(``{colunas: [...], linhas: [[...]]}``) cujos nomes e colunas seguem o esquema
-relacional de ``data/Capacitação/schema_capacitacao.sql`` — o arquivo foi
-desenhado para a futura migração a um banco SQL.
+Grava as tabelas consolidadas no schema privado ``capacitacao`` do Supabase (migração
+``supabase/migrations/0012_capacitacao.sql``), numa única transação, e atualiza a view
+pública ``public.capacitacao_dados`` lida pela interface. Os centróides dos municípios
+(distância até o polo) vêm de ``pnite_capacitacao_geo.js``, mantido localmente em ``data/``.
 
 Privacidade: nomes, CPF, e-mails, telefones e datas de nascimento são usados
 apenas em memória para deduplicar pessoas e ligar presença à inscrição. Nenhum
-dado pessoal é gravado no arquivo de saída; apenas contagens por município e as
-respostas das avaliações (anônimas, identificadas por um ID sequencial).
+dado pessoal é gravado no banco; apenas contagens por município e as respostas
+das avaliações (anônimas, identificadas por um ID sequencial).
 
-Uso (na raiz do repositório):
-    pip install openpyxl
+Uso (na raiz do repositório, com o ``.env`` preenchido):
+    pip install openpyxl requests python-dotenv
     python scripts/extrair_capacitacao.py
 """
 
@@ -39,12 +39,28 @@ from pathlib import Path
 
 import openpyxl
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from criar_banco_dados_brutos import sql_insert  # noqa: E402
+from supabase_api import LIMITE_CORPO, executar_sql, tamanho_corpo  # noqa: E402
+
 RAIZ = Path(__file__).resolve().parent.parent
 PASTA = RAIZ / "data" / "Capacitação"
 LISTA_IBGE = RAIZ / "data" / "Transporte Escolar" / "Lista de Municipios IBGE.csv"
 GEO_JS = PASTA / "pnite_capacitacao_geo.js"
 LEGADO = PASTA / "legado_cte_01a04_powerbi.json"
-SAIDA = PASTA / "pnite_capacitacao_dados.js"
+
+# Tipo no banco de cada coluna (as demais são text); ver 0012_capacitacao.sql
+TIPO_COLUNA = {
+    "cod_ibge": "char(7)", "polo_cod_ibge": "char(7)", "uf": "char(2)", "lat": "numeric", "lon": "numeric",
+    "numero": "smallint", "capacitacao": "smallint", "data_inicio": "date", "data_fim": "date",
+    "convidado": "smallint", "inscritos_total": "integer", "inscritos_gestores": "integer",
+    "inscritos_cacs": "integer", "inscritos_outros": "integer", "presentes_total": "integer",
+    "presentes_gestores": "integer", "presentes_cacs": "integer", "presentes_outros": "integer",
+    "distancia_polo_km": "numeric", "id_pergunta": "smallint", "ordem": "smallint", "nota": "smallint",
+}
+# Ordem de inserção respeita as chaves estrangeiras
+TABELAS_BANCO = ["municipios", "capacitacoes", "municipio_capacitacao", "aval15_perguntas", "aval15_respondentes",
+                 "aval15_respostas", "aval616_perguntas", "aval616_respondentes", "aval616_notas", "aval616_canais"]
 
 UF_POR_CODIGO = {"50": "MS", "51": "MT", "52": "GO", "53": "DF", "15": "PA"}
 
@@ -464,6 +480,29 @@ def tabela(colunas_, linhas):
     return {"colunas": colunas_, "linhas": linhas}
 
 
+def gravar_banco(dados):
+    """Substitui o conteúdo do schema ``capacitacao`` numa única transação e atualiza a view pública."""
+    tabelas = ", ".join(f"capacitacao.{t}" for t in ["metadados", *TABELAS_BANCO])
+    partes = ["BEGIN;", f"TRUNCATE {tabelas};"]
+    for nome in TABELAS_BANCO:
+        t = dados[nome]
+        colunas_ = [("seq", "integer")] + [(c, TIPO_COLUNA.get(c, "text")) for c in t["colunas"]]
+        partes.append(sql_insert(f"capacitacao.{nome}", colunas_, [[i + 1, *linha] for i, linha in enumerate(t["linhas"])]))
+    partes.append(sql_insert("capacitacao.metadados", [("versao_esquema", "smallint"), ("gerado_em", "text"),
+                                                       ("fontes", "jsonb"), ("presentes_sem_municipio", "jsonb")],
+                             [[dados["versao_esquema"], dados["gerado_em"], json.dumps(dados["fontes"], ensure_ascii=False),
+                               json.dumps(dados["presentes_sem_municipio"])]]))
+    partes += ["REFRESH MATERIALIZED VIEW public.capacitacao_dados;", "COMMIT;"]
+    sql = "\n".join(partes)
+    if tamanho_corpo(sql) > LIMITE_CORPO:
+        sys.exit(f"Carga da capacitação ({tamanho_corpo(sql):,} bytes) excede o limite de uma requisição ({LIMITE_CORPO:,}).")
+    executar_sql(sql)
+    contagem = executar_sql("SELECT " + ", ".join(f"(SELECT count(*) FROM capacitacao.{t}) AS {t}" for t in TABELAS_BANCO) + ";")[0]
+    divergentes = [t for t in TABELAS_BANCO if contagem[t] != len(dados[t]["linhas"])]
+    print(f"Gravado no banco: schema capacitacao ({sum(contagem.values()):,} linhas) e public.capacitacao_dados"
+          + (f" — DIVERGENTE em {', '.join(divergentes)}" if divergentes else " — OK"))
+
+
 def main():
     legado = json.loads(LEGADO.read_text(encoding="utf-8"))
     cent = centroides()
@@ -563,16 +602,7 @@ def main():
         "aval616_canais": tabela(["id_resposta", "canal"], canais616),
     }
 
-    cabecalho = ("/**\n * PNITE — Base consolidada das Capacitações do Transporte Escolar (CECATE-CO / UFG / FNDE)\n"
-                 " * Arquivo GERADO por scripts/extrair_capacitacao.py — não editar manualmente.\n"
-                 " * Tabelas no formato {colunas, linhas}, espelhando data/Capacitação/schema_capacitacao.sql.\n"
-                 " * Não contém dados pessoais (nomes, CPF, e-mails ou telefones).\n */\n")
-    corpo = json.dumps(dados, ensure_ascii=False, separators=(",", ":"))
-    corpo = corpo.replace('"linhas":[[', '"linhas":[\n[').replace("],[", "],\n[")
-    SAIDA.write_text(cabecalho + "(typeof window !== 'undefined' ? window : globalThis).PNITE_CAPACITACAO = " + corpo + ";\n",
-                     encoding="utf-8", newline="\n")
-
-    print(f"Gerado: {SAIDA.relative_to(RAIZ)} ({SAIDA.stat().st_size / 1024:.0f} KB)")
+    gravar_banco(dados)
     print("CTE  convid(html) convid(ok) inscritos presentes pres_c/mun mun_part mun_espont")
     for r in resumo:
         print("%3d %12d %10d %9d %9d %10d %8d %10d" % r)
