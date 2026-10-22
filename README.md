@@ -142,6 +142,8 @@ Esses arquivos são de uso local (a interface lê os indicadores da API do Supab
 
 ### Base de dados no Supabase
 
+Estrutura completa (schemas, tabelas, views da API, regras de cálculo e atualização): [`DATABASE.md`](DATABASE.md).
+
 Os dados das capacitações também vêm da API (`/rest/v1/capacitacao_dados`, gravada por `scripts/extrair_capacitacao.py`), e a malha municipal do mapa da capacitação vem da API de malhas do IBGE.
 
 Os dados brutos do SETE e do Censo Escolar ficam no Supabase, com os indicadores calculados no banco e servidos por escopo via API (`/rest/v1/indicadores_{nacional,regiao,estado,municipio}`). A plataforma consulta a API na abertura (Brasil, regiões e UFs) e a cada troca de território. Base nacional completa: SETE (ano de carga 2026) e Censo Escolar (2025) das 27 UFs. Estrutura, carga e validação estão descritas em [`scripts/README.md`](scripts/README.md#base-de-dados-no-supabase). As credenciais ficam no `.env` (modelo em `.env.example`), que nunca deve ser versionado nem servido pelo navegador.

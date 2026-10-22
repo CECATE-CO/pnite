@@ -7718,7 +7718,7 @@ window.onerror = function(msg, url, line, col, err) {
     <div class="smb-sec">
       <div class="smb-sec-title" data-i18n="settings_info_title">Informações da Versão</div>
       <div style="font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:4px;margin-top:6px">
-        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.1.6</b></div>
+        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.1.7</b></div>
         <div><span data-i18n="settings_updated">Última Atualização:</span> <b class="pnite-date-val">06/10/2026</b> às <b class="pnite-time-val">21:05</b></div>
         <div><span data-i18n="settings_author">Responsável Técnico:</span> <b class="pnite-author-val">Equipe PNITE</b></div>
       </div>
@@ -7758,7 +7758,7 @@ window.onerror = function(msg, url, line, col, err) {
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.3.1.6";
+const PNITE_VERSION = "v.3.1.7";
 const PNITE_LAST_UPDATE = "06/10/2026";
 const PNITE_LAST_TIME = "21:29";
 
@@ -15690,12 +15690,13 @@ function processarUploadExcel(event) {
       </div>
     </div>
     <div class="pif-body">
-      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.1.6</strong></div>
+      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.1.7</strong></div>
       <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">22/10/2026</span></div>
-      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">13:05</span></div>
+      <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">14:00</span></div>
       <div class="pif-row"><span>Responsável técnico:</span><span class="pnite-author-val">Equipe PNITE</span></div>
       <div class="pif-note">
         <i class="ti ti-check" style="color:var(--accent);margin-right:3px"></i>
+        <strong>Documentação do banco (v.3.1.7):</strong> novo <code>DATABASE.md</code> com schemas, tabelas, views da API, regras de cálculo, ordem de atualização e migrações do Supabase.<br>
         <strong>Definições únicas (v.3.1.6):</strong> rotas com mais de 2.000 km (erro de cadastro) deixam de entrar na extensão, o que leva o km médio nacional de 112,1 para 53,0 km/rota; capacidade válida de 1 a 100 lugares na capacidade média e no IUC; MOT_CVE e MON_CVE da tabela Dados SETE passam a contar terceirizados, como o PMVE e o PMNVE; descartado o código de município inválido 520140500.<br>
         <strong>Dados municipais via API (v.3.1.5):</strong> a tabela Dados SETE (municípios e UFs), a Distribuição Modal e os indicadores municipais do Censo e da frota (ATE, MEDATE, PATM, PATE, PVPCE, IMFP, IMFT, MIFCE) passam a vir do banco (views <code>sete_municipios</code> e <code>indicadores_municipio_complemento</code>), com as mesmas regras das bases antes embutidas; o arquivo fica 2,35 MB menor.<br>
         <strong>Capacitação via API (v.3.1.4):</strong> os dados das capacitações passam a ser lidos da API do Supabase (view <code>capacitacao_dados</code>, schema privado <code>capacitacao</code>) e a malha municipal do Centro-Oeste da API de malhas do IBGE; os arquivos JS estáticos da capacitação deixam de ser carregados e a pasta <code>data/</code> sai do Git.<br>
@@ -15722,7 +15723,7 @@ function processarUploadExcel(event) {
   </div>
   <button class="pif-btn" id="pifBtn" aria-label="Informações de Versão">
     <i class="ti ti-info-circle"></i>
-    <span class="pif-btn-label pnite-version-val">v.3.1.6</span>
+    <span class="pif-btn-label pnite-version-val">v.3.1.7</span>
   </button>
 </div>
 

@@ -53,6 +53,8 @@ Os arquivos consolidados em `data/Transporte Escolar/` (pasta local, fora do Git
 
 ## Base de Dados no Supabase
 
+Documentação completa da estrutura: [`DATABASE.md`](../DATABASE.md).
+
 Camadas (definidas em `supabase/migrations/`):
 
 | Schema | Conteúdo | Acesso pela API |
