@@ -12,6 +12,9 @@ Conjunto de scripts Python e Node.js para processamento, extração, agregação
 - **`scripts/criar_banco_dados_brutos.py`**:
   Estrutura e carga dos dados brutos do SETE (`ano_carga` 2026) e do Censo Escolar (`ano_carga` 2025) no Supabase **via API** (HTTPS `/pg/query`, chave secreta do `.env`). Gera as migrações `0003_sete.sql`/`0004_censo.sql` (`--gerar-ddl`), carrega em lotes idempotentes com checkpoint (`--retomar`), aceita carga por UF (`--uf go`) e carrega as referências (`--tabelas municipios referencia`).
 
+- **`scripts/importar_planilha.py`**:
+  Envio genérico de planilhas (CSV, TSV, TXT, XLSX, XLSM, XLS, ODS) ao Supabase via API. Sem argumentos, lê toda a pasta `upload/` (fora do Git; ver `upload/README.md`) e cria uma tabela por arquivo no schema privado `importacao`, com colunas em snake_case e tipos inferidos (inteiro, numérico em formato BR ou internacional, data, texto; códigos com zero à esquerda ficam como texto). Opções: `--simular`, `--modo criar|substituir|anexar`, `--tabela schema.nome`, `--aba`, `--todas-abas`, `--ano-carga`. Recusa os schemas `public`, `sete`, `censo`, `analise` e `pnite_meta`.
+
 - **`scripts/supabase_migrar.py`**:
   Aplica as migrações SQL de `supabase/migrations/` (schemas, tabelas, views de análise e a view pública `indicadores`), registrando-as em `pnite_meta.migracoes`.
 

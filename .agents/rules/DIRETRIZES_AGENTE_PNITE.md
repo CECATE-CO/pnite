@@ -564,3 +564,13 @@ Regras consolidadas a partir da revisão geral da v.2.9.6. Cada item corresponde
    - capturas de tela claro/escuro em desktop e celular para inspeção visual.
 4. **Linha de base:** quando houver dúvida se um problema é novo ou pré-existente, executar o mesmo teste na versão anterior em `old/`.
 5. Scripts de teste e arquivos temporários ficam fora do repositório (pasta temporária), salvo pedido explícito.
+
+---
+
+## 45. PASTA `upload/` — ENVIO DE PLANILHAS AO BANCO
+A pasta `upload/` recebe as planilhas de capacitação e de outras fontes que devem ser enviadas ao Supabase.
+
+- **Fora do Git:** o `.gitignore` ignora todo o conteúdo de `upload/`, exceto `upload/README.md`. As planilhas podem conter dados pessoais e nunca devem ser commitadas (§6), nem copiadas para outras pastas versionadas.
+- **Envio genérico:** `python scripts/importar_planilha.py` lê todos os arquivos de `upload/` (inclusive subpastas; CSV, TSV, TXT, XLSX, XLSM, XLS, ODS) e cria uma tabela por arquivo no schema privado `importacao` (sem acesso pela API pública). Usar `--simular` antes de enviar e `--modo substituir` para reenviar.
+- **Schemas protegidos:** o script recusa `public`, `sete`, `censo`, `analise` e `pnite_meta`. Dados de `upload/` só chegam à interface por views agregadas criadas em migração, nunca expondo dados pessoais.
+- **Regras por planilha:** a estrutura esperada de cada planilha e o tratamento específico (tabela de destino, colunas, tipos, anonimização) serão definidos pelo usuário, planilha a planilha. Ao receber essas definições, registrá-las nesta seção (subseções 45.x) e implementá-las no script de envio, sem inferir estruturas não informadas.

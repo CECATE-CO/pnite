@@ -6,3 +6,7 @@ __pycache__/
 .env
 scripts/.checkpoint_carga/
 config.local.js
+
+# Planilhas para envio ao banco (podem conter dados pessoais): só o README é versionado
+upload/*
+!upload/README.md
