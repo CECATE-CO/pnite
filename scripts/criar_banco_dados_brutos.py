@@ -567,7 +567,8 @@ def carregar_municipios():
         leitor = csv.reader(fh, delimiter=";")
         next(leitor)
         for r in leitor:
-            if len(r) < 9 or not r[2].strip():
+            # só códigos IBGE de 7 dígitos (a lista traz Aparecida de Goiânia duplicada como 520140500)
+            if len(r) < 9 or not re.fullmatch(r"\d{7}", r[2].strip()):
                 continue
             linhas.append([r[2].strip(), r[3].strip(), codigos[int(r[0])], r[5].strip() or None,
                            r[6].strip() or None, r[7].strip() or None, r[8].strip() or None])
