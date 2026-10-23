@@ -7718,7 +7718,7 @@ window.onerror = function(msg, url, line, col, err) {
     <div class="smb-sec">
       <div class="smb-sec-title" data-i18n="settings_info_title">Informações da Versão</div>
       <div style="font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:4px;margin-top:6px">
-        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.1.7</b></div>
+        <div><span data-i18n="settings_version">Versão:</span> <b class="pnite-version-val" style="color:var(--c-blue)">v.3.1.8</b></div>
         <div><span data-i18n="settings_updated">Última Atualização:</span> <b class="pnite-date-val">06/10/2026</b> às <b class="pnite-time-val">21:05</b></div>
         <div><span data-i18n="settings_author">Responsável Técnico:</span> <b class="pnite-author-val">Equipe PNITE</b></div>
       </div>
@@ -7758,7 +7758,7 @@ window.onerror = function(msg, url, line, col, err) {
 // ================================================================
 // PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 // ================================================================
-const PNITE_VERSION = "v.3.1.7";
+const PNITE_VERSION = "v.3.1.8";
 const PNITE_LAST_UPDATE = "06/10/2026";
 const PNITE_LAST_TIME = "21:29";
 
@@ -8610,13 +8610,6 @@ function renderAllIndicators(d) {
 }
 
 // ================================================================
-// DADOS REAIS — Relatórios CECATE/UFG 2024-2025
-// ================================================================
-// Valores legados (pacote compilado anterior). NÃO são exibidos desde a v.3.0.8: servem apenas de
-// referência para scripts/criar_banco_dados_brutos.py (tabela ref.raw_referencia no Supabase).
-const _FALLBACK_DATA = {"nacional":{"label":"Brasil","PRGM":38.16,"PRDAM":17.8,"PRIO":17.8,"PRRM":92.43,"PRHM":2.04,"PRMM":5.52,"PVP":50.68,"PVT":49.32,"PVPCE":15.57,"PECS":null,"IUC":0.49,"PMVE":82.5,"PMNVE":52.38,"MON_CVE":52.38,"MOT_CVE":82.5,"PRPM":null,"ATE":91,"TETI":null,"IPE":null,"TEDC":28.04,"PATM":84.24,"PATE":15.76,"MEDATE":44,"ICA":null,"IMFP":9.5,"IMFT":13.8,"MIFCE":9.0,"PAFI":null,"PAD":1.69,"PARI":2.88,"PCSC":11.62,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"regiao":{"norte":{"label":"Norte","PRGM":32.8,"PRDAM":21.56,"PRIO":21.56,"PRRM":67.6,"PRHM":22.75,"PRMM":9.64,"PVP":52.27,"PVT":47.73,"PVPCE":27.29,"PECS":null,"IUC":0.51,"PMVE":75.03,"PMNVE":51.47,"MON_CVE":51.47,"MOT_CVE":75.03,"PRPM":null,"ATE":76,"TETI":null,"IPE":null,"TEDC":13.81,"PATM":85.68,"PATE":14.32,"MEDATE":35,"ICA":null,"IMFP":9.9,"IMFT":13.1,"MIFCE":11,"PAFI":null,"PAD":1.95,"PARI":1.83,"PCSC":7.27,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"nordeste":{"label":"Nordeste","PRGM":35.13,"PRDAM":15.6,"PRIO":15.6,"PRRM":91.72,"PRHM":0.26,"PRMM":8.03,"PVP":46.94,"PVT":53.06,"PVPCE":20.47,"PECS":null,"IUC":0.57,"PMVE":73.26,"PMNVE":34.65,"MON_CVE":34.65,"MOT_CVE":73.26,"PRPM":null,"ATE":92,"TETI":null,"IPE":null,"TEDC":24.11,"PATM":88.56,"PATE":11.44,"MEDATE":49,"ICA":null,"IMFP":9.2,"IMFT":15.7,"MIFCE":9.0,"PAFI":null,"PAD":2.05,"PARI":2.67,"PCSC":11.69,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"sudeste":{"label":"Sudeste","PRGM":33.91,"PRDAM":21.08,"PRIO":21.08,"PRRM":96.39,"PRHM":0.18,"PRMM":3.43,"PVP":47.52,"PVT":52.48,"PVPCE":8.94,"PECS":null,"IUC":0.48,"PMVE":86.75,"PMNVE":65.87,"MON_CVE":65.87,"MOT_CVE":86.75,"PRPM":null,"ATE":103,"TETI":null,"IPE":null,"TEDC":36.89,"PATM":78.9,"PATE":21.1,"MEDATE":42,"ICA":null,"IMFP":9.6,"IMFT":13.2,"MIFCE":8,"PAFI":null,"PAD":1.31,"PARI":3.21,"PCSC":9.9,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"sul":{"label":"Sul","PRGM":54.5,"PRDAM":10.69,"PRIO":10.69,"PRRM":96.98,"PRHM":0.08,"PRMM":2.94,"PVP":52.51,"PVT":47.49,"PVPCE":12.97,"PECS":null,"IUC":0.45,"PMVE":93.58,"PMNVE":69.31,"MON_CVE":69.31,"MOT_CVE":93.58,"PRPM":null,"ATE":78,"TETI":null,"IPE":null,"TEDC":39.09,"PATM":92.44,"PATE":7.56,"MEDATE":43,"ICA":null,"IMFP":9.9,"IMFT":11.5,"MIFCE":8.0,"PAFI":null,"PAD":1.19,"PARI":2.12,"PCSC":18.3,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"centro-oeste":{"label":"Centro-Oeste","PRGM":34.85,"PRDAM":28.8,"PRIO":28.8,"PRRM":95.71,"PRHM":0.17,"PRMM":4.12,"PVP":71.64,"PVT":28.36,"PVPCE":19.23,"PECS":null,"IUC":0.47,"PMVE":86.26,"PMNVE":68.49,"MON_CVE":68.49,"MOT_CVE":86.26,"PRPM":null,"ATE":88,"TETI":null,"IPE":null,"TEDC":48.95,"PATM":63.32,"PATE":36.68,"MEDATE":47,"ICA":null,"IMFP":9.0,"IMFT":13.3,"MIFCE":10.0,"PAFI":null,"PAD":0.7,"PARI":8.18,"PCSC":22.27,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null}},"estado":{"ac":{"label":"Acre","PRGM":18.75,"PRDAM":14.06,"PRIO":14.06,"PRRM":76.56,"PRHM":23.44,"PRMM":0.0,"PVP":81.2,"PVT":18.8,"PVPCE":51.13,"PECS":null,"IUC":0.49,"PMVE":88.35,"PMNVE":73.74,"MON_CVE":73.74,"MOT_CVE":88.35,"PRPM":null,"ATE":72,"TETI":null,"IPE":null,"TEDC":32.51,"PATM":50.95,"PATE":49.05,"MEDATE":34,"ICA":null,"IMFP":8.9,"IMFT":6.2,"MIFCE":8.5,"PAFI":null,"PAD":1.79,"PARI":3.04,"PCSC":3.67,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"al":{"label":"Alagoas","PRGM":56.65,"PRDAM":10.63,"PRIO":10.63,"PRRM":88.92,"PRHM":0.37,"PRMM":10.71,"PVP":62.29,"PVT":37.71,"PVPCE":31.33,"PECS":null,"IUC":0.37,"PMVE":50.12,"PMNVE":21.39,"MON_CVE":21.39,"MOT_CVE":50.12,"PRPM":null,"ATE":153,"TETI":null,"IPE":null,"TEDC":14.73,"PATM":81.34,"PATE":18.66,"MEDATE":94,"ICA":null,"IMFP":6.9,"IMFT":15.2,"MIFCE":6.0,"PAFI":null,"PAD":1.16,"PARI":1.58,"PCSC":7.19,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"ap":{"label":"Amapá","PRGM":2.13,"PRDAM":27.66,"PRIO":27.66,"PRRM":76.6,"PRHM":23.4,"PRMM":0.0,"PVP":42.11,"PVT":57.89,"PVPCE":26.32,"PECS":null,"IUC":1.26,"PMVE":63.46,"PMNVE":17.65,"MON_CVE":17.65,"MOT_CVE":63.46,"PRPM":null,"ATE":77,"TETI":null,"IPE":null,"TEDC":49.54,"PATM":50.88,"PATE":49.12,"MEDATE":31,"ICA":null,"IMFP":9.7,"IMFT":13.8,"MIFCE":7,"PAFI":null,"PAD":0.02,"PARI":0.0,"PCSC":5.55,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"am":{"label":"Amazonas","PRGM":57.53,"PRDAM":14.16,"PRIO":14.16,"PRRM":37.35,"PRHM":62.65,"PRMM":0.0,"PVP":42.19,"PVT":57.81,"PVPCE":15.94,"PECS":null,"IUC":0.46,"PMVE":70.72,"PMNVE":61.05,"MON_CVE":61.05,"MOT_CVE":70.72,"PRPM":null,"ATE":61,"TETI":null,"IPE":null,"TEDC":3.92,"PATM":75.07,"PATE":24.93,"MEDATE":23,"ICA":null,"IMFP":8.9,"IMFT":11.4,"MIFCE":12,"PAFI":null,"PAD":1.29,"PARI":0.31,"PCSC":2.03,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"ba":{"label":"Bahia","PRGM":37.18,"PRDAM":11.66,"PRIO":11.66,"PRRM":94.0,"PRHM":0.24,"PRMM":5.76,"PVP":35.97,"PVT":64.03,"PVPCE":17.27,"PECS":null,"IUC":0.54,"PMVE":78.72,"PMNVE":53.79,"MON_CVE":53.79,"MOT_CVE":78.72,"PRPM":null,"ATE":82,"TETI":null,"IPE":null,"TEDC":18.44,"PATM":95.96,"PATE":4.04,"MEDATE":40,"ICA":null,"IMFP":10.0,"IMFT":14.8,"MIFCE":12.0,"PAFI":null,"PAD":2.86,"PARI":1.43,"PCSC":10.06,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"ce":{"label":"Ceará","PRGM":13.37,"PRDAM":19.44,"PRIO":19.44,"PRRM":89.18,"PRHM":0.02,"PRMM":10.79,"PVP":52.03,"PVT":47.97,"PVPCE":20.32,"PECS":null,"IUC":0.79,"PMVE":74.62,"PMNVE":12.32,"MON_CVE":12.32,"MOT_CVE":74.62,"PRPM":null,"ATE":112,"TETI":null,"IPE":null,"TEDC":32.27,"PATM":93.68,"PATE":6.32,"MEDATE":79,"ICA":null,"IMFP":9.9,"IMFT":18.7,"MIFCE":11,"PAFI":null,"PAD":2.08,"PARI":3.48,"PCSC":15.49,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"df":{"label":"Distrito Federal","PRGM":60.0,"PRDAM":0.0,"PRIO":0.0,"PRRM":100.0,"PRHM":0.0,"PRMM":0.0,"PVP":99.28,"PVT":0.72,"PVPCE":97.12,"PECS":null,"IUC":0.01,"PMVE":null,"PMNVE":null,"MON_CVE":null,"MOT_CVE":null,"PRPM":null,"ATE":155,"TETI":null,"IPE":null,"TEDC":0.9,"PATM":0.0,"PATE":100.0,"MEDATE":78,"ICA":null,"IMFP":12.4,"IMFT":9.0,"MIFCE":13,"PAFI":null,"PAD":0.0,"PARI":0.0,"PCSC":0.05,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"es":{"label":"Espírito Santo","PRGM":31.56,"PRDAM":6.7,"PRIO":6.7,"PRRM":93.76,"PRHM":0.05,"PRMM":6.19,"PVP":30.01,"PVT":69.99,"PVPCE":10.32,"PECS":null,"IUC":0.52,"PMVE":94.75,"PMNVE":85.68,"MON_CVE":85.68,"MOT_CVE":94.75,"PRPM":null,"ATE":88,"TETI":null,"IPE":null,"TEDC":36.33,"PATM":72.76,"PATE":27.24,"MEDATE":45,"ICA":null,"IMFP":10.8,"IMFT":19.0,"MIFCE":8,"PAFI":null,"PAD":1.1,"PARI":1.08,"PCSC":8.83,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"go":{"label":"Goiás","PRGM":35.61,"PRDAM":32.12,"PRIO":32.12,"PRRM":94.9,"PRHM":0.08,"PRMM":5.02,"PVP":51.18,"PVT":48.82,"PVPCE":21.69,"PECS":null,"IUC":0.68,"PMVE":95.39,"PMNVE":75.62,"MON_CVE":75.62,"MOT_CVE":95.39,"PRPM":null,"ATE":74,"TETI":null,"IPE":null,"TEDC":42.57,"PATM":94.89,"PATE":5.11,"MEDATE":40,"ICA":null,"IMFP":8.4,"IMFT":12.6,"MIFCE":7,"PAFI":null,"PAD":1.01,"PARI":8.25,"PCSC":21.86,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"ma":{"label":"Maranhão","PRGM":25.66,"PRDAM":38.47,"PRIO":38.47,"PRRM":86.28,"PRHM":0.61,"PRMM":13.11,"PVP":33.83,"PVT":66.17,"PVPCE":16.83,"PECS":null,"IUC":0.68,"PMVE":79.24,"PMNVE":36.63,"MON_CVE":36.63,"MOT_CVE":79.24,"PRPM":null,"ATE":64,"TETI":null,"IPE":null,"TEDC":25.59,"PATM":99.56,"PATE":0.44,"MEDATE":31,"ICA":null,"IMFP":9.9,"IMFT":13.9,"MIFCE":12,"PAFI":null,"PAD":1.73,"PARI":7.05,"PCSC":10.38,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"mt":{"label":"Mato Grosso","PRGM":31.7,"PRDAM":23.19,"PRIO":23.19,"PRRM":96.04,"PRHM":0.09,"PRMM":3.87,"PVP":86.13,"PVT":13.87,"PVPCE":10.9,"PECS":null,"IUC":0.39,"PMVE":78.27,"PMNVE":73.6,"MON_CVE":73.6,"MOT_CVE":78.27,"PRPM":null,"ATE":83,"TETI":null,"IPE":null,"TEDC":55.92,"PATM":62.19,"PATE":37.81,"MEDATE":53,"ICA":null,"IMFP":8.6,"IMFT":12.5,"MIFCE":13,"PAFI":null,"PAD":0.47,"PARI":6.55,"PCSC":32.18,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"ms":{"label":"Mato Grosso do Sul","PRGM":38.8,"PRDAM":32.21,"PRIO":32.21,"PRRM":96.71,"PRHM":0.48,"PRMM":2.81,"PVP":68.94,"PVT":31.06,"PVPCE":24.07,"PECS":null,"IUC":0.48,"PMVE":86.99,"PMNVE":54.51,"MON_CVE":54.51,"MOT_CVE":86.99,"PRPM":null,"ATE":88,"TETI":null,"IPE":null,"TEDC":54.53,"PATM":72.74,"PATE":27.26,"MEDATE":50,"ICA":null,"IMFP":9.9,"IMFT":15.6,"MIFCE":9,"PAFI":null,"PAD":0.57,"PARI":11.57,"PCSC":33.07,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"mg":{"label":"Minas Gerais","PRGM":37.34,"PRDAM":26.93,"PRIO":26.93,"PRRM":96.15,"PRHM":0.25,"PRMM":3.6,"PVP":48.02,"PVT":51.98,"PVPCE":8.61,"PECS":null,"IUC":0.54,"PMVE":82.32,"PMNVE":54.86,"MON_CVE":54.86,"MOT_CVE":82.32,"PRPM":null,"ATE":74,"TETI":null,"IPE":null,"TEDC":42.71,"PATM":99.18,"PATE":0.82,"MEDATE":37,"ICA":null,"IMFP":9.1,"IMFT":14.1,"MIFCE":10.0,"PAFI":null,"PAD":1.0,"PARI":5.01,"PCSC":26.45,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"pa":{"label":"Pará","PRGM":18.39,"PRDAM":18.02,"PRIO":18.02,"PRRM":57.81,"PRHM":40.03,"PRMM":2.16,"PVP":49.44,"PVT":50.56,"PVPCE":26.92,"PECS":null,"IUC":0.91,"PMVE":68.69,"PMNVE":43.15,"MON_CVE":43.15,"MOT_CVE":68.69,"PRPM":null,"ATE":84,"TETI":null,"IPE":null,"TEDC":13.53,"PATM":97.42,"PATE":2.58,"MEDATE":41,"ICA":null,"IMFP":10.3,"IMFT":17.4,"MIFCE":12,"PAFI":null,"PAD":2.59,"PARI":0.86,"PCSC":6.92,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"pb":{"label":"Paraíba","PRGM":16.56,"PRDAM":24.37,"PRIO":24.37,"PRRM":89.91,"PRHM":0.0,"PRMM":10.09,"PVP":72.28,"PVT":27.72,"PVPCE":30.52,"PECS":null,"IUC":0.5,"PMVE":75.51,"PMNVE":24.6,"MON_CVE":24.6,"MOT_CVE":75.51,"PRPM":null,"ATE":75,"TETI":null,"IPE":null,"TEDC":31.13,"PATM":79.08,"PATE":20.92,"MEDATE":40,"ICA":null,"IMFP":9.4,"IMFT":17.3,"MIFCE":9,"PAFI":null,"PAD":1.23,"PARI":6.85,"PCSC":10.58,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"pr":{"label":"Paraná","PRGM":63.87,"PRDAM":7.83,"PRIO":7.83,"PRRM":98.92,"PRHM":0.08,"PRMM":1.0,"PVP":46.79,"PVT":53.21,"PVPCE":10.64,"PECS":null,"IUC":0.19,"PMVE":95.86,"PMNVE":81.89,"MON_CVE":81.89,"MOT_CVE":95.86,"PRPM":null,"ATE":83,"TETI":null,"IPE":null,"TEDC":23.61,"PATM":99.98,"PATE":0.02,"MEDATE":51,"ICA":null,"IMFP":9.8,"IMFT":7.9,"MIFCE":7.0,"PAFI":null,"PAD":1.34,"PARI":0.45,"PCSC":7.75,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"pe":{"label":"Pernambuco","PRGM":49.45,"PRDAM":7.17,"PRIO":7.17,"PRRM":91.55,"PRHM":0.47,"PRMM":7.98,"PVP":47.21,"PVT":52.79,"PVPCE":17.78,"PECS":null,"IUC":0.51,"PMVE":73.21,"PMNVE":39.75,"MON_CVE":39.75,"MOT_CVE":73.21,"PRPM":null,"ATE":101,"TETI":null,"IPE":null,"TEDC":24.9,"PATM":86.12,"PATE":13.88,"MEDATE":48,"ICA":null,"IMFP":7.9,"IMFT":16.4,"MIFCE":6,"PAFI":null,"PAD":1.21,"PARI":0.76,"PCSC":17.93,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"pi":{"label":"Piauí","PRGM":36.0,"PRDAM":19.09,"PRIO":19.09,"PRRM":93.52,"PRHM":0.1,"PRMM":6.38,"PVP":44.29,"PVT":55.71,"PVPCE":23.79,"PECS":null,"IUC":0.49,"PMVE":61.32,"PMNVE":44.62,"MON_CVE":44.62,"MOT_CVE":61.32,"PRPM":null,"ATE":98,"TETI":null,"IPE":null,"TEDC":25.57,"PATM":67.05,"PATE":32.95,"MEDATE":67,"ICA":null,"IMFP":10.5,"IMFT":15.7,"MIFCE":12.0,"PAFI":null,"PAD":2.5,"PARI":3.61,"PCSC":9.59,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"rj":{"label":"Rio de Janeiro","PRGM":29.78,"PRDAM":9.55,"PRIO":9.55,"PRRM":97.77,"PRHM":0.09,"PRMM":2.13,"PVP":54.67,"PVT":45.33,"PVPCE":15.07,"PECS":null,"IUC":0.33,"PMVE":83.38,"PMNVE":52.98,"MON_CVE":52.98,"MOT_CVE":83.38,"PRPM":null,"ATE":238,"TETI":null,"IPE":null,"TEDC":14.81,"PATM":60.92,"PATE":39.08,"MEDATE":124,"ICA":null,"IMFP":10.3,"IMFT":10.9,"MIFCE":10,"PAFI":null,"PAD":2.02,"PARI":0.38,"PCSC":1.58,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"rn":{"label":"Rio Grande do Norte","PRGM":32.41,"PRDAM":20.96,"PRIO":20.96,"PRRM":92.26,"PRHM":0.08,"PRMM":7.66,"PVP":59.58,"PVT":40.42,"PVPCE":26.04,"PECS":null,"IUC":0.62,"PMVE":77.95,"PMNVE":59.87,"MON_CVE":59.87,"MOT_CVE":77.95,"PRPM":null,"ATE":85,"TETI":null,"IPE":null,"TEDC":31.39,"PATM":89.99,"PATE":10.01,"MEDATE":44,"ICA":null,"IMFP":10.2,"IMFT":13.2,"MIFCE":11.0,"PAFI":null,"PAD":2.84,"PARI":3.21,"PCSC":10.41,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"rs":{"label":"Rio Grande do Sul","PRGM":47.04,"PRDAM":11.5,"PRIO":11.5,"PRRM":97.65,"PRHM":0.08,"PRMM":2.27,"PVP":50.94,"PVT":49.06,"PVPCE":13.04,"PECS":null,"IUC":0.63,"PMVE":93.19,"PMNVE":65.57,"MON_CVE":65.57,"MOT_CVE":93.19,"PRPM":null,"ATE":57,"TETI":null,"IPE":null,"TEDC":45.28,"PATM":77.49,"PATE":22.51,"MEDATE":30,"ICA":null,"IMFP":10.3,"IMFT":14.6,"MIFCE":12,"PAFI":null,"PAD":1.28,"PARI":1.41,"PCSC":33.95,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"ro":{"label":"Rondônia","PRGM":36.71,"PRDAM":26.28,"PRIO":26.28,"PRRM":93.47,"PRHM":0.29,"PRMM":6.24,"PVP":61.11,"PVT":38.89,"PVPCE":41.96,"PECS":null,"IUC":0.25,"PMVE":79.04,"PMNVE":64.72,"MON_CVE":64.72,"MOT_CVE":79.04,"PRPM":null,"ATE":107,"TETI":null,"IPE":null,"TEDC":28.98,"PATM":88.95,"PATE":11.05,"MEDATE":75,"ICA":null,"IMFP":10.4,"IMFT":13.8,"MIFCE":11.0,"PAFI":null,"PAD":0.84,"PARI":6.02,"PCSC":18.81,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"rr":{"label":"Roraima","PRGM":41.94,"PRDAM":6.45,"PRIO":6.45,"PRRM":100.0,"PRHM":0.0,"PRMM":0.0,"PVP":63.49,"PVT":36.51,"PVPCE":44.44,"PECS":null,"IUC":0.41,"PMVE":53.12,"PMNVE":12.5,"MON_CVE":12.5,"MOT_CVE":53.12,"PRPM":null,"ATE":62,"TETI":null,"IPE":null,"TEDC":2.05,"PATM":51.35,"PATE":48.65,"MEDATE":38,"ICA":null,"IMFP":8.5,"IMFT":4.2,"MIFCE":7.0,"PAFI":null,"PAD":2.09,"PARI":0.8,"PCSC":3.46,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"sc":{"label":"Santa Catarina","PRGM":51.5,"PRDAM":14.97,"PRIO":14.97,"PRRM":91.3,"PRHM":0.07,"PRMM":8.63,"PVP":65.52,"PVT":34.48,"PVPCE":16.96,"PECS":null,"IUC":0.6,"PMVE":90.2,"PMNVE":53.51,"MON_CVE":53.51,"MOT_CVE":90.2,"PRPM":null,"ATE":103,"TETI":null,"IPE":null,"TEDC":44.6,"PATM":96.13,"PATE":3.87,"MEDATE":55,"ICA":null,"IMFP":9.7,"IMFT":13.4,"MIFCE":7,"PAFI":null,"PAD":0.89,"PARI":4.96,"PCSC":17.67,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"sp":{"label":"São Paulo","PRGM":27.16,"PRDAM":13.39,"PRIO":13.39,"PRRM":97.53,"PRHM":0.08,"PRMM":2.4,"PVP":46.73,"PVT":53.27,"PVPCE":7.65,"PECS":null,"IUC":0.42,"PMVE":97.01,"PMNVE":80.39,"MON_CVE":80.39,"MOT_CVE":97.01,"PRPM":null,"ATE":71,"TETI":null,"IPE":null,"TEDC":38.9,"PATM":88.8,"PATE":11.2,"MEDATE":31,"ICA":null,"IMFP":10.4,"IMFT":10.7,"MIFCE":6,"PAFI":null,"PAD":1.55,"PARI":1.46,"PCSC":8.5,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"se":{"label":"Sergipe","PRGM":52.26,"PRDAM":29.97,"PRIO":29.97,"PRRM":96.34,"PRHM":0.17,"PRMM":3.48,"PVP":68.88,"PVT":31.12,"PVPCE":19.31,"PECS":null,"IUC":0.71,"PMVE":75.97,"PMNVE":11.49,"MON_CVE":11.49,"MOT_CVE":75.97,"PRPM":null,"ATE":125,"TETI":null,"IPE":null,"TEDC":39.89,"PATM":73.37,"PATE":26.63,"MEDATE":77,"ICA":null,"IMFP":10.1,"IMFT":12.2,"MIFCE":7.5,"PAFI":null,"PAD":1.96,"PARI":6.24,"PCSC":9.09,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null},"to":{"label":"Tocantins","PRGM":54.5,"PRDAM":27.1,"PRIO":27.1,"PRRM":69.38,"PRHM":0.12,"PRMM":30.5,"PVP":45.52,"PVT":54.48,"PVPCE":11.54,"PECS":null,"IUC":0.36,"PMVE":81.77,"PMNVE":39.24,"MON_CVE":39.24,"MOT_CVE":81.77,"PRPM":null,"ATE":55,"TETI":null,"IPE":null,"TEDC":27.37,"PATM":77.27,"PATE":22.73,"MEDATE":35,"ICA":null,"IMFP":9.5,"IMFT":8.8,"MIFCE":6.0,"PAFI":null,"PAD":0.5,"PARI":8.19,"PCSC":20.46,"PAIH":null,"PRPNP":null,"DMC":null,"PVCED":null,"TVA":null}}};
-const _FALLBACK_RAW_DATA = {"ac": {"al_cad": 7330, "tot_veic": 133, "vp": 108, "vt": 25, "ce_veic": 68, "tot_mon": 99, "mon_cv": 73, "tot_mot_info": 103, "mot_cv": 91, "al_transp": 2383, "esc_at": 108, "tot_rotas": 128, "georref": 24, "dif": 18, "t1": 98, "t2": 30, "t3": 0, "km_total": 6482.2, "n_veic_validos": 133, "cap_sum": 4817.0, "cap_media": 36.22, "al_pcd": 131, "al_dif": 223, "al_transp_sete": 2383, "demanda_censo": 64941, "mot_sem_vinculo": 12, "mon_sem_vinculo": 26, "cs_transp": 64941, "cs_test": 31854, "cs_tmun": 33087, "cs_escolas_atendidas": 909, "medate_val": 34, "medate_n": 909, "imfp": 8.9, "imft": 6.2, "mifce": 8.5}, "al": {"al_cad": 155195, "tot_veic": 1628, "vp": 1014, "vt": 614, "ce_veic": 510, "tot_mon": 1150, "mon_cv": 246, "tot_mot_info": 1235, "mot_cv": 619, "al_transp": 22860, "esc_at": 477, "tot_rotas": 1345, "georref": 762, "dif": 143, "t1": 1196, "t2": 5, "t3": 144, "km_total": 47056.6, "n_veic_validos": 1620, "cap_sum": 61626.0, "cap_media": 38.04, "al_pcd": 1806, "al_dif": 2458, "al_transp_sete": 22860, "demanda_censo": 317905, "mot_sem_vinculo": 616, "mon_sem_vinculo": 904, "cs_transp": 317905, "cs_test": 59324, "cs_tmun": 258581, "cs_escolas_atendidas": 2086, "medate_val": 94, "medate_n": 2086, "imfp": 6.9, "imft": 15.2, "mifce": 6.0}, "ap": {"al_cad": 4384, "tot_veic": 57, "vp": 24, "vt": 33, "ce_veic": 15, "tot_mon": 51, "mon_cv": 9, "tot_mot_info": 52, "mot_cv": 33, "al_transp": 2172, "esc_at": 39, "tot_rotas": 47, "georref": 1, "dif": 13, "t1": 36, "t2": 11, "t3": 0, "km_total": 2491.2, "n_veic_validos": 57, "cap_sum": 1720.0, "cap_media": 30.18, "al_pcd": 1, "al_dif": 0, "al_transp_sete": 2172, "demanda_censo": 39131, "mot_sem_vinculo": 19, "mon_sem_vinculo": 42, "cs_transp": 39131, "cs_test": 19222, "cs_tmun": 19909, "cs_escolas_atendidas": 510, "medate_val": 31, "medate_n": 510, "imfp": 9.7, "imft": 13.8, "mifce": 7}, "am": {"al_cad": 102411, "tot_veic": 320, "vp": 135, "vt": 185, "ce_veic": 51, "tot_mon": 95, "mon_cv": 58, "tot_mot_info": 181, "mot_cv": 128, "al_transp": 4017, "esc_at": 162, "tot_rotas": 332, "georref": 191, "dif": 47, "t1": 124, "t2": 208, "t3": 0, "km_total": 17342.3, "n_veic_validos": 319, "cap_sum": 8823.0, "cap_media": 27.66, "al_pcd": 1322, "al_dif": 314, "al_transp_sete": 4017, "demanda_censo": 197502, "mot_sem_vinculo": 53, "mon_sem_vinculo": 37, "cs_transp": 197502, "cs_test": 49235, "cs_tmun": 148267, "cs_escolas_atendidas": 3289, "medate_val": 23, "medate_n": 3289, "imfp": 8.9, "imft": 11.4, "mifce": 12}, "ba": {"al_cad": 511303, "tot_veic": 6439, "vp": 2316, "vt": 4123, "ce_veic": 1112, "tot_mon": 1783, "mon_cv": 959, "tot_mot_info": 4008, "mot_cv": 3155, "al_transp": 94271, "esc_at": 2731, "tot_rotas": 10080, "georref": 3748, "dif": 1175, "t1": 9475, "t2": 24, "t3": 581, "km_total": 623729.6, "n_veic_validos": 6393, "cap_sum": 173506.0, "cap_media": 27.14, "al_pcd": 14603, "al_dif": 7308, "al_transp_sete": 94271, "demanda_censo": 937240, "mot_sem_vinculo": 853, "mon_sem_vinculo": 824, "cs_transp": 937240, "cs_test": 37866, "cs_tmun": 899374, "cs_escolas_atendidas": 11434, "medate_val": 40, "medate_n": 11434, "imfp": 10.0, "imft": 14.8, "mifce": 12.0}, "ce": {"al_cad": 267226, "tot_veic": 3106, "vp": 1616, "vt": 1490, "ce_veic": 631, "tot_mon": 1624, "mon_cv": 200, "tot_mot_info": 2372, "mot_cv": 1770, "al_transp": 86224, "esc_at": 1699, "tot_rotas": 4382, "georref": 586, "dif": 852, "t1": 3908, "t2": 1, "t3": 473, "km_total": 208472.6, "n_veic_validos": 3082, "cap_sum": 108859.0, "cap_media": 35.32, "al_pcd": 5563, "al_dif": 9297, "al_transp_sete": 86224, "demanda_censo": 556628, "mot_sem_vinculo": 602, "mon_sem_vinculo": 1424, "cs_transp": 556628, "cs_test": 35157, "cs_tmun": 521471, "cs_escolas_atendidas": 4985, "medate_val": 79, "medate_n": 4985, "imfp": 9.9, "imft": 18.7, "mifce": 11}, "df": {"al_cad": 4683, "tot_veic": 139, "vp": 138, "vt": 1, "ce_veic": 135, "al_transp": 42, "esc_at": 2, "tot_rotas": 5, "georref": 3, "dif": 0, "t1": 5, "t2": 0, "t3": 0, "km_total": 155.9, "n_veic_validos": 134, "cap_sum": 6122.0, "cap_media": 45.69, "al_pcd": 0, "al_dif": 0, "al_transp_sete": 42, "demanda_censo": 88301, "tot_mot_info": 0, "mot_sem_vinculo": 0, "mot_cv": 0, "tot_mon": 0, "mon_sem_vinculo": 0, "mon_cv": 0, "cs_transp": 88301, "cs_test": 88301, "cs_tmun": 0, "cs_escolas_atendidas": 570, "medate_val": 78, "medate_n": 570, "imfp": 12.4, "imft": 9.0, "mifce": 13}, "es": {"al_cad": 34976, "tot_veic": 843, "vp": 253, "vt": 590, "ce_veic": 87, "tot_mon": 461, "mon_cv": 395, "tot_mot_info": 495, "mot_cv": 469, "al_transp": 12707, "esc_at": 353, "tot_rotas": 1971, "georref": 622, "dif": 132, "t1": 1848, "t2": 1, "t3": 122, "km_total": 62799.8, "n_veic_validos": 841, "cap_sum": 24204.0, "cap_media": 28.78, "al_pcd": 385, "al_dif": 376, "al_transp_sete": 12707, "demanda_censo": 143945, "mot_sem_vinculo": 26, "mon_sem_vinculo": 66, "cs_transp": 143945, "cs_test": 39210, "cs_tmun": 104735, "cs_escolas_atendidas": 1652, "medate_val": 45, "medate_n": 1652, "imfp": 10.8, "imft": 19.0, "mifce": 8}, "go": {"al_cad": 82083, "tot_veic": 1858, "vp": 951, "vt": 907, "ce_veic": 403, "tot_mon": 283, "mon_cv": 214, "tot_mot_info": 1346, "mot_cv": 1284, "al_transp": 34945, "esc_at": 795, "tot_rotas": 2491, "georref": 887, "dif": 800, "t1": 2364, "t2": 2, "t3": 125, "km_total": 478967.9, "n_veic_validos": 1855, "cap_sum": 51567.0, "cap_media": 27.8, "al_pcd": 827, "al_dif": 6773, "al_transp_sete": 34945, "demanda_censo": 159846, "mot_sem_vinculo": 62, "mon_sem_vinculo": 69, "cs_transp": 159846, "cs_test": 8164, "cs_tmun": 151682, "cs_escolas_atendidas": 2171, "medate_val": 40, "medate_n": 2171, "imfp": 8.4, "imft": 12.6, "mifce": 7}, "ma": {"al_cad": 144662, "tot_veic": 1753, "vp": 593, "vt": 1160, "ce_veic": 295, "tot_mon": 1223, "mon_cv": 448, "tot_mot_info": 1498, "mot_cv": 1187, "al_transp": 37021, "esc_at": 1018, "tot_rotas": 1968, "georref": 505, "dif": 757, "t1": 1698, "t2": 12, "t3": 258, "km_total": 83356.4, "n_veic_validos": 1751, "cap_sum": 54199.0, "cap_media": 30.95, "al_pcd": 2507, "al_dif": 10199, "al_transp_sete": 37021, "demanda_censo": 356685, "mot_sem_vinculo": 311, "mon_sem_vinculo": 775, "cs_transp": 356685, "cs_test": 1563, "cs_tmun": 355122, "cs_escolas_atendidas": 5658, "medate_val": 31, "medate_n": 5658, "imfp": 9.9, "imft": 13.9, "mifce": 12}, "mt": {"al_cad": 72206, "tot_veic": 2596, "vp": 2236, "vt": 360, "ce_veic": 283, "tot_mon": 303, "mon_cv": 223, "tot_mot_info": 1620, "mot_cv": 1268, "al_transp": 40377, "esc_at": 825, "tot_rotas": 2199, "georref": 697, "dif": 510, "t1": 2112, "t2": 2, "t3": 85, "km_total": 262434.3, "n_veic_validos": 2583, "cap_sum": 104407.0, "cap_media": 40.42, "al_pcd": 339, "al_dif": 4726, "al_transp_sete": 40377, "demanda_censo": 125484, "mot_sem_vinculo": 352, "mon_sem_vinculo": 80, "cs_transp": 125484, "cs_test": 47440, "cs_tmun": 78044, "cs_escolas_atendidas": 1524, "medate_val": 53, "medate_n": 1524, "imfp": 8.6, "imft": 12.5, "mifce": 13}, "ms": {"al_cad": 44092, "tot_veic": 1288, "vp": 888, "vt": 400, "ce_veic": 310, "tot_mon": 255, "mon_cv": 139, "tot_mot_info": 861, "mot_cv": 749, "al_transp": 24042, "esc_at": 305, "tot_rotas": 1245, "georref": 483, "dif": 401, "t1": 1204, "t2": 6, "t3": 35, "km_total": 436150.5, "n_veic_validos": 1286, "cap_sum": 50070.0, "cap_media": 38.93, "al_pcd": 252, "al_dif": 5102, "al_transp_sete": 24042, "demanda_censo": 72697, "mot_sem_vinculo": 112, "mon_sem_vinculo": 116, "cs_transp": 72697, "cs_test": 19816, "cs_tmun": 52881, "cs_escolas_atendidas": 833, "medate_val": 50, "medate_n": 833, "imfp": 9.9, "imft": 15.6, "mifce": 9}, "mg": {"al_cad": 444936, "tot_veic": 13338, "vp": 6405, "vt": 6933, "ce_veic": 1148, "tot_mon": 3325, "mon_cv": 1824, "tot_mot_info": 7936, "mot_cv": 6533, "al_transp": 190011, "esc_at": 4996, "tot_rotas": 15679, "georref": 5855, "dif": 4222, "t1": 15075, "t2": 39, "t3": 565, "km_total": 3041445.2, "n_veic_validos": 13271, "cap_sum": 353702.0, "cap_media": 26.65, "al_pcd": 4453, "al_dif": 22274, "al_transp_sete": 190011, "demanda_censo": 718249, "mot_sem_vinculo": 1403, "mon_sem_vinculo": 1501, "cs_transp": 718249, "cs_test": 5924, "cs_tmun": 712325, "cs_escolas_atendidas": 9824, "medate_val": 37, "medate_n": 9824, "imfp": 9.1, "imft": 14.1, "mifce": 10.0}, "pa": {"al_cad": 301964, "tot_veic": 1341, "vp": 663, "vt": 678, "ce_veic": 361, "tot_mon": 642, "mon_cv": 277, "tot_mot_info": 1102, "mot_cv": 757, "al_transp": 40870, "esc_at": 1193, "tot_rotas": 3235, "georref": 595, "dif": 583, "t1": 1870, "t2": 1295, "t3": 70, "km_total": 167828.8, "n_veic_validos": 1331, "cap_sum": 44782.0, "cap_media": 33.65, "al_pcd": 7812, "al_dif": 2608, "al_transp_sete": 40870, "demanda_censo": 591018, "mot_sem_vinculo": 345, "mon_sem_vinculo": 365, "cs_transp": 591018, "cs_test": 15277, "cs_tmun": 575741, "cs_escolas_atendidas": 7080, "medate_val": 41, "medate_n": 7080, "imfp": 10.3, "imft": 17.4, "mifce": 12}, "pb": {"al_cad": 73220, "tot_veic": 1396, "vp": 1009, "vt": 387, "ce_veic": 426, "tot_mon": 126, "mon_cv": 31, "tot_mot_info": 878, "mot_cv": 663, "al_transp": 22795, "esc_at": 671, "tot_rotas": 1715, "georref": 284, "dif": 418, "t1": 1542, "t2": 0, "t3": 173, "km_total": 71950.0, "n_veic_validos": 1394, "cap_sum": 45645.0, "cap_media": 32.74, "al_pcd": 899, "al_dif": 5017, "al_transp_sete": 22795, "demanda_censo": 215512, "mot_sem_vinculo": 215, "mon_sem_vinculo": 95, "cs_transp": 215512, "cs_test": 45078, "cs_tmun": 170434, "cs_escolas_atendidas": 2910, "medate_val": 40, "medate_n": 2910, "imfp": 9.4, "imft": 17.3, "mifce": 9}, "pr": {"al_cad": 141198, "tot_veic": 5055, "vp": 2365, "vt": 2690, "ce_veic": 538, "tot_mon": 1209, "mon_cv": 990, "tot_mot_info": 3457, "mot_cv": 3314, "al_transp": 33337, "esc_at": 1824, "tot_rotas": 6095, "georref": 3893, "dif": 477, "t1": 6029, "t2": 5, "t3": 61, "km_total": 1408495.6, "n_veic_validos": 5024, "cap_sum": 171032.0, "cap_media": 34.04, "al_pcd": 1899, "al_dif": 631, "al_transp_sete": 33337, "demanda_censo": 430205, "mot_sem_vinculo": 143, "mon_sem_vinculo": 219, "cs_transp": 430205, "cs_test": 95, "cs_tmun": 430110, "cs_escolas_atendidas": 5211, "medate_val": 51, "medate_n": 5211, "imfp": 9.8, "imft": 7.9, "mifce": 7.0}, "pe": {"al_cad": 325255, "tot_veic": 5124, "vp": 2419, "vt": 2705, "ce_veic": 911, "tot_mon": 2035, "mon_cv": 809, "tot_mot_info": 3859, "mot_cv": 2825, "al_transp": 80993, "esc_at": 2086, "tot_rotas": 6139, "georref": 3036, "dif": 440, "t1": 5620, "t2": 29, "t3": 490, "km_total": 369300.1, "n_veic_validos": 5116, "cap_sum": 158612.0, "cap_media": 31.0, "al_pcd": 3947, "al_dif": 2474, "al_transp_sete": 80993, "demanda_censo": 451632, "mot_sem_vinculo": 1034, "mon_sem_vinculo": 1226, "cs_transp": 451632, "cs_test": 62693, "cs_tmun": 388939, "cs_escolas_atendidas": 4496, "medate_val": 48, "medate_n": 4496, "imfp": 7.9, "imft": 16.4, "mifce": 6}, "pi": {"al_cad": 106209, "tot_veic": 1673, "vp": 741, "vt": 932, "ce_veic": 398, "tot_mon": 892, "mon_cv": 398, "tot_mot_info": 923, "mot_cv": 566, "al_transp": 27160, "esc_at": 720, "tot_rotas": 1928, "georref": 694, "dif": 368, "t1": 1803, "t2": 2, "t3": 123, "km_total": 478432.3, "n_veic_validos": 1671, "cap_sum": 55598.0, "cap_media": 33.27, "al_pcd": 2659, "al_dif": 3839, "al_transp_sete": 27160, "demanda_censo": 283104, "mot_sem_vinculo": 357, "mon_sem_vinculo": 494, "cs_transp": 283104, "cs_test": 93290, "cs_tmun": 189814, "cs_escolas_atendidas": 2889, "medate_val": 67, "medate_n": 2889, "imfp": 10.5, "imft": 15.7, "mifce": 12.0}, "rj": {"al_cad": 134184, "tot_veic": 1811, "vp": 990, "vt": 821, "ce_veic": 273, "tot_mon": 1157, "mon_cv": 613, "tot_mot_info": 1029, "mot_cv": 858, "al_transp": 19874, "esc_at": 585, "tot_rotas": 1078, "georref": 321, "dif": 103, "t1": 1054, "t2": 1, "t3": 23, "km_total": 58326.3, "n_veic_validos": 1801, "cap_sum": 59453.0, "cap_media": 33.01, "al_pcd": 2710, "al_dif": 515, "al_transp_sete": 19874, "demanda_censo": 1257278, "mot_sem_vinculo": 171, "mon_sem_vinculo": 544, "cs_transp": 1257278, "cs_test": 491385, "cs_tmun": 765893, "cs_escolas_atendidas": 5286, "medate_val": 124, "medate_n": 5286, "imfp": 10.3, "imft": 10.9, "mifce": 10}, "rn": {"al_cad": 62247, "tot_veic": 814, "vp": 485, "vt": 329, "ce_veic": 212, "tot_mon": 152, "mon_cv": 91, "tot_mot_info": 567, "mot_cv": 442, "al_transp": 19539, "esc_at": 558, "tot_rotas": 1188, "georref": 385, "dif": 249, "t1": 1096, "t2": 1, "t3": 91, "km_total": 82800.4, "n_veic_validos": 813, "cap_sum": 31315.0, "cap_media": 38.52, "al_pcd": 1768, "al_dif": 2001, "al_transp_sete": 19539, "demanda_censo": 187676, "mot_sem_vinculo": 125, "mon_sem_vinculo": 61, "cs_transp": 187676, "cs_test": 18786, "cs_tmun": 168890, "cs_escolas_atendidas": 2210, "medate_val": 44, "medate_n": 2210, "imfp": 10.2, "imft": 13.2, "mifce": 11.0}, "rs": {"al_cad": 228280, "tot_veic": 5175, "vp": 2636, "vt": 2539, "ce_veic": 675, "tot_mon": 758, "mon_cv": 497, "tot_mot_info": 3464, "mot_cv": 3228, "al_transp": 103363, "esc_at": 2328, "tot_rotas": 6522, "georref": 3068, "dif": 750, "t1": 6369, "t2": 5, "t3": 148, "km_total": 349438.5, "n_veic_validos": 5151, "cap_sum": 165357.0, "cap_media": 32.1, "al_pcd": 2930, "al_dif": 3228, "al_transp_sete": 103363, "demanda_censo": 304441, "mot_sem_vinculo": 236, "mon_sem_vinculo": 261, "cs_transp": 304471, "cs_test": 68522, "cs_tmun": 235949, "cs_escolas_atendidas": 5382, "medate_val": 30, "medate_n": 5382, "imfp": 10.3, "imft": 14.6, "mifce": 12}, "ro": {"al_cad": 46194, "tot_veic": 1206, "vp": 737, "vt": 469, "ce_veic": 506, "tot_mon": 686, "mon_cv": 444, "tot_mot_info": 668, "mot_cv": 528, "al_transp": 13389, "esc_at": 345, "tot_rotas": 1362, "georref": 500, "dif": 358, "t1": 1273, "t2": 4, "t3": 85, "km_total": 102018.9, "n_veic_validos": 1205, "cap_sum": 53157.0, "cap_media": 44.11, "al_pcd": 388, "al_dif": 2781, "al_transp_sete": 13389, "demanda_censo": 71179, "mot_sem_vinculo": 140, "mon_sem_vinculo": 242, "cs_transp": 71179, "cs_test": 7866, "cs_tmun": 63313, "cs_escolas_atendidas": 668, "medate_val": 75, "medate_n": 668, "imfp": 10.4, "imft": 13.8, "mifce": 11.0}, "rr": {"al_cad": 45735, "tot_veic": 63, "vp": 40, "vt": 23, "ce_veic": 28, "tot_mon": 24, "mon_cv": 3, "tot_mot_info": 32, "mot_cv": 17, "al_transp": 936, "esc_at": 34, "tot_rotas": 62, "georref": 26, "dif": 4, "t1": 62, "t2": 0, "t3": 0, "km_total": 2208.9, "n_veic_validos": 63, "cap_sum": 2272.0, "cap_media": 36.06, "al_pcd": 955, "al_dif": 367, "al_transp_sete": 936, "demanda_censo": 27027, "mot_sem_vinculo": 15, "mon_sem_vinculo": 21, "cs_transp": 27027, "cs_test": 13148, "cs_tmun": 13879, "cs_escolas_atendidas": 442, "medate_val": 38, "medate_n": 442, "imfp": 8.5, "imft": 4.2, "mifce": 7.0}, "sc": {"al_cad": 140449, "tot_veic": 2848, "vp": 1866, "vt": 982, "ce_veic": 483, "tot_mon": 783, "mon_cv": 419, "tot_mot_info": 1929, "mot_cv": 1740, "al_transp": 62636, "esc_at": 1036, "tot_rotas": 2839, "georref": 1462, "dif": 425, "t1": 2592, "t2": 2, "t3": 245, "km_total": 533454.2, "n_veic_validos": 2839, "cap_sum": 104272.0, "cap_media": 36.73, "al_pcd": 1257, "al_dif": 6973, "al_transp_sete": 62636, "demanda_censo": 354510, "mot_sem_vinculo": 189, "mon_sem_vinculo": 364, "cs_transp": 354510, "cs_test": 13705, "cs_tmun": 340805, "cs_escolas_atendidas": 3463, "medate_val": 55, "medate_n": 3463, "imfp": 9.7, "imft": 13.4, "mifce": 7}, "sp": {"al_cad": 197228, "tot_veic": 6133, "vp": 2866, "vt": 3267, "ce_veic": 469, "tot_mon": 2922, "mon_cv": 2349, "tot_mot_info": 3379, "mot_cv": 3278, "al_transp": 76716, "esc_at": 2149, "tot_rotas": 6632, "georref": 1801, "dif": 888, "t1": 6468, "t2": 5, "t3": 159, "km_total": 265088.3, "n_veic_validos": 6117, "cap_sum": 183724.0, "cap_media": 30.03, "al_pcd": 3051, "al_dif": 2886, "al_transp_sete": 76716, "demanda_censo": 902541, "mot_sem_vinculo": 101, "mon_sem_vinculo": 573, "cs_transp": 902541, "cs_test": 101090, "cs_tmun": 801451, "cs_escolas_atendidas": 12726, "medate_val": 31, "medate_n": 12726, "imfp": 10.4, "imft": 10.7, "mifce": 6}, "se": {"al_cad": 36769, "tot_veic": 466, "vp": 321, "vt": 145, "ce_veic": 90, "tot_mon": 296, "mon_cv": 34, "tot_mot_info": 412, "mot_cv": 313, "al_transp": 14666, "esc_at": 326, "tot_rotas": 574, "georref": 300, "dif": 172, "t1": 553, "t2": 1, "t3": 20, "km_total": 22878.5, "n_veic_validos": 464, "cap_sum": 20520.0, "cap_media": 44.22, "al_pcd": 719, "al_dif": 2295, "al_transp_sete": 14666, "demanda_censo": 161276, "mot_sem_vinculo": 99, "mon_sem_vinculo": 262, "cs_transp": 161276, "cs_test": 42940, "cs_tmun": 118336, "cs_escolas_atendidas": 1298, "medate_val": 77, "medate_n": 1298, "imfp": 10.1, "imft": 12.2, "mifce": 7.5}, "to": {"al_cad": 46952, "tot_veic": 1127, "vp": 513, "vt": 614, "ce_veic": 130, "tot_mon": 344, "mon_cv": 135, "tot_mot_info": 746, "mot_cv": 610, "al_transp": 12853, "esc_at": 386, "tot_rotas": 1646, "georref": 897, "dif": 446, "t1": 1142, "t2": 2, "t3": 502, "km_total": 107207.5, "n_veic_validos": 1124, "cap_sum": 35409.0, "cap_media": 31.5, "al_pcd": 235, "al_dif": 3847, "al_transp_sete": 12853, "demanda_censo": 62826, "mot_sem_vinculo": 136, "mon_sem_vinculo": 209, "cs_transp": 62826, "cs_test": 14283, "cs_tmun": 48543, "cs_escolas_atendidas": 1149, "medate_val": 35, "medate_n": 1149, "imfp": 9.5, "imft": 8.8, "mifce": 6.0}, "nacional": {"al_cad": 3761371, "tot_veic": 67730, "vp": 34328, "vt": 33402, "ce_veic": 10548, "tot_mon": 22678, "mon_cv": 11878, "tot_mot_info": 44152, "mot_cv": 36425, "al_transp": 1054709, "esc_at": 27751, "tot_rotas": 82887, "georref": 31626, "dif": 14751, "t1": 76616, "t2": 1693, "t3": 4578, "km_total": 9290313.4, "tempo_mediano": 60.0, "n_veic_validos": 67438, "cap_sum": 2134770.0, "cap_media": 31.66, "al_pcd": 63418, "al_dif": 108512, "al_transp_sete": 1054709, "demanda_censo": 9078809, "mot_sem_vinculo": 7727, "mon_sem_vinculo": 10800, "cs_transp": 9078809, "cs_test": 1431234, "cs_tmun": 7647575, "cs_escolas_atendidas": 100655, "medate_val": 44, "medate_n": 100655, "imfp": 9.5, "imft": 13.8, "mifce": 9.0}, "norte": {"tot_rotas": 6812, "georref": 2234, "dif": 1469, "t1": 4605, "t2": 1550, "t3": 657, "km_total": 405579.9, "tot_veic": 4247, "vp": 2220, "vt": 2027, "n_veic_validos": 4232, "cap_sum": 150980.0, "cap_media": 35.68, "al_pcd": 10844, "al_dif": 10140, "al_cad": 554970, "al_transp_sete": 76620, "demanda_censo": 1053624, "al_transp": 76620, "tot_mot_info": 2884, "mot_sem_vinculo": 720, "mot_cv": 2164, "tot_mon": 1941, "mon_sem_vinculo": 942, "mon_cv": 999, "cs_transp": 1053624, "cs_test": 150885, "cs_tmun": 902739, "cs_escolas_atendidas": 14047, "medate_val": 35, "medate_n": 14047, "ce_veic": 1159, "imfp": 9.9, "imft": 13.1, "mifce": 11}, "nordeste": {"tot_rotas": 29319, "georref": 10300, "dif": 4574, "t1": 26891, "t2": 75, "t3": 2353, "km_total": 1987976.7, "tot_veic": 22399, "vp": 10514, "vt": 11885, "n_veic_validos": 22304, "cap_sum": 709880.0, "cap_media": 31.83, "al_pcd": 34471, "al_dif": 44888, "al_cad": 1682086, "al_transp_sete": 405529, "demanda_censo": 3467658, "al_transp": 405529, "tot_mot_info": 15752, "mot_sem_vinculo": 4212, "mot_cv": 11540, "tot_mon": 9281, "mon_sem_vinculo": 6065, "mon_cv": 3216, "cs_transp": 3467658, "cs_test": 396697, "cs_tmun": 3070961, "cs_escolas_atendidas": 37966, "medate_val": 49, "medate_n": 37966, "ce_veic": 4585, "imfp": 9.2, "imft": 15.7, "mifce": 9.0}, "sudeste": {"tot_rotas": 25360, "georref": 8599, "dif": 5345, "t1": 24445, "t2": 46, "t3": 869, "km_total": 3427659.7, "tot_veic": 22125, "vp": 10514, "vt": 11611, "n_veic_validos": 22030, "cap_sum": 621083.0, "cap_media": 28.19, "al_pcd": 10599, "al_dif": 26051, "al_cad": 811324, "al_transp_sete": 299308, "demanda_censo": 3022013, "al_transp": 299308, "tot_mot_info": 12839, "mot_sem_vinculo": 1701, "mot_cv": 11138, "tot_mon": 7865, "mon_sem_vinculo": 2684, "mon_cv": 5181, "cs_transp": 3022013, "cs_test": 637609, "cs_tmun": 2384404, "cs_escolas_atendidas": 29488, "medate_val": 42, "medate_n": 29488, "ce_veic": 1977, "imfp": 9.6, "imft": 13.2, "mifce": 8}, "sul": {"tot_rotas": 15456, "georref": 8423, "dif": 1652, "t1": 14990, "t2": 12, "t3": 454, "km_total": 2291388.4, "tot_veic": 13078, "vp": 6867, "vt": 6211, "n_veic_validos": 13014, "cap_sum": 440661.0, "cap_media": 33.86, "al_pcd": 6086, "al_dif": 10832, "al_cad": 509927, "al_transp_sete": 199336, "demanda_censo": 1089156, "al_transp": 199336, "tot_mot_info": 8850, "mot_sem_vinculo": 568, "mot_cv": 8282, "tot_mon": 2750, "mon_sem_vinculo": 844, "mon_cv": 1906, "cs_transp": 1089186, "cs_test": 82322, "cs_tmun": 1006864, "cs_escolas_atendidas": 14056, "medate_val": 43, "medate_n": 14056, "ce_veic": 1696, "imfp": 9.9, "imft": 11.5, "mifce": 8.0}, "centro-oeste": {"tot_rotas": 5940, "georref": 2070, "dif": 1711, "t1": 5685, "t2": 10, "t3": 245, "km_total": 1177708.7, "tot_veic": 5881, "vp": 4213, "vt": 1668, "n_veic_validos": 5858, "cap_sum": 212166.0, "cap_media": 36.22, "al_pcd": 1418, "al_dif": 16601, "al_cad": 203064, "al_transp_sete": 99406, "demanda_censo": 446328, "al_transp": 99406, "tot_mot_info": 3827, "mot_sem_vinculo": 526, "mot_cv": 3301, "tot_mon": 841, "mon_sem_vinculo": 265, "mon_cv": 576, "cs_transp": 446328, "cs_test": 163721, "cs_tmun": 282607, "cs_escolas_atendidas": 5098, "medate_val": 47, "medate_n": 5098, "ce_veic": 1131, "imfp": 9.0, "imft": 13.3, "mifce": 10.0}};
-// ================================================================
 // PNITE v.3.0.8 — INDICADORES VIA API DO SUPABASE
 // ----------------------------------------------------------------
 // Os indicadores vêm das views públicas public.indicadores_{nacional,regiao,estado,municipio}
@@ -9030,7 +9023,7 @@ const ALL_INDICATORS = [
     formula: '(Rotas com impedância registrada ÷ Total de rotas) × 100',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 17.80,
+    valNac: null,
     unit: '%',
     obj: 'Identificar os trechos em que a operação do transporte escolar está sujeita a interrupção, com vistas a subsidiar a tomada de decisão sobre obras de infraestrutura e sobre a definição do objeto licitado (substitui o antigo PRDAM).'
   },
@@ -9042,7 +9035,7 @@ const ALL_INDICATORS = [
     formula: '(Alunos em rotas com dificuldade de acesso ou impedância ÷ Total de alunos) × 100',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 2.88,
+    valNac: null,
     unit: '%',
     obj: 'Dimensionar a população de estudantes efetivamente exposta a trechos críticos de tráfego (porteiras, mata-burros, colchetes, atoleiros ou pontes rústicas), deslocando a unidade de análise da infraestrutura viária para o discente atendido.'
   },
@@ -9054,7 +9047,7 @@ const ALL_INDICATORS = [
     formula: '(Rotas rodoviárias ÷ Total de rotas) × 100',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 92.43,
+    valNac: null,
     unit: '%',
     obj: 'Descrever o perfil modal rodoviário do transporte escolar no território.'
   },
@@ -9078,7 +9071,7 @@ const ALL_INDICATORS = [
     formula: '(Rotas hidroviárias ÷ Total de rotas) × 100',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 2.04,
+    valNac: null,
     unit: '%',
     obj: 'Caracterizar a participação e o peso do transporte aquaviário (rios e lagos) no atendimento.'
   },
@@ -9102,7 +9095,7 @@ const ALL_INDICATORS = [
     formula: '(Rotas multimodais ÷ Total de rotas) × 100',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 5.52,
+    valNac: null,
     unit: '%',
     obj: 'Descrever a complexidade logística decorrente do uso combinado de múltiplos modos em uma mesma rota.'
   },
@@ -9114,7 +9107,7 @@ const ALL_INDICATORS = [
     formula: 'QT_TRANSP_RESP_MUN ÷ (QT_TRANSP_RESP_MUN + QT_TRANSP_RESP_EST) × 100',
     fonte: 'Censo Escolar 2025',
     status: 'ok',
-    valNac: 84.24,
+    valNac: null,
     unit: '%',
     obj: 'Percentual de Alunos Transportados sob responsabilidade municipal em relação ao total da demanda pública atendida: QT_TRANSP_RESP_MUN ÷ (QT_TRANSP_RESP_MUN + QT_TRANSP_RESP_EST) × 100.'
   },
@@ -9126,7 +9119,7 @@ const ALL_INDICATORS = [
     formula: 'Total de alunos transportados ÷ Total de escolas atendidas',
     fonte: 'Censo Escolar 2025',
     status: 'ok',
-    valNac: 91,
+    valNac: null,
     unit: 'alunos',
     obj: 'Retratar a escala média de atendimento do transporte por escola atendida (arredondado para cima).'
   },
@@ -9138,7 +9131,7 @@ const ALL_INDICATORS = [
     formula: 'Valor mediano da distribuição de alunos transportados por escola',
     fonte: 'Censo Escolar 2025',
     status: 'ok',
-    valNac: 44,
+    valNac: null,
     unit: 'alunos',
     obj: 'Caracterizar a escola típica quanto ao número de alunos transportados, imune a valores extremos (arredondado para cima).'
   },
@@ -9150,7 +9143,7 @@ const ALL_INDICATORS = [
     formula: 'QT_TRANSP_RESP_EST ÷ (QT_TRANSP_RESP_MUN + QT_TRANSP_RESP_EST) × 100',
     fonte: 'Censo Escolar 2025',
     status: 'ok',
-    valNac: 15.76,
+    valNac: null,
     unit: '%',
     obj: 'Percentual de Alunos Transportados sob responsabilidade estadual em relação ao total da demanda pública atendida: QT_TRANSP_RESP_EST ÷ (QT_TRANSP_RESP_MUN + QT_TRANSP_RESP_EST) × 100.'
   },
@@ -9162,7 +9155,7 @@ const ALL_INDICATORS = [
     formula: '(Veículos próprios ÷ Total de veículos) × 100',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 50.68,
+    valNac: null,
     unit: '%',
     obj: 'Avaliar a autonomia da gestão municipal na oferta do serviço e acompanhar sua evolução na série histórica.'
   },
@@ -9174,7 +9167,7 @@ const ALL_INDICATORS = [
     formula: '(Veículos do Caminho da Escola ÷ Total de veículos) × 100',
     fonte: 'SETE/FNDE',
     status: 'ok',
-    valNac: 15.57,
+    valNac: null,
     unit: '%',
     obj: 'Avaliar a renovação e a padronização da frota com veículos escolares específicos fornecidos pelo programa federal.'
   },
@@ -9186,7 +9179,7 @@ const ALL_INDICATORS = [
     formula: 'Σ(ano de referência − ano de fabricação) ÷ número de veículos próprios',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 9.5,
+    valNac: null,
     unit: 'anos',
     obj: 'Caracterizar o estado de conservação da frota sob gestão direta do poder público, subsidiando o planejamento da renovação.'
   },
@@ -9198,7 +9191,7 @@ const ALL_INDICATORS = [
     formula: 'Σ(ano de referência − ano de fabricação) ÷ número de veículos terceirizados',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 13.8,
+    valNac: null,
     unit: 'anos',
     obj: 'Verificar se a contratação de terceiros incorpora veículos em condição equivalente à da frota própria.'
   },
@@ -9210,7 +9203,7 @@ const ALL_INDICATORS = [
     formula: 'Valor mediano da distribuição de idades dos veículos do Caminho da Escola',
     fonte: 'SETE/FNDE',
     status: 'ok',
-    valNac: 9.0,
+    valNac: null,
     unit: 'anos',
     obj: 'Descrever a idade típica dos veículos do programa, reduzindo a distorção provocada por entregas concentradas em determinados exercícios.'
   },
@@ -9224,7 +9217,7 @@ const ALL_INDICATORS = [
     formula: '(Rotas georreferenciadas ÷ Total de rotas) × 100',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 38.16,
+    valNac: null,
     unit: '%',
     obj: 'Medir a qualidade do planejamento por meio do georreferenciamento das rotas, base para simulação e monitoramento espacial.'
   },
@@ -9248,7 +9241,7 @@ const ALL_INDICATORS = [
     formula: 'Total de alunos transportados ÷ (Veículos com capacidade de 1 a 100 lugares × Capacidade média desses veículos)',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 0.49,
+    valNac: null,
     unit: 'índice',
     obj: 'Medir a eficiência de uso da capacidade da frota, apontando ociosidade ou sobrecarga na operação.'
   },
@@ -9260,7 +9253,7 @@ const ALL_INDICATORS = [
     formula: '[1 − (Motoristas sem vínculo ÷ Total de motoristas)] × 100',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 82.5,
+    valNac: null,
     unit: '%',
     obj: 'Avaliar a formalização e a estabilidade da força de trabalho de motoristas do transporte escolar (antigo MOT_CVE).'
   },
@@ -9272,7 +9265,7 @@ const ALL_INDICATORS = [
     formula: '[1 − (Monitores sem vínculo ÷ Total de monitores)] × 100',
     fonte: 'SETE/PDDE',
     status: 'ok',
-    valNac: 52.38,
+    valNac: null,
     unit: '%',
     obj: 'Avaliar a formalização e a estabilidade dos monitores embarcados no transporte escolar (antigo MON_CVE).'
   },
@@ -9370,7 +9363,7 @@ const ALL_INDICATORS = [
     formula: '(Alunos atendidos com rota no SETE ÷ Demanda declarada no Censo Escolar) × 100',
     fonte: 'SETE (Script 13) + Censo Escolar 2025 (Inep)',
     status: 'ok',
-    valNac: 11.62,
+    valNac: null,
     unit: '%',
     obj: 'Verificar a cobertura efetiva da política de transporte escolar cruzando o atendimento das rotas do SETE com a demanda declarada no Censo Escolar 2025 (QT_TRANSP_PUBLICO).'
   },
@@ -9382,7 +9375,7 @@ const ALL_INDICATORS = [
     formula: '(Alunos com deficiência transportados ÷ Total transportado) × 100',
     fonte: 'SETE / Censo',
     status: 'ok',
-    valNac: 1.69, unit: '%',
+    valNac: null, unit: '%',
     obj: 'Verificar se o transporte escolar cumpre sua função de garantir acesso à educação em condições de igualdade, dimensionando a demanda por veículos acessíveis.'
   },
   {
@@ -9399,11 +9392,11 @@ const ALL_INDICATORS = [
   }
 ];
 
-// valNac passa a ser sincronizado com a base nacional calculada (DATA.nacional), inclusive após recarga de dados
+// valNac vem apenas da base nacional calculada (DATA.nacional), inclusive após recarga de dados;
+// sem resposta da API o valor fica nulo ("—" na interface), nunca um número fixo no código
 function syncNationalValues() {
   ALL_INDICATORS.forEach(ind => {
-    const v = getNationalAverage(ind.sigla);
-    if (v !== null) ind.valNac = v;
+    ind.valNac = getNationalAverage(ind.sigla);
   });
 }
 syncNationalValues();
@@ -15690,12 +15683,13 @@ function processarUploadExcel(event) {
       </div>
     </div>
     <div class="pif-body">
-      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.1.7</strong></div>
+      <div class="pif-row"><span>Versão ativa:</span><strong class="pnite-version-val">v.3.1.8</strong></div>
       <div class="pif-row"><span>Data da alteração:</span><span class="pnite-date-val">22/10/2026</span></div>
       <div class="pif-row"><span>Horário:</span><span class="pnite-time-val">14:00</span></div>
       <div class="pif-row"><span>Responsável técnico:</span><span class="pnite-author-val">Equipe PNITE</span></div>
       <div class="pif-note">
         <i class="ti ti-check" style="color:var(--accent);margin-right:3px"></i>
+        <strong>Sem valores embutidos (v.3.1.8):</strong> os valores legados de reserva (<code>_FALLBACK_DATA</code>/<code>_FALLBACK_RAW_DATA</code>) saem do HTML e a média nacional de referência dos indicadores fica em "—" quando a API do Supabase não responde, sem números fixos no código.<br>
         <strong>Documentação do banco (v.3.1.7):</strong> novo <code>DATABASE.md</code> com schemas, tabelas, views da API, regras de cálculo, ordem de atualização e migrações do Supabase.<br>
         <strong>Definições únicas (v.3.1.6):</strong> rotas com mais de 2.000 km (erro de cadastro) deixam de entrar na extensão, o que leva o km médio nacional de 112,1 para 53,0 km/rota; capacidade válida de 1 a 100 lugares na capacidade média e no IUC; MOT_CVE e MON_CVE da tabela Dados SETE passam a contar terceirizados, como o PMVE e o PMNVE; descartado o código de município inválido 520140500.<br>
         <strong>Dados municipais via API (v.3.1.5):</strong> a tabela Dados SETE (municípios e UFs), a Distribuição Modal e os indicadores municipais do Censo e da frota (ATE, MEDATE, PATM, PATE, PVPCE, IMFP, IMFT, MIFCE) passam a vir do banco (views <code>sete_municipios</code> e <code>indicadores_municipio_complemento</code>), com as mesmas regras das bases antes embutidas; o arquivo fica 2,35 MB menor.<br>
@@ -15723,7 +15717,7 @@ function processarUploadExcel(event) {
   </div>
   <button class="pif-btn" id="pifBtn" aria-label="Informações de Versão">
     <i class="ti ti-info-circle"></i>
-    <span class="pif-btn-label pnite-version-val">v.3.1.7</span>
+    <span class="pif-btn-label pnite-version-val">v.3.1.8</span>
   </button>
 </div>
 

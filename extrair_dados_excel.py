@@ -656,7 +656,7 @@ def processar_profissionais(data_dir='data'):
 def montar_raw_referencia(detalhes_por_uf):
     """
     Monta o RAW_DATA de referência por escopo (nacional, regiões e UFs): valores legados
-    embutidos no PNITE.html (_FALLBACK_RAW_DATA) sobrepostos pelos totais das planilhas
+    que ficavam embutidos no HTML (_FALLBACK_RAW_DATA, até a v.3.1.7) sobrepostos pelos totais das planilhas
     'consolidado *.xlsx'. Os campos calculados a partir dos CSVs brutos são aplicados depois.
     Também é usado por scripts/criar_banco_dados_brutos.py (tabela ref.raw_referencia).
     """
@@ -664,13 +664,18 @@ def montar_raw_referencia(detalhes_por_uf):
     ref_raw = {}
     ref_data = {}
     
-    # Arquivo principal fixo na raiz (PNITE.html); versões arquivadas em old/ servem de reserva
+    # Desde a v.3.1.8 o PNITE.html não traz mais esses valores: usa a versão mais recente
+    # (raiz ou arquivada em old/) que ainda contém _FALLBACK_RAW_DATA
     arquivos_html = glob.glob('PNITE.html') + sorted(glob.glob('old/PNITE [[]V.*[]].html'), reverse=True)
-    if arquivos_html:
-        html_alvo = arquivos_html[0]
+    html_alvo, conteudo = None, ''
+    for caminho in arquivos_html:
+        with open(caminho, 'r', encoding='utf-8', errors='replace') as f:
+            texto = f.read()
+        if 'const _FALLBACK_RAW_DATA' in texto:
+            html_alvo, conteudo = caminho, texto
+            break
+    if html_alvo:
         try:
-            with open(html_alvo, 'r', encoding='utf-8', errors='replace') as f:
-                conteudo = f.read()
             m_raw = re.search(r'const (?:_FALLBACK_RAW_DATA|RAW_DATA)\s*=\s*(\{.*?\});\n', conteudo)
             if m_raw:
                 ref_raw = json.loads(m_raw.group(1))
