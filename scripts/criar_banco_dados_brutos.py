@@ -24,7 +24,7 @@ Regras de carga:
 Referências (``--tabelas municipios referencia``):
 - municipios: ``Lista de Municipios IBGE.csv`` -> ``ref.municipios``;
 - referencia: RAW_DATA legado + planilhas ``consolidado *.xlsx`` -> ``ref.raw_referencia`` e
-  ``ref.detalhes_scripts`` (requer pandas/openpyxl; reutiliza extrair_dados_excel.py).
+  ``ref.detalhes_scripts`` (requer pandas/openpyxl; reutiliza scripts/extrair_dados_excel.py).
 
 Uso:
     pip install requests python-dotenv python-docx pandas openpyxl
@@ -580,9 +580,7 @@ def carregar_municipios():
 
 def carregar_referencia(ano):
     """RAW_DATA de referência (legado do HTML + planilhas consolidado *.xlsx) e detalhes_scripts."""
-    os.chdir(RAIZ)  # extrair_dados_excel.py resolve PNITE.html e data/ a partir da raiz
-    sys.path.insert(0, str(RAIZ))
-    import extrair_dados_excel as ext
+    import extrair_dados_excel as ext  # scripts/ já está no sys.path; caminhos resolvidos pela raiz
 
     tabelas = ext.carregar_planilhas(str(PASTA_DADOS))
     detalhes = ext.extrair_metricas_por_uf(tabelas)

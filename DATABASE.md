@@ -218,7 +218,7 @@ Cada nível soma o anterior. Os percentuais são sempre recalculados a partir do
 
 | Função | Papel |
 |---|---|
-| `analise.calcular_indicadores(raw, label)` | Indicadores de um escopo a partir dos contadores (porta do `extrair_dados_excel.py`) |
+| `analise.calcular_indicadores(raw, label)` | Indicadores de um escopo a partir dos contadores (porta do `scripts/extrair_dados_excel.py`) |
 | `analise.montar_raw(contadores, tempo_mediano, tempo_medio)` | Monta o `raw` (km arredondado, km médio, capacidade média, tempos) |
 | `analise.pct`, `analise.num`, `analise.sn` | Percentual, leitura numérica de JSON, S/N → boolean |
 | `analise.pct_par`, `analise.round_par` | Percentual e arredondamento com empate para o par |
@@ -808,7 +808,7 @@ Pareamento entre o ano de carga do SETE e o ano do Censo Escolar usado com ele.
 
 #### 10.3.4. `ref.raw_referencia`
 
-Contadores de referência por escopo (legado `_FALLBACK_RAW_DATA` + planilhas `consolidado *.xlsx`), gerados por `extrair_dados_excel.montar_raw_referencia`. Nas views `indicadores_estado/regiao/nacional`, os contadores calculados dos dados brutos **sobrepõem** estes valores; o que sobra daqui são campos sem cálculo no banco (`cs_*`, `medate_*`, `imfp`, `imft`, `mifce`, `esc_at`, `ce_veic`).
+Contadores de referência por escopo (legado `_FALLBACK_RAW_DATA` + planilhas `consolidado *.xlsx`), gerados por `montar_raw_referencia` de `scripts/extrair_dados_excel.py`. Nas views `indicadores_estado/regiao/nacional`, os contadores calculados dos dados brutos **sobrepõem** estes valores; o que sobra daqui são campos sem cálculo no banco (`cs_*`, `medate_*`, `imfp`, `imft`, `mifce`, `esc_at`, `ce_veic`).
 
 **Tipo:** tabela · **Linhas:** 33 · **Colunas:** 3
 

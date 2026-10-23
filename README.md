@@ -100,7 +100,7 @@ pnite/
 ├── old/                       # Histórico rigoroso de versões arquivadas (v.1.0.0 até atual)
 │   └── PNITE [V.*].html
 │
-└── extrair_dados_excel.py     # Script central de processamento das planilhas em data/
+└── scripts/                   # Carga do banco e utilitários (inclui extrair_dados_excel.py)
 ```
 
 ---
@@ -126,10 +126,10 @@ pnite/
 
 ## 🔄 Atualização dos Dados
 
-Para recalcular os indicadores a partir de planilhas adicionadas ou atualizadas em `data/Transporte Escolar/`:
+Para recalcular o pacote local a partir de planilhas adicionadas ou atualizadas em `data/Transporte Escolar/`:
 
 ```bash
-python extrair_dados_excel.py
+python scripts/extrair_dados_excel.py
 ```
 
 O script recalcula os totais nacionais, agregações regionais/estaduais e atualiza os arquivos:

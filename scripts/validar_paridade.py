@@ -1,6 +1,6 @@
 """
 PNITE — Teste de paridade: API do Supabase (public.indicadores) × pacote compilado atual
-(data/Transporte Escolar/pnite_dados_consolidados.json, gerado pelo extrair_dados_excel.py).
+(data/Transporte Escolar/pnite_dados_consolidados.json, gerado pelo scripts/extrair_dados_excel.py).
 
 Lê a API com a chave publishable (mesmo caminho do front-end) e compara, campo a campo:
   - DATA (indicadores) e RAW_DATA dos escopos estaduais/regionais/nacional;

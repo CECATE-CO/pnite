@@ -6,8 +6,10 @@ Conjunto de scripts Python e Node.js para processamento, extração, agregação
 
 ## Estrutura dos Scripts
 
-- **`extrair_dados_excel.py`** *(na raiz)*:
-  Script central de extração. Lê as planilhas consolidadas em `data/Transporte Escolar/`, calcula os 18 indicadores analíticos, gera os benchmarks nacionais e compõe os pacotes `pnite_dados_consolidados.json` e `pnite_dados_consolidados.js`.
+- **`scripts/extrair_dados_excel.py`**:
+  Lê as planilhas consolidadas em `data/Transporte Escolar/`. Tem dois usos:
+  - **Biblioteca da carga de referência** (em uso): `carregar_planilhas`, `extrair_metricas_por_uf` e `montar_raw_referencia` são chamadas por `criar_banco_dados_brutos.py --tabelas referencia` para gravar `ref.raw_referencia` e `ref.detalhes_scripts`.
+  - **Execução direta** (legado): `python scripts/extrair_dados_excel.py` gera o pacote local `pnite_dados_consolidados.json`/`.js`, que a interface não lê mais (os indicadores vêm do Supabase); só o `validar_paridade.py` o utiliza. O cálculo dos indicadores foi portado para `analise.calcular_indicadores` no banco.
 
 - **`scripts/criar_banco_dados_brutos.py`**:
   Estrutura e carga dos dados brutos do SETE (`ano_carga` 2026) e do Censo Escolar (`ano_carga` 2025) no Supabase **via API** (HTTPS `/pg/query`, chave secreta do `.env`). Gera as migrações `0003_sete.sql`/`0004_censo.sql` (`--gerar-ddl`), carrega em lotes idempotentes com checkpoint (`--retomar`), aceita carga por UF (`--uf go`) e carrega as referências (`--tabelas municipios referencia`).
@@ -43,9 +45,9 @@ Conjunto de scripts Python e Node.js para processamento, extração, agregação
 
 ## Como Executar a Atualização de Dados
 
-Na raiz do repositório:
+Os indicadores da interface são atualizados no banco (ver `DATABASE.md`, seção 7). Para regenerar o pacote local legado:
 ```bash
-python extrair_dados_excel.py
+python scripts/extrair_dados_excel.py
 ```
 Os arquivos consolidados em `data/Transporte Escolar/` (pasta local, fora do Git) são atualizados; a interface lê os indicadores da API do Supabase.
 

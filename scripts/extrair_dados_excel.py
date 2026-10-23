@@ -3,11 +3,15 @@ Script de Extração e Consolidação de Dados das Planilhas Excel da PNITE
 PNITE — Plataforma Nacional de Inteligência em Transporte Escolar
 
 Este script realiza a leitura automatizada de todas as planilhas Excel consolidadas
-armazenadas na pasta 'data/' (com o prefixo 'consolidado XX - script_XX_*.xlsx'),
+armazenadas em 'data/Transporte Escolar/' (com o prefixo 'consolidado XX - script_XX_*.xlsx'),
 consolida os indicadores estaduais, regionais e nacionais, e exporta os resultados
 para:
-  1) data/pnite_dados_consolidados.json (para consumo via APIs ou fetch)
-  2) data/pnite_dados_consolidados.js   (objeto window.PNITE_EXCEL_DATA para acesso direto)
+  1) data/Transporte Escolar/pnite_dados_consolidados.json (lido por scripts/validar_paridade.py)
+  2) data/Transporte Escolar/pnite_dados_consolidados.js   (objeto window.PNITE_EXCEL_DATA)
+
+Uso (de qualquer pasta): python scripts/extrair_dados_excel.py
+As funções carregar_planilhas, extrair_metricas_por_uf e montar_raw_referencia também são usadas
+por scripts/criar_banco_dados_brutos.py (tabelas ref.raw_referencia e ref.detalhes_scripts).
 """
 
 import os
@@ -19,6 +23,9 @@ import unicodedata
 import pandas as pd
 import numpy as np
 from datetime import datetime
+
+# Raiz do repositório: os caminhos de data/, PNITE.html e old/ não dependem da pasta atual
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Assegura suporte a utf-8 no console Windows
 if hasattr(sys.stdout, 'reconfigure'):
@@ -666,7 +673,9 @@ def montar_raw_referencia(detalhes_por_uf):
     
     # Desde a v.3.1.8 o PNITE.html não traz mais esses valores: usa a versão mais recente
     # (raiz ou arquivada em old/) que ainda contém _FALLBACK_RAW_DATA
-    arquivos_html = glob.glob('PNITE.html') + sorted(glob.glob('old/PNITE [[]V.*[]].html'), reverse=True)
+    raiz_glob = glob.escape(RAIZ)
+    arquivos_html = (glob.glob(os.path.join(raiz_glob, 'PNITE.html'))
+                     + sorted(glob.glob(os.path.join(raiz_glob, 'old', 'PNITE [[]V.*[]].html')), reverse=True))
     html_alvo, conteudo = None, ''
     for caminho in arquivos_html:
         with open(caminho, 'r', encoding='utf-8', errors='replace') as f:
@@ -748,8 +757,8 @@ def extrair_e_consolidar_tudo(data_dir=None, html_ref=None):
     Executa a extração completa dos Excels e compõe a base RAW_DATA e DATA.
     """
     if data_dir is None:
-        transp_dir = os.path.join('data', 'Transporte Escolar')
-        data_dir = transp_dir if os.path.isdir(transp_dir) else 'data'
+        transp_dir = os.path.join(RAIZ, 'data', 'Transporte Escolar')
+        data_dir = transp_dir if os.path.isdir(transp_dir) else os.path.join(RAIZ, 'data')
     tabelas = carregar_planilhas(data_dir)
     detalhes_por_uf = extrair_metricas_por_uf(tabelas)
     dados_alunos = processar_alunos(data_dir)
